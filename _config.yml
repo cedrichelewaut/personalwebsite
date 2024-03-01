@@ -1,0 +1,25 @@
+# General site settings
+title: 			
+email: 			cedric_helewaut@hotmail.com
+description:		
+author: 		C.H.
+baseurl: 		"/cedrich" # the subpath of your site
+url: 			"http://www.cedrichelewaut.com"
+
+# Socials
+github_username:  	cedrichelewaut
+linkedin_username: 	cedrichelewaut
+instagram_username: 	dispo_ce
+
+# Site analytics
+# google_analytics:   UA-XXXXXXXXX-X
+
+# Build settings
+#theme: jekyll-theme-clean-blog
+markdown: kramdown
+paginate: 5
+paginate_path: "/posts/page:num/"
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
