@@ -1,10 +1,10 @@
 # General site settings
 title: 			
 email: 			cedric_helewaut@hotmail.com
-description:		
+description:	
 author: 		C.H.
 baseurl: 		"" 
-url: 			"https://cedrichelewaut.github.io/personalwebsite/"
+url: 			""
 
 # Socials
 github_username:  	cedrichelewaut
@@ -22,7 +22,6 @@ paginate_path: "/posts/page:num/"
 plugins:
   - jekyll-feed
   - jekyll-paginate
-  - jekyll-sitemap
 
 
 # repository: cedrichelewaut/personalwebsite
