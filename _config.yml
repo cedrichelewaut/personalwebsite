@@ -3,7 +3,7 @@ title:
 email: 			cedric_helewaut@hotmail.com
 description:		
 author: 		C.H.
-baseurl: 		"/personalwebsite" 
+baseurl: 		"" 
 url: 			"https://cedrichelewaut.github.io/personalwebsite/"
 
 # Socials
@@ -23,3 +23,7 @@ plugins:
   - jekyll-feed
   - jekyll-paginate
   - jekyll-sitemap
+
+
+  repository: cedrichelewaut/personalwebsite
+  branch: main
