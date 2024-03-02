@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3.3"
 gem "bundler", "~> 2.5.6"
-
+ruby "3.0.2"
 
 
 group :jekyll_plugins do
