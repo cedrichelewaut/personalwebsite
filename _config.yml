@@ -3,8 +3,8 @@ title:
 email: 			cedric_helewaut@hotmail.com
 description:		
 author: 		C.H.
-baseurl: 		"" # the subpath of your site
-url: 			"http://www.cedrichelewaut.com"
+baseurl: 		"/personalwebsite" 
+url: 			"https://cedrichelewaut.github.io/personalwebsite/"
 
 # Socials
 github_username:  	cedrichelewaut
