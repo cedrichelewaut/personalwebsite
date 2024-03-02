@@ -3,7 +3,7 @@ title:
 email: 			cedric_helewaut@hotmail.com
 description:		
 author: 		C.H.
-baseurl: 		"/cedrich" # the subpath of your site
+baseurl: 		"" # the subpath of your site
 url: 			"http://www.cedrichelewaut.com"
 
 # Socials
