@@ -1,11 +1,11 @@
 ---
 layout: page
-title: 
+title: Projects
+description: Find out what I have worked on in the past
 background: '/img/mountains.jpg'
 ---
 
 {% for post in paginator.posts %}
-
 <article class="post-preview">
   <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
     <h2 class="post-title">{{ post.title }}</h2>
