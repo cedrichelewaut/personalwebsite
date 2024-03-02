@@ -25,5 +25,5 @@ plugins:
   - jekyll-sitemap
 
 
-  repository: cedrichelewaut/personalwebsite
-  branch: master
+# repository: cedrichelewaut/personalwebsite
+# branch: master
