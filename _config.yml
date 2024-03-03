@@ -5,6 +5,7 @@ description:
 author: 		C.H.
 baseurl: 		"" 
 url: 			""
+logo: favicon.ico
 
 # Socials
 github_username:  	cedrichelewaut
