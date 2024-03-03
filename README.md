@@ -2,7 +2,9 @@
 
 Welcome to the repository for my personal website. 
 Feel free to explore and use what you like (under conditions of the stated MIT licence).
+
 If you need help including something on your own website, feel free to reach out!
+However, this is a personal project, I will not offer any guarantee for support.
 
 
 ## Website Credits
