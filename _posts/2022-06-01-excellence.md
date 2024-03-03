@@ -1,7 +1,7 @@
 ---
 title: "Ghent University excellence program"
 subtitle: The dangers of AI, a case of racial bias in facial recognition systems.
-background: '/img/montreal'
+background: '/img/cities/prague.jpg'
 draft: false
 layout: post
 ---
