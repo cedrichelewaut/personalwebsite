@@ -5,7 +5,8 @@ background: '/img/companies/itp.JPG'
 draft: false
 layout: post
 ---
-![ITP Image](/img/companies/itp.png){:width="666px"}
+<img src="/img/companies/itp.png" alt="ITP Image" style="max-width:100%;height:auto;">
+
 
 In the summer of 2021, I decided to apply for my first internship as a computer science engineer. I reached out to In The Pocket, and before I knew it I was spending part of my summer in their Machine Learning (ML) team.
 
