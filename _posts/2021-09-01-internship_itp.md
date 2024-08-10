@@ -1,6 +1,6 @@
 ---
 title: "Machine Learning Internship at In The Pocket"
-subtitle: "First experiences with Data science and Machine Learning"
+subtitle: "Data science and Machine Learning: Tools for solving real-world problems"
 background: '/img/companies/itp.JPG'
 draft: false
 layout: post
