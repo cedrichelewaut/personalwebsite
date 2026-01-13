@@ -29,7 +29,7 @@ body:has(.masthead-fullscreen) {
   .masthead-fullscreen {
     margin-top: -1px; // Compensate for navbar border
     min-height: 100vh; // Full viewport height
-    margin-bottom: 3rem
+    margin-bottom: 3rem;
   }
 
   footer {
@@ -84,12 +84,13 @@ img {
 
 // Navigation
 nav {
-  background: white;
+  background: rgb(255, 255, 255);
   border-bottom: 1px solid $border-color;
   position: sticky;
   z-index: 100;
-  margin-bottom: 0;
-  margin-top: 0;
+  padding: 0rem 0rem;
+  height: 45px;
+  margin-top: -1rem;
 
   .container {
     display: flex;
@@ -112,12 +113,15 @@ nav {
     list-style: none;
     display: flex;
     gap: 1rem;
+    margin: 0;
+    padding: 0;
 
     li a {
       color: $text-color;
       font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      line-height: 1;
 
       &:hover {
         color: $link-color;
@@ -166,8 +170,7 @@ nav {
 // Header / Hero
 header.masthead {
   background: linear-gradient(135deg, $primary-color 0%, #34495e 100%);
-  color: white;
-  padding: 4rem 0 6rem;
+  padding: 4rem 0 4rem;
   text-align: center;
   position: relative;
 
