@@ -5,7 +5,7 @@ $primary-color: #000000;
 $text-color: #333;
 $light-gray: #f8f9fa;
 $border-color: #e0e0e0;
-$link-color: #04245b;
+$link-color: #1463ec;
 $font-sans: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
 $font-serif: 'Lora', Georgia, serif;
 
@@ -549,8 +549,8 @@ footer {
 
 // Profile photo (for home page)
 .profile-photo {
-  width: 180px;
-  height: 180px;
+  width: 360px;
+  height: 360px;
   border-radius: 50%;
   margin: 0 auto 2rem;
   border: 4px solid white;
