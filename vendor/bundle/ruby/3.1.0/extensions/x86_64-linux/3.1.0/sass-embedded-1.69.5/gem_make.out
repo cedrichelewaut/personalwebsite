@@ -1,5 +1,0 @@
-current directory: /home/cedri/cedrich/vendor/bundle/ruby/3.1.0/gems/sass-embedded-1.69.5/ext/sass
-/home/cedri/.rbenv/versions/3.1.1/bin/ruby -I/home/cedri/.rbenv/versions/3.1.1/lib/ruby/3.1.0 -rrubygems /home/cedri/cedrich/vendor/bundle/ruby/3.1.0/gems/rake-13.1.0/exe/rake RUBYARCHDIR\=/home/cedri/cedrich/vendor/bundle/ruby/3.1.0/extensions/x86_64-linux/3.1.0/sass-embedded-1.69.5 RUBYLIBDIR\=/home/cedri/cedrich/vendor/bundle/ruby/3.1.0/extensions/x86_64-linux/3.1.0/sass-embedded-1.69.5
-gem install --force --install-dir /home/cedri/cedrich/vendor/bundle/ruby/3.1.0/gems/sass-embedded-1.69.5/ext/sass/ruby --no-document --ignore-dependencies --platform x86_64-linux-gnu --version 1.69.5 sass-embedded
-cp -r /home/cedri/cedrich/vendor/bundle/ruby/3.1.0/gems/sass-embedded-1.69.5/ext/sass/ruby/gems/sass-embedded-1.69.5-x86_64-linux/ext/sass/dart-sass dart-sass
-rm -rf /home/cedri/cedrich/vendor/bundle/ruby/3.1.0/gems/sass-embedded-1.69.5/ext/sass/ruby
