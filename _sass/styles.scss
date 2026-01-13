@@ -29,6 +29,7 @@ body:has(.masthead-fullscreen) {
   .masthead-fullscreen {
     margin-top: -1px; // Compensate for navbar border
     min-height: 100vh; // Full viewport height
+    margin-bottom: 3rem
   }
 
   footer {
@@ -71,13 +72,13 @@ img {
 // Layout
 .container {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 0 20px;
 }
 
 .wide-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 0 20px;
 }
 
@@ -85,10 +86,10 @@ img {
 nav {
   background: white;
   border-bottom: 1px solid $border-color;
-  padding: 1rem 0;
   position: sticky;
-  top: 0;
   z-index: 100;
+  margin-bottom: 0;
+  margin-top: 0;
 
   .container {
     display: flex;
@@ -110,7 +111,7 @@ nav {
   ul {
     list-style: none;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 
     li a {
       color: $text-color;
@@ -166,7 +167,7 @@ nav {
 header.masthead {
   background: linear-gradient(135deg, $primary-color 0%, #34495e 100%);
   color: white;
-  padding: 8rem 0 6rem;
+  padding: 4rem 0 6rem;
   text-align: center;
   position: relative;
 
@@ -189,7 +190,7 @@ header.masthead {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 0;
+    padding: 0rem 0;
   }
 
   .container {
@@ -204,7 +205,7 @@ header.masthead {
   .site-heading, .page-heading, .post-heading {
     h1 {
       font-size: 3rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0rem;
     }
 
     .subheading {
@@ -245,7 +246,7 @@ main {
 }
 
 article {
-  margin-bottom: 3rem;
+  margin-bottom: 0rem;
 }
 
 // Post list
@@ -253,7 +254,7 @@ article {
   border-bottom: 1px solid $border-color;
   padding: 1.5rem 0;
   transition: all 0.2s ease;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 
   &:last-child {
     border-bottom: none;
@@ -389,7 +390,7 @@ article {
 
     label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 2rem;
       font-weight: 600;
       color: $primary-color;
     }
@@ -441,7 +442,7 @@ article {
 footer {
   background: $light-gray;
   padding: 3rem 0 2rem;
-  margin-top: 0;
+  margin-top: 0rem;
   border-top: 1px solid $border-color;
 
   .social-links {
