@@ -444,7 +444,7 @@ article {
 // Footer
 footer {
   background: $light-gray;
-  padding: 4rem 0 3rem;
+  padding: 1.5rem 0 1.5rem;
   margin-top: 0rem;
   border-top: 1px solid $border-color;
 
@@ -498,14 +498,21 @@ footer {
 
 // Post navigation
 .post-navigation {
+  position: static;
+  z-index: auto;
+  background: none;
+  border-bottom: none;
+  height: auto;
   display: flex;
   justify-content: space-between;
+  gap: 4rem;
   margin: 3rem 0;
   padding: 2rem 0;
   border-top: 1px solid $border-color;
 
   a {
     flex: 1;
+    min-width: 0;
 
     &.next {
       text-align: right;
@@ -522,6 +529,8 @@ footer {
     .nav-title {
       color: $primary-color;
       font-weight: 600;
+      display: block;
+      word-break: break-word;
     }
 
     &:hover .nav-title {
