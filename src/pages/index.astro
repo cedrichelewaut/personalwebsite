@@ -21,7 +21,7 @@ const study = byOrder((await getCollection("study")).filter(isLive)).slice(0, la
 const projects = byOrder((await getCollection("projects")).filter(isLive)).slice(0, latestCount);
 
 const books = (await getCollection("reading"))
-  .filter(isLive)
+  .filter((entry) => isLive(entry) && (entry.data.rating ?? 0) > 4)
   .sort((a, b) => readSortKey(b.data.read) - readSortKey(a.data.read) || a.data.title.localeCompare(b.data.title))
   .slice(0, latestCount);
 const current = await loadCurrent();

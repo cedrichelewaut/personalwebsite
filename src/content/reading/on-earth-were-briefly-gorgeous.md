@@ -1,6 +1,7 @@
 ---
 title: "On Earth We're Briefly Gorgeous"
 author: "Ocean Vuong"
-read: "2024-01"
-draft: true
+read: "2024-01-01"
+rating: 5
+draft: false
 ---

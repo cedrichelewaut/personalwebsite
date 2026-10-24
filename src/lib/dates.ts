@@ -71,6 +71,12 @@ export function formatRead(raw: string): string {
   return formatPoint(value);
 }
 
+/** 5 stays "5". 4.5 and 4.25 stay as written. */
+export function formatRating(value: number): string {
+  if (!Number.isFinite(value)) return "";
+  return String(value);
+}
+
 /** Larger means more recent. A month without a day sorts after the dated days in that month. */
 export function readSortKey(raw: string): number {
   const value = raw.trim();

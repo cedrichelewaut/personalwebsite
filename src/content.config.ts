@@ -111,6 +111,8 @@ const reading = defineCollection({
     summary: z.string().default(""),
     /** Dutch books set nl. Omit for English. */
     lang: z.enum(["nl"]).optional(),
+    /** Goodreads rating. Home recommendations are the three newest with rating above 4. */
+    rating: z.number().min(0).max(5).optional(),
     noteDate,
     draft: z.boolean().default(false),
   }),
