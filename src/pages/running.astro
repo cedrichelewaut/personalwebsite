@@ -1,0 +1,103 @@
+---
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+
+const board = "https://cedrichelewaut.github.io/marathoning/";
+const intro = "I’m following an 18-week marathon plan. The board is synced daily from Strava.";
+---
+
+<Base title="Running" page="running" current="running" description={intro}>
+  <Section num="06" title="Running">
+    <p class="lede">{intro}</p>
+    <p class="board-link signal-links">
+      <a href={board} target="_blank" rel="noopener noreferrer">Open full board</a>
+    </p>
+  </Section>
+  <iframe
+    id="running-board"
+    class="board-frame"
+    src={board}
+    title="Running board"
+    loading="eager"
+  ></iframe>
+  <script is:inline>
+    (function () {
+      var frame = document.getElementById("running-board");
+      if (!frame || !window.fetch) return;
+      var board = frame.getAttribute("src");
+      var probe;
+
+      function fit(px) {
+        if (!px || px < 400) return;
+        var next = Math.ceil(px) + 24;
+        var current = frame.getBoundingClientRect().height;
+        if (Math.abs(current - next) < 8) return;
+        frame.style.height = next + "px";
+      }
+
+      function measure() {
+        if (!probe || !probe.contentDocument) return;
+        var doc = probe.contentDocument;
+        var root = doc.documentElement;
+        var body = doc.body;
+        fit(Math.max(root ? root.scrollHeight : 0, body ? body.scrollHeight : 0));
+      }
+
+      // The live board can post its height later. Until then, size from a script-free copy.
+      window.addEventListener("message", function (event) {
+        if (event.origin !== "https://cedrichelewaut.github.io" || event.source !== frame.contentWindow) return;
+        var data = event.data;
+        if (!data || typeof data !== "object") return;
+        if (typeof data.height === "number") fit(data.height);
+      });
+
+      function width() {
+        return Math.round(frame.getBoundingClientRect().width);
+      }
+
+      fetch(board, { credentials: "omit" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("status");
+          return res.text();
+        })
+        .then(function (html) {
+          if (!html || html.toLowerCase().indexOf("<" + "script") !== -1) return;
+          var w = width();
+          if (w < 200) return;
+          probe = document.createElement("iframe");
+          probe.setAttribute("aria-hidden", "true");
+          probe.setAttribute("sandbox", "allow-same-origin");
+          probe.setAttribute("inert", "");
+          probe.tabIndex = -1;
+          probe.title = "";
+          probe.setAttribute("scrolling", "no");
+          probe.style.cssText =
+            "position:fixed;left:0;top:0;visibility:hidden;pointer-events:none;border:0;height:120px;width:" +
+            w +
+            "px;";
+          if (html.toLowerCase().indexOf("<base") === -1) {
+            html = html.replace(/<head[^>]*>/i, function (tag) {
+              return tag + '<base href="' + board + '">';
+            });
+          }
+          probe.srcdoc = html;
+          probe.addEventListener("load", function () {
+            measure();
+            var doc = probe.contentDocument;
+            if (doc && doc.fonts && doc.fonts.ready) doc.fonts.ready.then(measure);
+            if (doc && window.ResizeObserver) new ResizeObserver(measure).observe(doc.documentElement);
+          });
+          document.body.appendChild(probe);
+          if (window.ResizeObserver) {
+            new ResizeObserver(function () {
+              var next = width();
+              if (!probe || Math.abs(parseFloat(probe.style.width) - next) < 2) return;
+              probe.style.width = next + "px";
+              measure();
+            }).observe(frame);
+          }
+        })
+        .catch(function () {});
+    })();
+  </script>
+</Base>
