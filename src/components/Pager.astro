@@ -1,0 +1,21 @@
+---
+interface Item {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  indexHref: string;
+  indexLabel: string;
+  newer?: Item;
+  older?: Item;
+}
+
+const { indexHref, indexLabel, newer, older } = Astro.props;
+---
+
+<nav class="pager" aria-label="Adjacent notes">
+  <a href={indexHref}>{indexLabel}</a>
+  {newer && <a href={newer.href}>{newer.label}</a>}
+  {older && <a href={older.href}>{older.label}</a>}
+</nav>

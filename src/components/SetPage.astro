@@ -1,0 +1,65 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Note from "../layouts/Note.astro";
+import Pager from "./Pager.astro";
+import photos from "../data/photographs.json";
+import { figCaption } from "../lib/figures";
+import { hasNote } from "../lib/content";
+import type { SectionName } from "../lib/series";
+
+interface Props {
+  entry: CollectionEntry<"series">;
+}
+
+const numbers: Record<SectionName, string> = {
+  work: "01",
+  projects: "02",
+  photographs: "03",
+  reading: "04",
+};
+
+const indexLabel: Record<SectionName, string> = {
+  work: "all work",
+  projects: "all projects",
+  photographs: "all photographs",
+  reading: "all reading",
+};
+
+const { entry } = Astro.props;
+const section = entry.data.section;
+const { Content } = await render(entry);
+const plates = (entry.data.photos ?? []).map((slug) => {
+  const index = photos.findIndex((photo) => photo.slug === slug);
+  const photo = photos[index];
+  if (!photo) throw new Error(`Collection ${entry.data.code} lists an unknown photograph: ${slug}.`);
+  return { photo, caption: figCaption(index + 1, photo.place, photo.date) };
+});
+---
+
+<Note
+  page={`entry ${section}`}
+  current={section}
+  section={numbers[section]}
+  title={entry.data.title}
+  description={entry.data.summary || entry.data.title}
+  kickerHref={`/${section}/`}
+  kicker={section}
+  dek={entry.data.summary}
+  mark={entry.data.code}
+>
+  {hasNote(entry) && <Content />}
+  {
+    plates.map(({ photo, caption }) => (
+      <figure class="plate" id={photo.slug}>
+        <a href={photo.src}>
+          <img src={photo.src} width={photo.width} height={photo.height} alt={photo.alt} />
+        </a>
+        <figcaption>
+          <a href={`/photographs/${photo.slug}/`}>{caption}</a>
+          {photo.note && <span class="cap-note">{photo.note}</span>}
+        </figcaption>
+      </figure>
+    ))
+  }
+  <Pager slot="pager" indexHref={`/${section}/`} indexLabel={indexLabel[section]} />
+</Note>

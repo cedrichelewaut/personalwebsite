@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from "astro:content";
+import Note from "../../layouts/Note.astro";
+import Pager from "../../components/Pager.astro";
+import SetPage from "../../components/SetPage.astro";
+import { hasNote, isLive, neighbours } from "../../lib/content";
+import { formatRead, readSortKey } from "../../lib/dates";
+import { loadSeries } from "../../lib/series";
+
+export async function getStaticPaths() {
+  const all = await getCollection("reading");
+  const notes = all.filter((entry) => isLive(entry) && hasNote(entry));
+  const sets = await loadSeries(
+    "reading",
+    all.map((entry) => entry.id),
+  );
+  return [
+    ...notes.map((entry) => ({
+      params: { slug: entry.id },
+      props: { kind: "item" as const, entry },
+    })),
+    ...sets.map((entry) => ({
+      params: { slug: entry.id },
+      props: { kind: "set" as const, entry },
+    })),
+  ];
+}
+
+const props = Astro.props;
+const entry = props.kind === "item" ? props.entry : undefined;
+const rendered = entry ? await render(entry) : undefined;
+const notes = (await getCollection("reading"))
+  .filter((item) => isLive(item) && hasNote(item))
+  .sort((a, b) => readSortKey(b.data.read) - readSortKey(a.data.read) || a.data.title.localeCompare(b.data.title));
+const { newer, older } = entry ? neighbours(notes, entry.id) : { newer: undefined, older: undefined };
+const Content = rendered?.Content;
+---
+
+{
+  props.kind === "set" && <SetPage entry={props.entry} />
+}
+{
+  entry && Content && (
+    <Note
+      page="entry reading"
+      current="reading"
+      section="04"
+      title={entry.data.title}
+      description={entry.data.summary || entry.data.title}
+      kickerHref="/reading/"
+      kicker="reading"
+      meta={[
+        { label: "author", value: entry.data.author },
+        { label: "read", value: formatRead(entry.data.read) },
+      ]}
+    >
+      {hasNote(entry) ? <Content /> : entry.data.summary ? <p>{entry.data.summary}</p> : null}
+      <Pager
+        slot="pager"
+        indexHref="/reading/"
+        indexLabel="all reading"
+        newer={newer ? { href: `/reading/${newer.id}/`, label: "newer" } : undefined}
+        older={older ? { href: `/reading/${older.id}/`, label: "older" } : undefined}
+      />
+    </Note>
+  )
+}
