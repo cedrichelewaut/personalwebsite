@@ -350,6 +350,24 @@ main {
   padding-top: var(--gutter);
 }
 
+/* Home: intro is the first main child at every width. Flex order wins over
+   any grid/flex reordering a breakpoint might introduce. */
+body.home main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+body.home main > .intro {
+  order: -1;
+  min-width: 0;
+}
+
+body.home main > .digest {
+  order: 1;
+  min-width: 0;
+}
+
 .head {
   align-items: start;
   padding-bottom: var(--gutter);
@@ -371,30 +389,56 @@ main {
   grid-column: span 10;
 }
 
-/* Home intro sits above the section index. The highlight follows the text, line by line. */
+/* Home intro sits above the section index. The highlight follows the text, line by line.
+   Named areas keep the portrait in front of the copy. The single-column stack
+   starts at the same width the nav becomes a column, so narrow viewports never
+   keep a two-column intro under that index. */
 .intro {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  grid-template-areas: "photo text";
   gap: var(--gutter);
-  align-items: end;
+  align-items: start;
   padding-bottom: var(--gutter);
   border-bottom: 1px solid var(--ink);
+  min-width: 0;
 }
 
 .intro-photo {
+  grid-area: photo;
+  min-width: 0;
+  min-height: 0;
+  align-self: start;
+}
+
+.intro-photo img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
 }
 
-@media (max-width: 640px) {
+.intro-text {
+  grid-area: text;
+  min-width: 0;
+  align-self: end;
+}
+
+@media (max-width: 720px) {
   .intro {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "photo" "text";
+    align-items: start;
   }
+
   .intro-photo {
     max-width: 14rem;
+  }
+
+  .intro-text {
+    align-self: start;
   }
 }
 
