@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { hasNote } from "../lib/content";
+import { formatRating, formatRead } from "../lib/dates";
+
+interface Props {
+  books: CollectionEntry<"reading">[];
+}
+
+const { books } = Astro.props;
+---
+
+<ol class="shelf">
+  {
+    books.map((entry) => {
+      const href = hasNote(entry) ? `/reading/${entry.id}/` : undefined;
+      const title = (
+        <>
+          {entry.data.title}
+          {entry.data.lang === "nl" && <abbr class="lang" title="Dutch">NL</abbr>}
+        </>
+      );
+      return (
+        <li>
+          <p class="shelf-title">
+            {href ? <a href={href}>{title}</a> : title}
+          </p>
+          <p class="shelf-by">{entry.data.author}</p>
+          <p class="shelf-date">{formatRead(entry.data.read)}</p>
+          {entry.data.rating != null && <p class="shelf-rate">{formatRating(entry.data.rating)}</p>}
+        </li>
+      );
+    })
+  }
+</ol>

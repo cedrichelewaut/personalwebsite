@@ -22,7 +22,7 @@ A single book, project, photograph, or role does not get a catalogue code. Its f
 
 A catalogue code is only for a finished collection, such as a photo series, an essay series, or a CV. The code is a short prefix, an underscore, and a number (`F_02`, `CV_01`, `W_014`). It is a quiet mark on the collection. The URL stays the readable slug.
 
-Work, Study, and Projects are plain lists of titles, most recent first. A lower `order` sits higher. Reading lists the books he recommends most.
+Work, Study, and Projects are plain lists of titles, most recent first. A lower `order` sits higher. The Reading page lists books rated 3 or higher, newest finished first. Home “Latest recommendations” is the three newest with a rating above 4.
 
 ## Currently reading
 
@@ -40,13 +40,14 @@ url: "https://www.goodreads.com/book/show/257232432-de-eeuwigheid-in-een-kort-mo
 
 ## Add a book
 
-Copy `src/content/reading/example.md`. Set `draft` to `false` and replace the fields. `example.md` stays a draft and is not published. The Reading page lists recommendations, not reviews. It does not show a score.
+Copy `src/content/reading/example.md`. Set `draft` to `false` and replace the fields. `example.md` stays a draft and is not published. Books rated under 3 stay drafts or are left out. Do not link a Goodreads profile.
 
 ```yaml
 ---
 title: "The book title"
 author: "Author name"
 read: "2026-05-12"   # YYYY-MM-DD, YYYY-MM, or ""
+rating: 4.5          # optional. Home uses rating above 4.
 lang: nl             # Dutch only. Omit this line for English.
 draft: false
 ---

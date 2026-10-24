@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { hasNote } from "../lib/content";
-import { formatRead } from "../lib/dates";
+import { formatRating, formatRead } from "../lib/dates";
 
 interface Props {
   books: CollectionEntry<"reading">[];
@@ -31,7 +31,10 @@ const { books } = Astro.props;
             )}
           </p>
           <p class="poster-by">{entry.data.author}</p>
-          <p class="poster-date">{formatRead(entry.data.read)}</p>
+          <p class="poster-date">
+            {formatRead(entry.data.read)}
+            {entry.data.rating != null && <span class="poster-rate">{formatRating(entry.data.rating)}</span>}
+          </p>
         </li>
       );
     })

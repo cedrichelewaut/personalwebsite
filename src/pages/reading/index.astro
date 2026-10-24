@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
-import BookPoster from "../../components/BookPoster.astro";
+import Bookshelf from "../../components/Bookshelf.astro";
 import NowReading from "../../components/NowReading.astro";
 import CollectionIndex from "../../components/CollectionIndex.astro";
 import { isLive } from "../../lib/content";
@@ -23,12 +23,12 @@ const current = await loadCurrent();
 ---
 
 <Base
-  title="Reading"
+  title="Bookshelf"
   page="reading"
   current="reading"
-  description="The book Cedric is reading now, and a short list of the books he recommends most."
+  description="The book Cedric is reading now, and the books he has read and rated 3 or higher."
 >
-  <Section num="05" title="Reading" />
+  <Section num="05" title="Bookshelf" />
   <CollectionIndex section="reading" reserved={all.map((entry) => entry.id)} />
   <NowReading
     title={current.data.title}
@@ -37,9 +37,8 @@ const current = await loadCurrent();
     url={current.data.url}
     lang={current.data.lang}
   />
-  <section class="part" aria-labelledby="recommendations">
-    <h2 class="part-title" id="recommendations">Latest recommendations</h2>
-    <p class="lede">A short list of the books I recommend most.</p>
-    <BookPoster books={books} />
+  <section class="part" aria-labelledby="read-list">
+    <h2 class="excerpt-label" id="read-list">Read</h2>
+    <Bookshelf books={books} />
   </section>
 </Base>
