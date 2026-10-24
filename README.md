@@ -6,7 +6,7 @@ The previous Jekyll theme (Start Bootstrap Clean Blog, Bootstrap) has been remov
 
 Type: [Aileron](https://github.com/font-archive/Aileron) (CC0, `public/fonts/AILERON-CC0.txt`) with fallback Helvetica, Arial, sans-serif. Metadata is [IBM Plex Mono](https://github.com/IBM/plex) (SIL Open Font License, `public/fonts/IBM-PLEX-MONO-OFL.txt`).
 
-Colours are custom properties in `src/styles/site.css`. The page background is `--paper` (`#FAFAF7`). Ink is `#151515`, grey is `#5E5B55`, signal is `#B4141A`. Thin decorative column lines use `--rule` (`#CFCDC6`). Change the background there; type, content rules, and the browser theme colour follow the variables.
+Colours are custom properties in `src/styles/site.css`. The page background is `--paper` (`#FAFAF7`). Ink is `#151515`, grey is `#5E5B55`, signal is Red earth `#9A2400`. Thin decorative column lines use `--rule` (`#CFCDC6`). Change the background there; type, content rules, and the browser theme colour follow the variables.
 
 ## Develop
 
@@ -61,7 +61,7 @@ Copy `src/content/projects/example.md`. These are hobby projects. Paid and acade
 title: "Project title"
 year: "12 may 26 > 30 jul 26"
 summary: "One line for the index."
-url: "https://example.com"   # optional
+url: "https://example.com"   # optional; leave "" for no link
 order: 10
 draft: false
 ---
@@ -69,7 +69,28 @@ draft: false
 An optional longer note.
 ```
 
-Name the file `field-notes.md`. That is the permalink `/projects/field-notes/`.
+Name the file `field-notes.md`. That is the permalink `/projects/field-notes/`. An empty `url` is not rendered, so the row has no dead link. `src/content/projects/built-with-flexviz.md` is that kind of placeholder: title, a one-line description, and no link.
+
+## Add an essay
+
+Copy `src/content/writing/example.md`. Set `draft` to `false`. The Writing page is a list of titles, oldest first (`order` 1, then 2). The filename is the permalink: `field-notes.md` is `/writing/field-notes/`.
+
+```yaml
+---
+title: "Essay title"
+subtitle: "Optional second line"
+date: "2026-01-13"   # omit when there is no date yet
+order: 8
+stub: false          # true marks an unfinished note; the list still shows the title
+photos: []           # { src, alt } objects; nothing is drawn while this is empty
+# image:             # optional single picture
+#   src: /img/example.jpg
+#   alt: "What is in the frame."
+draft: false
+---
+```
+
+Links in an essay are Red earth. `src/content/writing/2026-a-year-of-juggling.md` is a stub (`stub: true`, `photos: []`) and sits last.
 
 ## Add a photograph
 

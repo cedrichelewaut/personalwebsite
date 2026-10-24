@@ -48,6 +48,11 @@ const books = (await getCollection("reading"))
   .slice(0, latestCount);
 const current = await loadCurrent();
 
+const essays = (await getCollection("writing"))
+  .filter(isLive)
+  .sort((a, b) => b.data.order - a.data.order || a.data.title.localeCompare(b.data.title))
+  .slice(0, 3);
+
 const plates = photos.slice(0, latestCount).map((photo, index) => ({
   ...photo,
   caption: figCaption(index + 1, photo.place, photo.date),
@@ -127,5 +132,20 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
     />
     <h3 class="excerpt-label">recommendations</h3>
     <BookPoster books={books} />
+  </section>
+
+  <section class="digest" aria-labelledby="home-writing">
+    <h2 class="digest-title" id="home-writing">
+      <a href="/writing/"><span class="num">05</span>Writing</a>
+    </h2>
+    <ul class="essays">
+      {
+        essays.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}/`}>{entry.data.title}</a>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 </Base>

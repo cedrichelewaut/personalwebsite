@@ -31,12 +31,12 @@
 
 [[redirects]]
   from = "/posts"
-  to = "/work/"
+  to = "/writing/"
   status = 301
 
 [[redirects]]
   from = "/posts/"
-  to = "/work/"
+  to = "/writing/"
   status = 301
 
 [[redirects]]
@@ -51,70 +51,70 @@
 
 [[redirects]]
   from = "/2026/01/13/pxg"
-  to = "/work/pxg/"
+  to = "/writing/pxg/"
   status = 301
 
 [[redirects]]
   from = "/2026/01/13/pxg.html"
-  to = "/work/pxg/"
+  to = "/writing/pxg/"
   status = 301
 
 [[redirects]]
   from = "/2024/09/01/izg"
-  to = "/work/izg/"
+  to = "/writing/izg/"
   status = 301
 
 [[redirects]]
   from = "/2024/09/01/izg.html"
-  to = "/work/izg/"
+  to = "/writing/izg/"
   status = 301
 
 [[redirects]]
   from = "/2023/09/01/proximus"
-  to = "/work/proximus/"
+  to = "/writing/proximus/"
   status = 301
 
 [[redirects]]
   from = "/2023/09/01/proximus.html"
-  to = "/work/proximus/"
+  to = "/writing/proximus/"
   status = 301
 
 [[redirects]]
   from = "/2023/06/30/thesis"
-  to = "/work/thesis/"
+  to = "/writing/thesis/"
   status = 301
 
 [[redirects]]
   from = "/2023/06/30/thesis.html"
-  to = "/work/thesis/"
+  to = "/writing/thesis/"
   status = 301
 
 [[redirects]]
   from = "/2023/05/01/optioryx"
-  to = "/work/optioryx/"
+  to = "/writing/optioryx/"
   status = 301
 
 [[redirects]]
   from = "/2023/05/01/optioryx.html"
-  to = "/work/optioryx/"
+  to = "/writing/optioryx/"
   status = 301
 
 [[redirects]]
   from = "/2022/06/01/excellence"
-  to = "/work/excellence/"
+  to = "/writing/excellence/"
   status = 301
 
 [[redirects]]
   from = "/2022/06/01/excellence.html"
-  to = "/work/excellence/"
+  to = "/writing/excellence/"
   status = 301
 
 [[redirects]]
   from = "/2021/09/01/internship_itp"
-  to = "/work/itp/"
+  to = "/writing/internship-itp/"
   status = 301
 
 [[redirects]]
   from = "/2021/09/01/internship_itp.html"
-  to = "/work/itp/"
+  to = "/writing/internship-itp/"
   status = 301

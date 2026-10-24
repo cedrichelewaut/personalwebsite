@@ -49,7 +49,10 @@ const projects = defineCollection({
     title: z.string(),
     year: z.string().default("—"),
     summary: z.string().default(""),
-    url: z.string().optional(),
+    url: z
+      .string()
+      .default("")
+      .refine((value) => value === "" || z.string().url().safeParse(value).success, "Link must be a URL or empty."),
     order: z.number().default(0),
     noteDate,
     draft: z.boolean().default(false),
@@ -108,4 +111,33 @@ const series = defineCollection({
     }),
 });
 
-export const collections = { work, projects, reading, current, series };
+const writing = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/writing", generateId: fileId }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().default(""),
+    date: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
+    order: z.number(),
+    stub: z.boolean().default(false),
+    photos: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+        }),
+      )
+      .default([]),
+    image: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+      })
+      .optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, projects, reading, current, writing, series };

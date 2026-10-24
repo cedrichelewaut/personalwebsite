@@ -6,10 +6,11 @@ import { hasNote, isLive } from "../lib/content";
 import { loadSeries } from "../lib/series";
 
 export const GET: APIRoute = async () => {
-  const [work, projects, reading, workSets, projectSets, photoSets, readingSets] = await Promise.all([
+  const [work, projects, reading, writing, workSets, projectSets, photoSets, readingSets] = await Promise.all([
     getCollection("work"),
     getCollection("projects"),
     getCollection("reading"),
+    getCollection("writing"),
     loadSeries("work"),
     loadSeries("projects"),
     loadSeries("photographs"),
@@ -22,10 +23,12 @@ export const GET: APIRoute = async () => {
     "/projects/",
     "/photographs/",
     "/reading/",
+    "/writing/",
     "/contact/",
     ...work.filter(isLive).filter((entry) => entry.body?.trim()).map((entry) => `/work/${entry.id}/`),
     ...projects.filter(isLive).map((entry) => `/projects/${entry.id}/`),
     ...reading.filter((entry) => isLive(entry) && hasNote(entry)).map((entry) => `/reading/${entry.id}/`),
+    ...writing.filter(isLive).map((entry) => `/writing/${entry.id}/`),
     ...photos.map((photo) => `/photographs/${photo.slug}/`),
     ...workSets.map((entry) => `/work/${entry.id}/`),
     ...projectSets.map((entry) => `/projects/${entry.id}/`),

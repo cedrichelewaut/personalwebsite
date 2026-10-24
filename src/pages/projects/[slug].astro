@@ -30,11 +30,12 @@ const entry = props.kind === "item" ? props.entry : undefined;
 const rendered = entry ? await render(entry) : undefined;
 const notes = byOrder((await getCollection("projects")).filter(isLive));
 const { newer, older } = entry ? neighbours(notes, entry.id) : { newer: undefined, older: undefined };
+const link = entry?.data.url?.trim() ?? "";
 const meta = entry
   ? [
       { label: "dates", value: entry.data.year },
-      ...(entry.data.url
-        ? [{ label: "link", value: entry.data.url.replace(/^https?:\/\//, ""), href: entry.data.url }]
+      ...(link
+        ? [{ label: "link", value: link.replace(/^https?:\/\//, ""), href: link }]
         : []),
     ]
   : [];
