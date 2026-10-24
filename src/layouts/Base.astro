@@ -1,6 +1,7 @@
 ---
 import css from "../styles/site.css?raw";
-import { nav, site } from "../data/site";
+import SiteNav from "../components/SiteNav.astro";
+import { site } from "../data/site";
 
 interface Props {
   title: string;
@@ -50,21 +51,10 @@ const year = new Date().getFullYear();
           </header>
         )
       }
-      <nav aria-label="Sections">
-        <ul class="nav-list">
-          {
-            nav.map((item) => (
-              <li class={item.id === "contact" ? "nav-contact" : undefined}>
-                <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
-                  <span class="num">{item.num}</span>
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+      <SiteNav current={current} />
       <main id="content">
+        <slot name="lead" />
+        {page === "home" && <SiteNav current={current} narrow />}
         <slot />
       </main>
       <footer>
