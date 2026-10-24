@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "reset-template": "node scripts/reset-template.mjs"
   },
   "devDependencies": {
     "astro": "^7.4.2"

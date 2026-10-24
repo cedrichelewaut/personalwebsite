@@ -1,7 +1,7 @@
 ---
 import css from "../styles/site.css?raw";
 import SiteNav from "../components/SiteNav.astro";
-import { site } from "../data/site";
+import { site } from "../site";
 
 interface Props {
   title: string;
@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={`${site.url}/img/cedric.jpg`} />
+    <meta property="og:image" content={`${site.url}${site.ogImage}`} />
     <meta name="theme-color" content="#fafaf7" />
     <style is:inline set:html={css}></style>
   </head>

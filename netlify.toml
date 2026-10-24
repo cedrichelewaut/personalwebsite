@@ -4,6 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # PERSONAL_BOOKSHELF turns the bookshelf on for Cedric's production builds of this repo.
+  # Cloners: delete the PERSONAL_BOOKSHELF line. The template default in src/site.config.ts is off.
+  PERSONAL_BOOKSHELF = "true"
 
 [[headers]]
   for = "/*"

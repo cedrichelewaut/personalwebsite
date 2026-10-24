@@ -103,7 +103,7 @@ const readOn = z.preprocess((value) => {
 }, z.string().regex(/^$|^\d{4}-\d{2}(-\d{2})?$/));
 
 const reading = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/reading", generateId: fileId }),
+  loader: glob({ pattern: "**/*.md", base: "./src/personal/bookshelf/content/reading", generateId: fileId }),
   schema: z.object({
     title: z.string(),
     author: z.string(),
@@ -118,9 +118,9 @@ const reading = defineCollection({
   }),
 });
 
-/** One file, one book. Edit src/content/current.md to change what is being read. */
+/** One file, one book. Edit src/personal/bookshelf/content/current.md to change what is being read. */
 const current = defineCollection({
-  loader: glob({ pattern: "current.md", base: "./src/content", generateId: fileId }),
+  loader: glob({ pattern: "current.md", base: "./src/personal/bookshelf/content", generateId: fileId }),
   schema: z.object({
     title: z.string(),
     author: z.string(),
@@ -149,4 +149,15 @@ const series = defineCollection({
     }),
 });
 
-export const collections = { work, study, projects, reading, current, series };
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog", generateId: fileId }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string().default(""),
+    noteDate,
+    order: z.number().default(0),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, study, projects, reading, current, series, blog };

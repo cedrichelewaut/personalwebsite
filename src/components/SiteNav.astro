@@ -1,5 +1,5 @@
 ---
-import { navContact, navGroups } from "../data/site";
+import { navContact, navGroups } from "../site";
 
 interface Props {
   current: string;
@@ -30,10 +30,14 @@ const prefix = narrow ? "nav-narrow" : "nav";
         </li>
       ))
     }
-    <li class="nav-contact">
-      <a href={navContact.href} aria-current={navContact.id === current ? "page" : undefined}>
-        {navContact.label}
-      </a>
-    </li>
+    {
+      navContact && (
+        <li class="nav-contact">
+          <a href={navContact.href} aria-current={navContact.id === current ? "page" : undefined}>
+            {navContact.label}
+          </a>
+        </li>
+      )
+    }
   </ul>
 </nav>
