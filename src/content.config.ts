@@ -56,24 +56,28 @@ const projects = defineCollection({
   }),
 });
 
+const readOn = z.preprocess((value) => {
+  if (value instanceof Date) {
+    const year = value.getUTCFullYear();
+    const month = String(value.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(value.getUTCDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  if (value == null) return "";
+  return value;
+}, z.string().regex(/^$|^\d{4}-\d{2}(-\d{2})?$/));
+
 const reading = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/reading", generateId: fileId }),
-  schema: z
-    .object({
-      title: z.string(),
-      author: z.string(),
-      year: z.string().default("—"),
-      summary: z.string().default(""),
-      reading: z.boolean().default(false),
-      read: z.boolean().default(false),
-      recommended: z.boolean().default(false),
-      order: z.number().default(0),
-      noteDate,
-      draft: z.boolean().default(false),
-    })
-    .refine((entry) => entry.reading || entry.read || entry.recommended, {
-      message: "Mark the book as reading, read, and/or recommended.",
-    }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    read: readOn.default(""),
+    highly: z.boolean().default(false),
+    summary: z.string().default(""),
+    noteDate,
+    draft: z.boolean().default(false),
+  }),
 });
 
 const series = defineCollection({

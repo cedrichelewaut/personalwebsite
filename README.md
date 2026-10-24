@@ -22,29 +22,23 @@ A single book, project, photograph, or role does not get a catalogue code. Its f
 
 A catalogue code is only for a finished collection, such as a photo series, an essay series, or a CV. The code is a short prefix, an underscore, and a number (`F_02`, `CV_01`, `W_014`). It is a quiet mark on the collection. The URL stays the readable slug.
 
-Where a section has no real entries yet, the index shows a row titled `[Placeholder]`. That row is an empty slot, not a work.
+Where a section has no real entries yet, the index shows a row titled `[Placeholder]`. That row is an empty slot, not a work. Reading is filled from books he recommends, so it has no placeholder row.
 
 ## Add a book
 
-Copy `src/content/reading/example.md`. Set `draft` to `false` and replace the fields. `example.md` stays a draft and is not published.
+Copy `src/content/reading/example.md`. Set `draft` to `false` and replace the fields. `example.md` stays a draft and is not published. The Reading page lists recommendations, not reviews. It does not show a score.
 
 ```yaml
 ---
 title: "The book title"
 author: "Author name"
-year: "12 may 26 > 30 jul 26"
-summary: "One line for the index."
-reading: false   # currently reading
-read: true       # finished
-recommended: true
-order: 10
+read: "2026-05-12"   # YYYY-MM-DD, YYYY-MM, or ""
+highly: false        # true marks the title "highly recommended"
 draft: false
 ---
-
-An optional longer note. The title in the index links to this page.
 ```
 
-Name the file `the-book.md`, not a code. Write `year` the way it should read: lowercase month, two-digit year, `>` between the ends. A book can sit in more than one list. `order` sorts a list; lower numbers come first. `recommended: true` marks the title in crimson.
+Name the file `the-book.md`, not a code. `read` is when he finished it. Leave it empty when that date was not recorded. The index prints `12 may 26` or, for a month without a day, `may 26`. Newest dates come first. Undated books come last. `highly: true` adds a crimson “highly recommended” mark. It is not a star rating. A body is optional. With no body, the title stays in the list and does not get its own page.
 
 ## Add a project
 

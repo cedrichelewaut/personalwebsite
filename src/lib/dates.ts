@@ -49,3 +49,34 @@ export function formatRange(start: string, end: string): string {
   if (from === to) return from;
   return `${from} > ${to}`;
 }
+
+const monthIndex = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+/** "2026-08-22" → "22 aug 26". "2025-07" → "jul 25". An empty date stays a dash. */
+export function formatRead(raw: string): string {
+  const value = raw.trim();
+  if (!value) return "—";
+  const full = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (full) {
+    const month = monthIndex[Number(full[2]) - 1];
+    if (!month) return value;
+    return `${full[3]} ${month} ${full[1].slice(2)}`;
+  }
+  const monthOnly = value.match(/^(\d{4})-(\d{2})$/);
+  if (monthOnly) {
+    const month = monthIndex[Number(monthOnly[2]) - 1];
+    if (!month) return value;
+    return `${month} ${monthOnly[1].slice(2)}`;
+  }
+  return formatPoint(value);
+}
+
+/** Larger means more recent. A month without a day sorts after the dated days in that month. */
+export function readSortKey(raw: string): number {
+  const value = raw.trim();
+  const full = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (full) return Number(full[1]) * 10000 + Number(full[2]) * 100 + Number(full[3]);
+  const monthOnly = value.match(/^(\d{4})-(\d{2})$/);
+  if (monthOnly) return Number(monthOnly[1]) * 10000 + Number(monthOnly[2]) * 100;
+  return 0;
+}

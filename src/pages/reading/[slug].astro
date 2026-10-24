@@ -3,12 +3,13 @@ import { getCollection, render } from "astro:content";
 import Note from "../../layouts/Note.astro";
 import Pager from "../../components/Pager.astro";
 import SetPage from "../../components/SetPage.astro";
-import { byOrder, hasNote, isLive, neighbours } from "../../lib/content";
+import { hasNote, isLive, neighbours } from "../../lib/content";
+import { formatRead, readSortKey } from "../../lib/dates";
 import { loadSeries } from "../../lib/series";
 
 export async function getStaticPaths() {
   const all = await getCollection("reading");
-  const notes = byOrder(all.filter(isLive));
+  const notes = all.filter((entry) => isLive(entry) && hasNote(entry));
   const sets = await loadSeries(
     "reading",
     all.map((entry) => entry.id),
@@ -28,15 +29,10 @@ export async function getStaticPaths() {
 const props = Astro.props;
 const entry = props.kind === "item" ? props.entry : undefined;
 const rendered = entry ? await render(entry) : undefined;
-const notes = byOrder((await getCollection("reading")).filter(isLive));
+const notes = (await getCollection("reading"))
+  .filter((item) => isLive(item) && hasNote(item))
+  .sort((a, b) => readSortKey(b.data.read) - readSortKey(a.data.read) || a.data.title.localeCompare(b.data.title));
 const { newer, older } = entry ? neighbours(notes, entry.id) : { newer: undefined, older: undefined };
-const lists = entry
-  ? [
-      entry.data.reading ? "in progress" : "",
-      entry.data.read ? "read" : "",
-      entry.data.recommended ? "recommended" : "",
-    ].filter(Boolean)
-  : [];
 const Content = rendered?.Content;
 ---
 
@@ -55,12 +51,11 @@ const Content = rendered?.Content;
       kicker="reading"
       meta={[
         { label: "author", value: entry.data.author },
-        { label: "dates", value: entry.data.year },
-        { label: "list", value: lists.join(", ") },
+        { label: "read", value: formatRead(entry.data.read) },
       ]}
     >
-      {hasNote(entry) ? <Content /> : <p>{entry.data.summary}</p>}
-      {entry.data.recommended && <p class="flag">recommended</p>}
+      {hasNote(entry) ? <Content /> : entry.data.summary ? <p>{entry.data.summary}</p> : null}
+      {entry.data.highly && <p class="flag">highly recommended</p>}
       <Pager
         slot="pager"
         indexHref="/reading/"

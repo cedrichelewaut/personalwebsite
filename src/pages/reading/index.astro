@@ -4,70 +4,49 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import IndexTable from "../../components/IndexTable.astro";
 import CollectionIndex from "../../components/CollectionIndex.astro";
-import { byOrder, isLive } from "../../lib/content";
+import { hasNote, isLive } from "../../lib/content";
+import { formatRead, readSortKey } from "../../lib/dates";
 import { assertReadableSlug } from "../../lib/slugs";
 
 const all = await getCollection("reading");
 for (const entry of all) assertReadableSlug(entry.id, "Books");
 
-const books = byOrder(all.filter(isLive));
-
-const groups = [
-  { key: "reading" as const, label: "in progress" },
-  { key: "read" as const, label: "read" },
-  { key: "recommended" as const, label: "recommended" },
-];
-
-const rows = groups.flatMap((group) => {
-  const entries = books.filter((book) => book.data[group.key]);
-  if (entries.length === 0) {
-    return [
-      {
-        cells: {
-          list: group.label,
-          dates: "—",
-          title: "[Placeholder]",
-          author: "—",
-          note: "Nothing recorded yet. This row is not a book.",
-        },
-      },
-    ];
-  }
-  return entries.map((entry) => ({
-    cells: {
-      list: group.label,
-      dates: entry.data.year,
-      title: entry.data.title,
-      author: entry.data.author,
-      note: entry.data.summary,
-    },
-    href: `/reading/${entry.id}/`,
-    linkKey: "title",
-    flag: entry.data.recommended ? "recommended" : undefined,
-  }));
+const books = all.filter(isLive).sort((a, b) => {
+  const byDate = readSortKey(b.data.read) - readSortKey(a.data.read);
+  if (byDate !== 0) return byDate;
+  return a.data.title.localeCompare(b.data.title);
 });
+
+const showNote = books.some((book) => book.data.summary.trim().length > 0);
+const rows = books.map((entry) => ({
+  cells: {
+    dates: formatRead(entry.data.read),
+    title: entry.data.title,
+    author: entry.data.author,
+    ...(showNote ? { note: entry.data.summary } : {}),
+  },
+  href: hasNote(entry) ? `/reading/${entry.id}/` : undefined,
+  linkKey: "title",
+  flag: entry.data.highly ? "highly recommended" : undefined,
+}));
 ---
 
 <Base
   title="Reading"
   page="reading"
   current="reading"
-  description="Books in progress, books read, and recommendations."
+  description="Books Cedric recommends, drawn from what he has read. Not reviews."
 >
   <Section num="04" title="Reading">
-    <p class="lede">
-      Books in progress, books finished, and recommendations. Nothing was recorded on the previous site,
-      so each [Placeholder] row is an empty slot, not a title. Recommended titles are marked in crimson.
-    </p>
+    <p class="lede">Books I recommend, drawn from what I have read. Not reviews.</p>
   </Section>
   <CollectionIndex section="reading" reserved={all.map((entry) => entry.id)} />
   <IndexTable
     columns={[
-      { key: "list", label: "list" },
-      { key: "dates", label: "dates" },
+      { key: "dates", label: "read" },
       { key: "title", label: "title" },
       { key: "author", label: "author" },
-      { key: "note", label: "note" },
+      ...(showNote ? [{ key: "note", label: "note" }] : []),
     ]}
     rows={rows}
   />

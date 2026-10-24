@@ -5,7 +5,7 @@ import IndexTable from "../components/IndexTable.astro";
 import { site } from "../data/site";
 import photos from "../data/photographs.json";
 import { byOrder, hasNote, isLive } from "../lib/content";
-import { formatRange } from "../lib/dates";
+import { formatRange, formatRead, readSortKey } from "../lib/dates";
 import { figCaption } from "../lib/figures";
 
 const latestCount = 3;
@@ -39,30 +39,20 @@ const projectRows =
         },
       ];
 
-const books = byOrder((await getCollection("reading")).filter(isLive)).slice(0, latestCount);
-const bookRows =
-  books.length > 0
-    ? books.map((entry) => ({
-        cells: {
-          dates: entry.data.year,
-          title: entry.data.title,
-          author: entry.data.author,
-          note: entry.data.summary,
-        },
-        href: `/reading/${entry.id}/`,
-        linkKey: "title",
-        flag: entry.data.recommended ? "recommended" : undefined,
-      }))
-    : [
-        {
-          cells: {
-            dates: "—",
-            title: "[Placeholder]",
-            author: "—",
-            note: "Nothing recorded yet. This row is not a book.",
-          },
-        },
-      ];
+const books = (await getCollection("reading"))
+  .filter(isLive)
+  .sort((a, b) => readSortKey(b.data.read) - readSortKey(a.data.read) || a.data.title.localeCompare(b.data.title))
+  .slice(0, latestCount);
+const bookRows = books.map((entry) => ({
+  cells: {
+    dates: formatRead(entry.data.read),
+    title: entry.data.title,
+    author: entry.data.author,
+  },
+  href: hasNote(entry) ? `/reading/${entry.id}/` : undefined,
+  linkKey: "title",
+  flag: entry.data.highly ? "highly recommended" : undefined,
+}));
 
 const plates = photos.slice(0, latestCount).map((photo, index) => ({
   ...photo,
@@ -136,10 +126,9 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
     </h2>
     <IndexTable
       columns={[
-        { key: "dates", label: "dates" },
+        { key: "dates", label: "read" },
         { key: "title", label: "title" },
         { key: "author", label: "author" },
-        { key: "note", label: "note" },
       ]}
       rows={bookRows}
     />

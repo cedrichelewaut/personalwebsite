@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { site } from "../data/site";
 import photos from "../data/photographs.json";
-import { isLive } from "../lib/content";
+import { hasNote, isLive } from "../lib/content";
 import { loadSeries } from "../lib/series";
 
 export const GET: APIRoute = async () => {
@@ -25,7 +25,7 @@ export const GET: APIRoute = async () => {
     "/contact/",
     ...work.filter(isLive).filter((entry) => entry.body?.trim()).map((entry) => `/work/${entry.id}/`),
     ...projects.filter(isLive).map((entry) => `/projects/${entry.id}/`),
-    ...reading.filter(isLive).map((entry) => `/reading/${entry.id}/`),
+    ...reading.filter((entry) => isLive(entry) && hasNote(entry)).map((entry) => `/reading/${entry.id}/`),
     ...photos.map((photo) => `/photographs/${photo.slug}/`),
     ...workSets.map((entry) => `/work/${entry.id}/`),
     ...projectSets.map((entry) => `/projects/${entry.id}/`),
