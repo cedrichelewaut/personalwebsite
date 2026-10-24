@@ -26,7 +26,7 @@ export const GET: APIRoute = async () => {
     "/projects/",
     "/photographs/",
     "/reading/",
-    "/marathoning/",
+    "/running/",
     "/contact/",
     ...work.filter(isLive).map((entry) => `/work/${entry.id}/`),
     ...study.filter(isLive).map((entry) => `/study/${entry.id}/`),

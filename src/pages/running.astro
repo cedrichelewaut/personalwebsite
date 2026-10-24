@@ -6,23 +6,23 @@ const board = "https://cedrichelewaut.github.io/marathoning/";
 const intro = "I’m following an 18-week marathon plan. The board is synced daily from Strava.";
 ---
 
-<Base title="Marathon training" page="marathoning" current="marathoning" description={intro}>
-  <Section num="06" title="Marathon training">
+<Base title="Running" page="running" current="running" description={intro}>
+  <Section num="06" title="Running">
     <p class="lede">{intro}</p>
     <p class="board-link signal-links">
       <a href={board} target="_blank" rel="noopener noreferrer">Open full board</a>
     </p>
   </Section>
   <iframe
-    id="marathon-board"
+    id="running-board"
     class="board-frame"
     src={board}
-    title="Marathon training board"
+    title="Running board"
     loading="eager"
   ></iframe>
   <script is:inline>
     (function () {
-      var frame = document.getElementById("marathon-board");
+      var frame = document.getElementById("running-board");
       if (!frame || !window.fetch) return;
       var board = frame.getAttribute("src");
       var probe;
