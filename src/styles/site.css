@@ -224,7 +224,8 @@ textarea:focus-visible {
 .sheet > header,
 .sheet > nav,
 .sheet > main,
-.sheet > footer {
+.sheet > footer,
+.site-nav {
   position: relative;
   z-index: 1;
 }
@@ -426,6 +427,12 @@ body.home main > .digest {
   align-self: end;
 }
 
+/* The second home nav sits in the document after the intro. It is hidden until
+   the nav stacks, so desktop keeps a single menu line above the portrait. */
+.site-nav-narrow {
+  display: none;
+}
+
 @media (max-width: 720px) {
   .intro {
     grid-template-columns: minmax(0, 1fr);
@@ -439,6 +446,20 @@ body.home main > .digest {
 
   .intro-text {
     align-self: start;
+  }
+
+  body.home .site-nav:not(.site-nav-narrow) {
+    display: none;
+  }
+
+  body.home .site-nav-narrow {
+    display: block;
+    min-width: 0;
+    margin-top: var(--gutter);
+  }
+
+  body.home main {
+    padding-top: 0;
   }
 }
 

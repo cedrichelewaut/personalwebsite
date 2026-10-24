@@ -1,0 +1,25 @@
+---
+import { nav } from "../data/site";
+
+interface Props {
+  current: string;
+  narrow?: boolean;
+}
+
+const { current, narrow = false } = Astro.props;
+---
+
+<nav class:list={["site-nav", narrow && "site-nav-narrow"]} aria-label="Sections">
+  <ul class="nav-list">
+    {
+      nav.map((item) => (
+        <li class={item.id === "contact" ? "nav-contact" : undefined}>
+          <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
+            <span class="num">{item.num}</span>
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
