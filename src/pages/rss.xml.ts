@@ -20,12 +20,13 @@ interface FeedItem {
 }
 
 export const GET: APIRoute = async () => {
-  const [work, projects, reading, notes, ...sets] = await Promise.all([
+  const [work, study, projects, reading, ...sets] = await Promise.all([
     getCollection("work"),
+    getCollection("study"),
     getCollection("projects"),
     getCollection("reading"),
-    getCollection("notes"),
     loadSeries("work"),
+    loadSeries("study"),
     loadSeries("projects"),
     loadSeries("photographs"),
     loadSeries("reading"),
@@ -38,6 +39,14 @@ export const GET: APIRoute = async () => {
       .map((entry) => ({
         title: entry.data.title,
         path: `/work/${entry.id}/`,
+        summary: entry.data.summary,
+        date: entry.data.noteDate as string,
+      })),
+    ...study
+      .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
+      .map((entry) => ({
+        title: entry.data.title,
+        path: `/study/${entry.id}/`,
         summary: entry.data.summary,
         date: entry.data.noteDate as string,
       })),
@@ -56,14 +65,6 @@ export const GET: APIRoute = async () => {
         path: `/reading/${entry.id}/`,
         summary: entry.data.summary || entry.data.title,
         date: entry.data.noteDate as string,
-      })),
-    ...notes
-      .filter((entry) => isLive(entry) && entry.data.date)
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/notes/${entry.id}/`,
-        summary: entry.data.subtitle || entry.data.title,
-        date: entry.data.date as string,
       })),
     ...series
       .filter((entry) => hasNote(entry) && entry.data.noteDate)

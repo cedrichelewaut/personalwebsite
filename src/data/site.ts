@@ -32,9 +32,9 @@ export const site = {
 export const nav = [
   { href: "/", id: "index", num: "00", label: "index" },
   { href: "/work/", id: "work", num: "01", label: "work" },
-  { href: "/projects/", id: "projects", num: "02", label: "projects" },
-  { href: "/photographs/", id: "photographs", num: "03", label: "photographs" },
-  { href: "/reading/", id: "reading", num: "04", label: "reading" },
-  { href: "/notes/", id: "notes", num: "05", label: "notes" },
+  { href: "/study/", id: "study", num: "02", label: "study" },
+  { href: "/projects/", id: "projects", num: "03", label: "projects" },
+  { href: "/photographs/", id: "photographs", num: "04", label: "photographs" },
+  { href: "/reading/", id: "reading", num: "05", label: "reading" },
   { href: "/contact/", id: "contact", num: "06", label: "contact" },
 ] as const;

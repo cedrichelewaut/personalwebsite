@@ -18,13 +18,18 @@ const { books } = Astro.props;
       return (
         <li>
           <span class="poster-no">{number}</span>
-          {href ? (
-            <a class="poster-title" href={href}>
-              {entry.data.title}
-            </a>
-          ) : (
-            <p class="poster-title">{entry.data.title}</p>
-          )}
+          <p class="poster-name">
+            {href ? (
+              <a class="poster-title" href={href}>
+                {entry.data.title}
+              </a>
+            ) : (
+              <span class="poster-title">{entry.data.title}</span>
+            )}
+            {entry.data.lang === "nl" && (
+              <abbr class="lang" title="Dutch">NL</abbr>
+            )}
+          </p>
           <p class="poster-by">{entry.data.author}</p>
           <p class="poster-date">{formatRead(entry.data.read)}</p>
         </li>

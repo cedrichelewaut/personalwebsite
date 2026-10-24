@@ -18,7 +18,7 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Previous Jekyll URLs.
+# One hop to the current page. No splat that lands on another redirect.
 [[redirects]]
   from = "/about"
   to = "/work/"
@@ -27,16 +27,6 @@
 [[redirects]]
   from = "/about.html"
   to = "/work/"
-  status = 301
-
-[[redirects]]
-  from = "/posts"
-  to = "/notes/"
-  status = 301
-
-[[redirects]]
-  from = "/posts/"
-  to = "/notes/"
   status = 301
 
 [[redirects]]
@@ -50,97 +40,321 @@
   status = 301
 
 [[redirects]]
-  from = "/2026/01/13/pxg"
-  to = "/notes/pxg/"
+  from = "/posts"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/2026/01/13/pxg.html"
-  to = "/notes/pxg/"
+  from = "/posts/"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/2024/09/01/izg"
-  to = "/notes/izg/"
+  from = "/notes"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/2024/09/01/izg.html"
-  to = "/notes/izg/"
+  from = "/notes/"
+  to = "/"
   status = 301
 
-[[redirects]]
-  from = "/2023/09/01/proximus"
-  to = "/notes/proximus/"
-  status = 301
-
-[[redirects]]
-  from = "/2023/09/01/proximus.html"
-  to = "/notes/proximus/"
-  status = 301
-
-[[redirects]]
-  from = "/2023/06/30/thesis"
-  to = "/notes/thesis/"
-  status = 301
-
-[[redirects]]
-  from = "/2023/06/30/thesis.html"
-  to = "/notes/thesis/"
-  status = 301
-
-[[redirects]]
-  from = "/2023/05/01/optioryx"
-  to = "/notes/optioryx/"
-  status = 301
-
-[[redirects]]
-  from = "/2023/05/01/optioryx.html"
-  to = "/notes/optioryx/"
-  status = 301
-
-[[redirects]]
-  from = "/2022/06/01/excellence"
-  to = "/notes/excellence/"
-  status = 301
-
-[[redirects]]
-  from = "/2022/06/01/excellence.html"
-  to = "/notes/excellence/"
-  status = 301
-
-[[redirects]]
-  from = "/2021/09/01/internship_itp"
-  to = "/notes/internship-itp/"
-  status = 301
-
-[[redirects]]
-  from = "/2021/09/01/internship_itp.html"
-  to = "/notes/internship-itp/"
-  status = 301
-
-# Earlier name for this section.
 [[redirects]]
   from = "/writing"
-  to = "/notes/"
+  to = "/"
   status = 301
 
 [[redirects]]
   from = "/writing/"
-  to = "/notes/"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/2026/01/13/pxg"
+  to = "/work/pxg/"
+  status = 301
+
+[[redirects]]
+  from = "/2026/01/13/pxg.html"
+  to = "/work/pxg/"
+  status = 301
+
+[[redirects]]
+  from = "/2024/09/01/izg"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/2024/09/01/izg.html"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/2023/09/01/proximus"
+  to = "/work/proximus/"
+  status = 301
+
+[[redirects]]
+  from = "/2023/09/01/proximus.html"
+  to = "/work/proximus/"
+  status = 301
+
+[[redirects]]
+  from = "/2023/06/30/thesis"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/2023/06/30/thesis.html"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/2023/05/01/optioryx"
+  to = "/work/optioryx/"
+  status = 301
+
+[[redirects]]
+  from = "/2023/05/01/optioryx.html"
+  to = "/work/optioryx/"
+  status = 301
+
+[[redirects]]
+  from = "/2022/06/01/excellence"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/2022/06/01/excellence.html"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/2021/09/01/internship_itp"
+  to = "/work/itp/"
+  status = 301
+
+[[redirects]]
+  from = "/2021/09/01/internship_itp.html"
+  to = "/work/itp/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/pxg"
+  to = "/work/pxg/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/pxg/"
+  to = "/work/pxg/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/proximus"
+  to = "/work/proximus/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/proximus/"
+  to = "/work/proximus/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/optioryx"
+  to = "/work/optioryx/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/optioryx/"
+  to = "/work/optioryx/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/internship-itp"
+  to = "/work/itp/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/internship-itp/"
+  to = "/work/itp/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/thesis"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/thesis/"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/excellence"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/excellence/"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/izg"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/izg/"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/house-renovation-ghent"
+  to = "/projects/house-renovation-ghent/"
+  status = 301
+
+[[redirects]]
+  from = "/notes/house-renovation-ghent/"
+  to = "/projects/house-renovation-ghent/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/pxg"
+  to = "/work/pxg/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/pxg/"
+  to = "/work/pxg/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/proximus"
+  to = "/work/proximus/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/proximus/"
+  to = "/work/proximus/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/optioryx"
+  to = "/work/optioryx/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/optioryx/"
+  to = "/work/optioryx/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/internship-itp"
+  to = "/work/itp/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/internship-itp/"
+  to = "/work/itp/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/thesis"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/thesis/"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/excellence"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/excellence/"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/izg"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/izg/"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/house-renovation-ghent"
+  to = "/projects/house-renovation-ghent/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/house-renovation-ghent/"
+  to = "/projects/house-renovation-ghent/"
   status = 301
 
 [[redirects]]
   from = "/writing/2026-a-year-of-juggling"
-  to = "/notes/house-renovation-ghent/"
+  to = "/projects/house-renovation-ghent/"
   status = 301
 
 [[redirects]]
   from = "/writing/2026-a-year-of-juggling/"
-  to = "/notes/house-renovation-ghent/"
+  to = "/projects/house-renovation-ghent/"
   status = 301
 
 [[redirects]]
-  from = "/writing/*"
-  to = "/notes/:splat"
+  from = "/work/thesis"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/work/thesis/"
+  to = "/study/thesis/"
+  status = 301
+
+[[redirects]]
+  from = "/work/excellence"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/work/excellence/"
+  to = "/study/excellence/"
+  status = 301
+
+[[redirects]]
+  from = "/work/degree"
+  to = "/study/degree/"
+  status = 301
+
+[[redirects]]
+  from = "/work/degree/"
+  to = "/study/degree/"
+  status = 301
+
+[[redirects]]
+  from = "/work/montreal"
+  to = "/study/montreal/"
+  status = 301
+
+[[redirects]]
+  from = "/work/montreal/"
+  to = "/study/montreal/"
+  status = 301
+
+[[redirects]]
+  from = "/work/izg"
+  to = "/projects/izg/"
+  status = 301
+
+[[redirects]]
+  from = "/work/izg/"
+  to = "/projects/izg/"
   status = 301

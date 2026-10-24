@@ -22,7 +22,7 @@ A single book, project, photograph, or role does not get a catalogue code. Its f
 
 A catalogue code is only for a finished collection, such as a photo series, an essay series, or a CV. The code is a short prefix, an underscore, and a number (`F_02`, `CV_01`, `W_014`). It is a quiet mark on the collection. The URL stays the readable slug.
 
-Where a section has no real entries yet, the index shows a row titled `[Placeholder]`. That row is an empty slot, not a work. Reading lists the books he recommends most, so it has no placeholder row.
+Work, Study, and Projects are plain lists of titles, most recent first. A lower `order` sits higher. Reading lists the books he recommends most.
 
 ## Currently reading
 
@@ -33,6 +33,7 @@ Edit `src/content/current.md`. That one file is the book at the top of Reading a
 title: "De eeuwigheid in een kort moment"
 author: "Elif Shafak"
 edition: "Dutch edition, Wereldbibliotheek, 2026"
+lang: nl          # omit for English
 url: "https://www.goodreads.com/book/show/257232432-de-eeuwigheid-in-een-kort-moment"
 ---
 ```
@@ -46,15 +47,16 @@ Copy `src/content/reading/example.md`. Set `draft` to `false` and replace the fi
 title: "The book title"
 author: "Author name"
 read: "2026-05-12"   # YYYY-MM-DD, YYYY-MM, or ""
+lang: nl             # Dutch only. Omit this line for English.
 draft: false
 ---
 ```
 
-Name the file `the-book.md`, not a code. `read` is when he finished it. Leave it empty when that date was not recorded. The list prints `12 may 26` or, for a month without a day, `may 26`. Newest dates come first. Undated books come last. A body is optional. With no body, the title stays in the list and does not get its own page.
+Name the file `the-book.md`, not a code. `read` is when he finished it. Leave it empty when that date was not recorded. The list prints `12 may 26` or, for a month without a day, `may 26`. Newest dates come first. Undated books come last. `lang: nl` adds a small NL mark beside the title. English books omit `lang`. A body is optional. With no body, the title stays in the list and does not get its own page.
 
 ## Add a project
 
-Copy `src/content/projects/example.md`. These are hobby projects. Paid and academic work belongs under Work.
+Copy `src/content/projects/example.md`. Paid work belongs under Work. Study belongs under Study. `src/content/projects/house-renovation-ghent.md` is a stub (`stub: true`, `photos: []`). The outline stays in an HTML comment in that file. Nothing is drawn while `photos` is empty. An empty `url` is not a link. `src/content/projects/built-with-flexviz.md` is a placeholder: title, "Coming soon.", and no link.
 
 ```yaml
 ---
@@ -69,28 +71,11 @@ draft: false
 An optional longer note.
 ```
 
-Name the file `field-notes.md`. That is the permalink `/projects/field-notes/`. An empty `url` is not rendered, so the row has no dead link. `src/content/projects/built-with-flexviz.md` is that kind of placeholder: title, a one-line description, and no link.
+Name the file `field-notes.md`. That is the permalink `/projects/field-notes/`. An empty `url` is not rendered, so the page has no dead link.
 
-## Add a note
+## Add a study entry
 
-Copy `src/content/notes/example.md`. Set `draft` to `false`. The Notes page is a list of titles, most recent first (a higher `order` sits higher). The filename is the permalink: `field-notes.md` is `/notes/field-notes/`.
-
-```yaml
----
-title: "Short factual title"
-subtitle: ""         # optional mono line; leave empty when it would read as a tagline
-date: "2026-01-13"   # omit when there is no date yet
-order: 9
-stub: false          # true marks an unfinished note; the list still shows the title
-photos: []           # { src, alt } objects; nothing is drawn while this is empty
-# image:             # optional single picture
-#   src: /img/example.jpg
-#   alt: "What is in the frame."
-draft: false
----
-```
-
-Links in a note are Red earth. `src/content/notes/house-renovation-ghent.md` is a stub (`stub: true`, `photos: []`) and sits at the top while its `order` is the highest.
+Add `src/content/study/short-name.md`. The filename is the permalink: `thesis.md` is `/study/thesis/`. The fields match a role below (`title`, `org`, `start`, `end`, `summary`, `order`). `image` and `photos` are optional. Nothing is drawn while `photos` is empty.
 
 ## Add a photograph
 
@@ -123,7 +108,7 @@ Copy `src/content/collections/example-series.md` for a finished body of work. `e
 title: "Field notes"
 summary: "One line for the index."
 code: "W_02"
-section: projects   # work, projects, photographs, or reading
+section: projects   # work, study, projects, photographs, or reading
 order: 10
 draft: false
 ---
@@ -140,22 +125,20 @@ Add `src/content/work/short-name.md`. A role is not a catalogue code. The filena
 ```yaml
 ---
 title: "Title of the longer note"
-indexTitle: "Shorter name used in the index"
-subtitle: "Optional second line"
 org: "Organisation"
 start: "Sept. 2025"
 end: "Present"
-summary: "One line for the index."
+summary: "One line, used when the page has no body."
 order: 1
 noteDate: 2026-01-13   # optional, used for RSS
 draft: false
 ---
 
-Write the note in Markdown. With no body, the row stays in the index and does not get its own page.
+Write the note in Markdown. With no body, the detail page shows the summary. The index always links the title.
 ```
 
-`start` and `end` may be `Month YYYY` or `D Month YYYY`. The index prints them as `sep 25 > present` or `12 may 26 > 30 jul 26`. Days are not invented. `order` runs top to bottom. `noteDate` is `YYYY-MM-DD`.
+`start` and `end` may be `Month YYYY` or `D Month YYYY`. The detail page prints them as `sep 25 > present` or `12 may 26 > 30 jul 26`. Days are not invented. The index is titles only. `order` 1 is the most recent. `noteDate` is `YYYY-MM-DD`. An optional `image` is one picture. `photos` is a list of `{ src, alt }`; nothing is drawn while it is empty. Links in the note are Red earth.
 
 ## Feed
 
-Notes that have a body and a `noteDate` are included in `/rss.xml`. `/feed.xml` redirects there.
+Entries that have a body and a `noteDate` are included in `/rss.xml`. `/feed.xml` redirects there.

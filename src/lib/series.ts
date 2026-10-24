@@ -2,7 +2,7 @@ import { getCollection } from "astro:content";
 import { byOrder, isLive } from "./content";
 import { assertReadableSlug } from "./slugs";
 
-export const sections = ["work", "projects", "photographs", "reading"] as const;
+export const sections = ["work", "study", "projects", "photographs", "reading"] as const;
 export type SectionName = (typeof sections)[number];
 
 export async function loadSeries(section: SectionName, reserved: string[] = []) {

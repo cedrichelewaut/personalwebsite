@@ -2,37 +2,18 @@
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
-import IndexTable from "../../components/IndexTable.astro";
+import TitleList from "../../components/TitleList.astro";
 import CollectionIndex from "../../components/CollectionIndex.astro";
-import { byOrder, hasNote, isLive } from "../../lib/content";
-import { formatRange } from "../../lib/dates";
+import { byOrder, isLive } from "../../lib/content";
 import { assertReadableSlug } from "../../lib/slugs";
 
 const all = await getCollection("work");
 for (const entry of all) assertReadableSlug(entry.id, "Roles");
 const entries = byOrder(all.filter(isLive));
-const rows = entries.map((entry) => ({
-  cells: {
-    dates: formatRange(entry.data.start, entry.data.end),
-    title: entry.data.indexTitle ?? entry.data.title,
-    note: entry.data.summary,
-  },
-  href: hasNote(entry) ? `/work/${entry.id}/` : undefined,
-  linkKey: "title",
-}));
 ---
 
-<Base title="Work" page="work" current="work" description="Career, study, and volunteering.">
-  <Section num="01" title="Work">
-    <p class="lede">Career, study, and volunteering. A title with a longer note is linked.</p>
-  </Section>
+<Base title="Work" page="work" current="work" description="Paid work, most recent first.">
+  <Section num="01" title="Work" />
   <CollectionIndex section="work" reserved={all.map((entry) => entry.id)} />
-  <IndexTable
-    columns={[
-      { key: "dates", label: "dates" },
-      { key: "title", label: "title" },
-      { key: "note", label: "note" },
-    ]}
-    rows={rows}
-  />
+  <TitleList items={entries.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
 </Base>

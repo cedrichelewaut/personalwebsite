@@ -1,31 +1,33 @@
 ---
-title: "Proximus Young Graduate Program"
-indexTitle: "Management Trainee at Proximus"
-subtitle: "Bridging the Gap Between Technical and Business Expertise"
+title: "Proximus graduate programme"
 org: "Proximus"
 start: "Sept. 2023"
 end: "Aug. 2025"
 summary: "Rotated across strategy and product roles, focusing on security and AI."
-order: 3
+order: 2
 noteDate: 2023-09-01
+photos: []
+image:
+  src: /img/companies/pxs.jpg
+  alt: "A flock of birds in a dense shape above a line of bare trees, against a purple and blue sky."
 ---
 
-## A Transformative Journey
+#### A Transformative Journey
 
 In September 2023, after completing my engineering degree, I joined Proximus as a technical graduate. I wanted to complement my technical background with broader business experience, and Belgium's largest telecom operator was the right place for this. What I didn't expect was how much three rotations through product management and strategy would reshape the way I work.
 
-## Fraud & Security at BICS
+#### Fraud & Security at BICS
 
 My first rotation placed me in product management at BICS, Proximus's international carrier service. For eight months, I worked on all aspects of the product lifecycle—from exploring opportunities to create innovative products, to tracking development and building partnerships. I gained hands-on experience in key skills such as market research, building business cases, and technical reviews.
 
-## AI Strategy at Proximus Ada
+#### AI Strategy at Proximus Ada
 
 For my second rotation, I shifted to Proximus Ada, Proximus's AI division. Here, instead of owning products, I worked on a broad series of strategic projects, ranging from AI productization exercises to researching agentic AI applications for the telecom industry. Working alongside great minds, Proximus Ada provided an excellent environment for strategic thinking.
 
-## Streamlining Operations
+#### Streamlining Operations
 
 In my final rotation, I returned to Proximus, joining the operational excellence strategy team. I was tasked with optimizing a network product line—from market research and analyzing the operational model to financial modeling of costs. This project taught me how to collect data from across the organization and combine it into strategic insights that enable prioritization of improvements.
 
-## What I Learned
+#### What I Learned
 
 The graduate program gave me something most traditional engineering roles wouldn't: a broad perspective with deep dives in critical areas. I learned how to manage complex projects without clear directions or straightforward solutions, and transitioned from a computer science engineer to a professional at the intersection of technology and real-world impact.

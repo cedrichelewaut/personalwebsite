@@ -6,31 +6,34 @@ import { hasNote, isLive } from "../lib/content";
 import { loadSeries } from "../lib/series";
 
 export const GET: APIRoute = async () => {
-  const [work, projects, reading, notes, workSets, projectSets, photoSets, readingSets] = await Promise.all([
-    getCollection("work"),
-    getCollection("projects"),
-    getCollection("reading"),
-    getCollection("notes"),
-    loadSeries("work"),
-    loadSeries("projects"),
-    loadSeries("photographs"),
-    loadSeries("reading"),
-  ]);
+  const [work, study, projects, reading, workSets, studySets, projectSets, photoSets, readingSets] =
+    await Promise.all([
+      getCollection("work"),
+      getCollection("study"),
+      getCollection("projects"),
+      getCollection("reading"),
+      loadSeries("work"),
+      loadSeries("study"),
+      loadSeries("projects"),
+      loadSeries("photographs"),
+      loadSeries("reading"),
+    ]);
 
   const paths = [
     "/",
     "/work/",
+    "/study/",
     "/projects/",
     "/photographs/",
     "/reading/",
-    "/notes/",
     "/contact/",
-    ...work.filter(isLive).filter((entry) => entry.body?.trim()).map((entry) => `/work/${entry.id}/`),
+    ...work.filter(isLive).map((entry) => `/work/${entry.id}/`),
+    ...study.filter(isLive).map((entry) => `/study/${entry.id}/`),
     ...projects.filter(isLive).map((entry) => `/projects/${entry.id}/`),
     ...reading.filter((entry) => isLive(entry) && hasNote(entry)).map((entry) => `/reading/${entry.id}/`),
-    ...notes.filter(isLive).map((entry) => `/notes/${entry.id}/`),
     ...photos.map((photo) => `/photographs/${photo.slug}/`),
     ...workSets.map((entry) => `/work/${entry.id}/`),
+    ...studySets.map((entry) => `/study/${entry.id}/`),
     ...projectSets.map((entry) => `/projects/${entry.id}/`),
     ...photoSets.map((entry) => `/photographs/${entry.id}/`),
     ...readingSets.map((entry) => `/reading/${entry.id}/`),
