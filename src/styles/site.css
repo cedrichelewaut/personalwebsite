@@ -260,7 +260,10 @@ table.index,
 }
 
 .meta-face,
-.nav-list,
+.nav-groups,
+.nav-label,
+.nav-sub,
+.nav-contact,
 .foot,
 table.index,
 figcaption,
@@ -308,43 +311,60 @@ figcaption,
   text-underline-offset: 0.15em;
 }
 
-.nav-list {
+.nav-groups {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 1.25rem;
+  align-items: flex-end;
+  gap: 0.35rem 2.75rem;
   list-style: none;
   margin: 0;
   padding: calc(var(--gutter) / 2) 0;
 }
 
-.nav-list a {
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
+.nav-label {
+  color: var(--grey);
+}
+
+.nav-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 1.15rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-sub a,
+.nav-contact a {
   color: var(--ink);
   text-decoration: none;
 }
 
-.nav-list a:hover {
+.nav-sub a:hover,
+.nav-contact a:hover {
   color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
-.nav-list .num {
-  display: inline-block;
-  min-width: 1.8rem;
-}
-
-.nav-list a[aria-current="page"] {
-  font-style: italic;
-}
-
-.nav-list a[aria-current="page"] .num {
+.nav-sub a[aria-current="page"],
+.nav-contact a[aria-current="page"] {
   color: var(--signal);
   font-style: italic;
 }
 
 .nav-contact {
   margin-left: auto;
+  align-self: center;
 }
 
 main {
@@ -364,7 +384,7 @@ body.home main > .intro {
   min-width: 0;
 }
 
-body.home main > .digest {
+body.home main > .home-group {
   order: 1;
   min-width: 0;
 }
@@ -531,6 +551,24 @@ h1.intro-title {
 
 .digest {
   margin-top: calc(var(--gutter) * 1.5);
+}
+
+.home-group {
+  margin-top: calc(var(--gutter) * 1.5);
+}
+
+.home-group-title {
+  margin: 0;
+  color: var(--grey);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.home-group .digest:first-of-type {
+  margin-top: 0.85rem;
 }
 
 .digest-title {
@@ -1253,26 +1291,52 @@ footer {
     justify-self: start;
   }
 
-  .nav-list {
+  .nav-groups {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     padding: 0;
   }
 
-  .nav-list a {
-    display: flex;
-    gap: 0.75rem;
-    padding: 0.4rem 0;
+  .nav-group {
+    gap: 0;
+    padding-top: 0.55rem;
     border-top: 1px solid var(--ink);
   }
 
-  .nav-list li:first-child a {
+  .nav-group:first-child {
     border-top: 0;
+    padding-top: 0;
+  }
+
+  .nav-label {
+    padding: 0.35rem 0 0.15rem;
+  }
+
+  .nav-sub {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .nav-sub a,
+  .nav-contact a {
+    display: block;
+    padding: 0.38rem 0 0.38rem 1.15rem;
+    border-top: 1px solid var(--rule);
   }
 
   .nav-contact {
     margin-left: 0;
+    align-self: stretch;
+    border-top: 1px solid var(--ink);
+  }
+
+  .nav-contact a {
+    padding-left: 0;
+    border-top: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .meta > div {

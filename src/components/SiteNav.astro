@@ -1,5 +1,5 @@
 ---
-import { nav } from "../data/site";
+import { navContact, navGroups } from "../data/site";
 
 interface Props {
   current: string;
@@ -7,19 +7,33 @@ interface Props {
 }
 
 const { current, narrow = false } = Astro.props;
+const prefix = narrow ? "nav-narrow" : "nav";
 ---
 
 <nav class:list={["site-nav", narrow && "site-nav-narrow"]} aria-label="Sections">
-  <ul class="nav-list">
+  <ul class="nav-groups">
     {
-      nav.map((item) => (
-        <li class={item.id === "contact" ? "nav-contact" : undefined}>
-          <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
-            <span class="num">{item.num}</span>
-            {item.label}
-          </a>
+      navGroups.map((group) => (
+        <li class="nav-group">
+          <span class="nav-label" id={`${prefix}-${group.id}`}>
+            {group.label}
+          </span>
+          <ul class="nav-sub" aria-labelledby={`${prefix}-${group.id}`}>
+            {group.items.map((item) => (
+              <li>
+                <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </li>
       ))
     }
+    <li class="nav-contact">
+      <a href={navContact.href} aria-current={navContact.id === current ? "page" : undefined}>
+        {navContact.label}
+      </a>
+    </li>
   </ul>
 </nav>
