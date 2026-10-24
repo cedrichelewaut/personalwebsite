@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import IndexTable from "../../components/IndexTable.astro";
+import CollectionIndex from "../../components/CollectionIndex.astro";
+import { byOrder, isLive } from "../../lib/content";
+import { assertReadableSlug } from "../../lib/slugs";
+
+const all = await getCollection("projects");
+for (const entry of all) assertReadableSlug(entry.id, "Projects");
+
+const entries = byOrder(all.filter(isLive));
+const rows =
+  entries.length > 0
+    ? entries.map((entry) => ({
+        cells: {
+          dates: entry.data.year,
+          title: entry.data.title,
+          note: entry.data.summary,
+        },
+        href: `/projects/${entry.id}/`,
+        linkKey: "title",
+      }))
+    : [
+        {
+          cells: {
+            dates: "—",
+            title: "[Placeholder]",
+            note: "Nothing recorded yet. This row is not a project.",
+          },
+        },
+      ];
+---
+
+<Base
+  title="Projects"
+  page="projects"
+  current="projects"
+  description="Hobby projects. None were recorded on the previous site."
+>
+  <Section num="02" title="Projects">
+    <p class="lede">
+      Hobby projects, separate from paid and academic work. Nothing was recorded on the previous site.
+    </p>
+  </Section>
+  <CollectionIndex section="projects" reserved={all.map((entry) => entry.id)} />
+  <IndexTable
+    columns={[
+      { key: "dates", label: "dates" },
+      { key: "title", label: "title" },
+      { key: "note", label: "note" },
+    ]}
+    rows={rows}
+  />
+</Base>

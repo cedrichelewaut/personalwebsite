@@ -1,0 +1,60 @@
+---
+interface Column {
+  key: string;
+  label: string;
+}
+
+interface Row {
+  cells: Record<string, string>;
+  href?: string;
+  linkKey?: string;
+  flag?: string;
+  mark?: string;
+}
+
+interface Props {
+  caption?: string;
+  columns: Column[];
+  rows: Row[];
+}
+
+const { caption, columns, rows } = Astro.props;
+---
+
+<table class="index">
+  {caption && <caption>{caption}</caption>}
+  <thead>
+    <tr>
+      {columns.map((column) => <th scope="col">{column.label}</th>)}
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((row) => (
+        <tr>
+          {columns.map((column) => {
+            const value = row.cells[column.key] || "—";
+            const linked = Boolean(row.href && row.linkKey === column.key);
+            const external = row.href?.startsWith("http");
+            return (
+              <td data-label={column.label}>
+                {row.mark && column.key === "title" ? <span class="mark">{row.mark}</span> : null}
+                {linked ? (
+                  <a
+                    href={row.href}
+                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    {value}
+                  </a>
+                ) : (
+                  value
+                )}
+                {row.flag && column.key === "title" ? <span class="flag">{row.flag}</span> : null}
+              </td>
+            );
+          })}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

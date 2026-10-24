@@ -1,0 +1,30 @@
+---
+import IndexTable from "./IndexTable.astro";
+import { loadSeries, type SectionName } from "../lib/series";
+
+interface Props {
+  section: SectionName;
+  reserved?: string[];
+}
+
+const { section, reserved = [] } = Astro.props;
+const sets = await loadSeries(section, reserved);
+---
+
+{
+  sets.length > 0 && (
+    <IndexTable
+      caption="collections"
+      columns={[
+        { key: "title", label: "title" },
+        { key: "note", label: "note" },
+      ]}
+      rows={sets.map((entry) => ({
+        cells: { title: entry.data.title, note: entry.data.summary || "—" },
+        href: `/${section}/${entry.id}/`,
+        linkKey: "title",
+        mark: entry.data.code,
+      }))}
+    />
+  )
+}

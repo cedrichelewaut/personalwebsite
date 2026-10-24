@@ -1,0 +1,69 @@
+---
+import Base from "./Base.astro";
+
+interface Meta {
+  label: string;
+  value: string;
+  href?: string;
+}
+
+interface Props {
+  page: string;
+  current: string;
+  section: string;
+  title: string;
+  description?: string;
+  kickerHref: string;
+  kicker: string;
+  dek?: string;
+  mark?: string;
+  meta?: Meta[];
+}
+
+const { page, current, section, title, description, kickerHref, kicker, dek, mark, meta = [] } =
+  Astro.props;
+const external = (href: string) => href.startsWith("http");
+---
+
+<Base title={title} description={description} page={page} current={current} ogType="article">
+  <div class="grid head">
+    <p class="section-no">{section}</p>
+    <div class="head-copy">
+      <p class="kicker"><a href={kickerHref}>{kicker}</a></p>
+      {mark && <p class="mark">{mark}</p>}
+      <h1>{title}</h1>
+      {dek && <p class="dek">{dek}</p>}
+    </div>
+  </div>
+  {
+    meta.length > 0 && (
+      <dl class="grid meta block">
+        {meta.map((item) => (
+          <div>
+            <dt>{item.label}</dt>
+            <dd>
+              {item.href ? (
+                <a
+                  href={item.href}
+                  {...(external(item.href)
+                    ? { target: "_blank", rel: "noopener noreferrer me" }
+                    : {})}
+                >
+                  {item.value}
+                </a>
+              ) : (
+                item.value
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+  <div class="block prose">
+    <slot />
+  </div>
+  <div class="block">
+    <slot name="pager" />
+  </div>
+</Base>

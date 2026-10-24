@@ -1,0 +1,147 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import IndexTable from "../components/IndexTable.astro";
+import { site } from "../data/site";
+import photos from "../data/photographs.json";
+import { byOrder, hasNote, isLive } from "../lib/content";
+import { formatRange } from "../lib/dates";
+import { figCaption } from "../lib/figures";
+
+const latestCount = 3;
+
+const work = byOrder((await getCollection("work")).filter(isLive)).slice(0, latestCount);
+const workRows = work.map((entry) => ({
+  cells: {
+    dates: formatRange(entry.data.start, entry.data.end),
+    title: entry.data.indexTitle ?? entry.data.title,
+    note: entry.data.summary,
+  },
+  href: hasNote(entry) ? `/work/${entry.id}/` : undefined,
+  linkKey: "title",
+}));
+
+const projects = byOrder((await getCollection("projects")).filter(isLive)).slice(0, latestCount);
+const projectRows =
+  projects.length > 0
+    ? projects.map((entry) => ({
+        cells: { dates: entry.data.year, title: entry.data.title, note: entry.data.summary },
+        href: `/projects/${entry.id}/`,
+        linkKey: "title",
+      }))
+    : [
+        {
+          cells: {
+            dates: "—",
+            title: "[Placeholder]",
+            note: "Nothing recorded yet. This row is not a project.",
+          },
+        },
+      ];
+
+const books = byOrder((await getCollection("reading")).filter(isLive)).slice(0, latestCount);
+const bookRows =
+  books.length > 0
+    ? books.map((entry) => ({
+        cells: {
+          dates: entry.data.year,
+          title: entry.data.title,
+          author: entry.data.author,
+          note: entry.data.summary,
+        },
+        href: `/reading/${entry.id}/`,
+        linkKey: "title",
+        flag: entry.data.recommended ? "recommended" : undefined,
+      }))
+    : [
+        {
+          cells: {
+            dates: "—",
+            title: "[Placeholder]",
+            author: "—",
+            note: "Nothing recorded yet. This row is not a book.",
+          },
+        },
+      ];
+
+const plates = photos.slice(0, latestCount).map((photo, index) => ({
+  ...photo,
+  caption: figCaption(index + 1, photo.place, photo.date),
+}));
+---
+
+<Base title={site.name} page="home" current="index">
+  <div class="grid head">
+    <p class="section-no">00</p>
+    <div class="head-copy">
+      <h1>{site.name}</h1>
+      <p class="lede">
+        I am a Ghent-based computer science engineer, interested in sustainable innovation.
+      </p>
+      <p>
+        I studied computer science engineering at Ghent University (MSc, ir., Sept 2021–June 2023),
+        with an exchange at Polytechnique Montréal. I work as a GTM Specialist on security solutions
+        at Proximus Global, and I volunteer with Engineering Without Borders.
+      </p>
+    </div>
+  </div>
+
+  <section class="digest" aria-labelledby="home-work">
+    <h2 class="digest-title" id="home-work">
+      <a href="/work/"><span class="num">01</span>Work</a>
+    </h2>
+    <IndexTable
+      columns={[
+        { key: "dates", label: "dates" },
+        { key: "title", label: "title" },
+        { key: "note", label: "note" },
+      ]}
+      rows={workRows}
+    />
+  </section>
+
+  <section class="digest" aria-labelledby="home-projects">
+    <h2 class="digest-title" id="home-projects">
+      <a href="/projects/"><span class="num">02</span>Projects</a>
+    </h2>
+    <IndexTable
+      columns={[
+        { key: "dates", label: "dates" },
+        { key: "title", label: "title" },
+        { key: "note", label: "note" },
+      ]}
+      rows={projectRows}
+    />
+  </section>
+
+  <section class="digest" aria-labelledby="home-photographs">
+    <h2 class="digest-title" id="home-photographs">
+      <a href="/photographs/"><span class="num">03</span>Photographs</a>
+    </h2>
+    <div class="grid thumbs">
+      {
+        plates.map((photo) => (
+          <a class="thumb" href={`/photographs/${photo.slug}/`}>
+            <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
+            <span class="thumb-label">{photo.caption}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="digest" aria-labelledby="home-reading">
+    <h2 class="digest-title" id="home-reading">
+      <a href="/reading/"><span class="num">04</span>Reading</a>
+    </h2>
+    <IndexTable
+      columns={[
+        { key: "dates", label: "dates" },
+        { key: "title", label: "title" },
+        { key: "author", label: "author" },
+        { key: "note", label: "note" },
+      ]}
+      rows={bookRows}
+    />
+  </section>
+</Base>

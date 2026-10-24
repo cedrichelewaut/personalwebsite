@@ -1,0 +1,63 @@
+---
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import { site } from "../data/site";
+---
+
+<Base
+  title="Contact"
+  page="contact"
+  current="contact"
+  description="Open for questions, business inquiries, or just grabbing a coffee."
+>
+  <Section num="05" title="Contact">
+    <p class="lede">
+      Open for questions, business inquiries, or just grabbing a coffee. Get in touch through this form
+      or on LinkedIn!
+    </p>
+  </Section>
+  <div class="grid block">
+    <form class="form-col" action={site.formspree} method="POST">
+      <p class="kicker">form</p>
+      <input type="hidden" name="_subject" value="Website — Cedric Helewaut" />
+      <p class="hp">
+        <label for="gotcha">Leave this empty</label>
+        <input id="gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </p>
+      <div class="field">
+        <label for="name">name</label>
+        <input id="name" type="text" name="name" required autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="email">email</label>
+        <input id="email" type="email" name="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="message">message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button class="submit" type="submit">send message</button>
+    </form>
+    <div class="direct-col">
+      <p class="kicker">direct</p>
+      <dl class="direct">
+        {
+          site.profiles.map((profile) => (
+            <div>
+              <dt>{profile.label.toLowerCase()}</dt>
+              <dd>
+                <a
+                  href={profile.href}
+                  rel={profile.href.startsWith("http") ? "me noopener noreferrer" : "me"}
+                  target={profile.href.startsWith("http") ? "_blank" : undefined}
+                >
+                  {profile.display}
+                </a>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</Base>

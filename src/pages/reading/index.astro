@@ -1,0 +1,74 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import IndexTable from "../../components/IndexTable.astro";
+import CollectionIndex from "../../components/CollectionIndex.astro";
+import { byOrder, isLive } from "../../lib/content";
+import { assertReadableSlug } from "../../lib/slugs";
+
+const all = await getCollection("reading");
+for (const entry of all) assertReadableSlug(entry.id, "Books");
+
+const books = byOrder(all.filter(isLive));
+
+const groups = [
+  { key: "reading" as const, label: "in progress" },
+  { key: "read" as const, label: "read" },
+  { key: "recommended" as const, label: "recommended" },
+];
+
+const rows = groups.flatMap((group) => {
+  const entries = books.filter((book) => book.data[group.key]);
+  if (entries.length === 0) {
+    return [
+      {
+        cells: {
+          list: group.label,
+          dates: "—",
+          title: "[Placeholder]",
+          author: "—",
+          note: "Nothing recorded yet. This row is not a book.",
+        },
+      },
+    ];
+  }
+  return entries.map((entry) => ({
+    cells: {
+      list: group.label,
+      dates: entry.data.year,
+      title: entry.data.title,
+      author: entry.data.author,
+      note: entry.data.summary,
+    },
+    href: `/reading/${entry.id}/`,
+    linkKey: "title",
+    flag: entry.data.recommended ? "recommended" : undefined,
+  }));
+});
+---
+
+<Base
+  title="Reading"
+  page="reading"
+  current="reading"
+  description="Books in progress, books read, and recommendations."
+>
+  <Section num="04" title="Reading">
+    <p class="lede">
+      Books in progress, books finished, and recommendations. Nothing was recorded on the previous site,
+      so each [Placeholder] row is an empty slot, not a title. Recommended titles are marked in crimson.
+    </p>
+  </Section>
+  <CollectionIndex section="reading" reserved={all.map((entry) => entry.id)} />
+  <IndexTable
+    columns={[
+      { key: "list", label: "list" },
+      { key: "dates", label: "dates" },
+      { key: "title", label: "title" },
+      { key: "author", label: "author" },
+      { key: "note", label: "note" },
+    ]}
+    rows={rows}
+  />
+</Base>

@@ -1,0 +1,76 @@
+---
+import css from "../styles/site.css?raw";
+import { nav, site } from "../data/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  page: string;
+  current: string;
+  ogType?: "website" | "article";
+}
+
+const { title, description = site.description, page, current, ogType = "website" } = Astro.props;
+const fullTitle = title === site.name ? site.name : `${title} — ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${site.url}/img/cedric.jpg`} />
+    <meta name="theme-color" content="#fafaf7" />
+    <style is:inline set:html={css}></style>
+  </head>
+  <body class={page}>
+    <a class="skip" href="#content">Skip to content</a>
+    <div class="sheet">
+      <div class="vgrid" aria-hidden="true">
+        {Array.from({ length: 12 }, () => <i />)}
+      </div>
+      <header class="band">
+        <div class="grid mast">
+          <a class="brand" href="/">{site.name}</a>
+          <span class="place">{site.location.toLowerCase()}</span>
+        </div>
+      </header>
+      <nav aria-label="Sections">
+        <ul class="nav-list">
+          {
+            nav.map((item) => (
+              <li class={item.id === "contact" ? "nav-contact" : undefined}>
+                <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
+                  <span class="num">{item.num}</span>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <main id="content">
+        <slot />
+      </main>
+      <footer>
+        <div class="foot">
+          <span>© {year} {site.name}</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <a href="/rss.xml">rss</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
