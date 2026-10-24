@@ -20,11 +20,11 @@ interface FeedItem {
 }
 
 export const GET: APIRoute = async () => {
-  const [work, projects, reading, writing, ...sets] = await Promise.all([
+  const [work, projects, reading, notes, ...sets] = await Promise.all([
     getCollection("work"),
     getCollection("projects"),
     getCollection("reading"),
-    getCollection("writing"),
+    getCollection("notes"),
     loadSeries("work"),
     loadSeries("projects"),
     loadSeries("photographs"),
@@ -57,11 +57,11 @@ export const GET: APIRoute = async () => {
         summary: entry.data.summary || entry.data.title,
         date: entry.data.noteDate as string,
       })),
-    ...writing
+    ...notes
       .filter((entry) => isLive(entry) && entry.data.date)
       .map((entry) => ({
         title: entry.data.title,
-        path: `/writing/${entry.id}/`,
+        path: `/notes/${entry.id}/`,
         summary: entry.data.subtitle || entry.data.title,
         date: entry.data.date as string,
       })),

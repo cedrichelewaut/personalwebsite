@@ -1,6 +1,5 @@
 ---
-title: "GTM Specialist for Security"
-subtitle: "Bridging technical expertise and market strategy in cybersecurity"
+title: "Go-to-market for security, Proximus Global"
 date: "2026-01-13"
 order: 7
 stub: false

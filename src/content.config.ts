@@ -111,8 +111,8 @@ const series = defineCollection({
     }),
 });
 
-const writing = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/writing", generateId: fileId }),
+const notes = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/notes", generateId: fileId }),
   schema: z.object({
     title: z.string(),
     subtitle: z.string().default(""),
@@ -140,4 +140,4 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { work, projects, reading, current, writing, series };
+export const collections = { work, projects, reading, current, notes, series };

@@ -6,8 +6,8 @@ import { isLive, neighbours } from "../../lib/content";
 import { formatRead } from "../../lib/dates";
 
 export async function getStaticPaths() {
-  const essays = (await getCollection("writing")).filter(isLive);
-  return essays.map((entry) => ({
+  const notes = (await getCollection("notes")).filter(isLive);
+  return notes.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const oldestFirst = (await getCollection("writing"))
+const oldestFirst = (await getCollection("notes"))
   .filter(isLive)
   .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
 const newestFirst = [...oldestFirst].reverse();
@@ -25,14 +25,14 @@ const { newer, older } = neighbours(newestFirst, entry.id);
 <Base
   title={entry.data.title}
   description={entry.data.subtitle || entry.data.title}
-  page="entry writing"
-  current="writing"
+  page="entry notes"
+  current="notes"
   ogType="article"
 >
   <header class="article-head">
-    <p class="kicker signal-links"><a href="/writing/">writing</a></p>
+    <p class="kicker signal-links"><a href="/notes/">notes</a></p>
     <h1>{entry.data.title}</h1>
-    {entry.data.subtitle && <p class="dek">{entry.data.subtitle}</p>}
+    {entry.data.subtitle && <p class="article-meta">{entry.data.subtitle}</p>}
     {entry.data.date && <p class="article-meta">{formatRead(entry.data.date)}</p>}
   </header>
   {
@@ -56,10 +56,10 @@ const { newer, older } = neighbours(newestFirst, entry.id);
   }
   <div class="block signal-links">
     <Pager
-      indexHref="/writing/"
-      indexLabel="all writing"
-      newer={newer ? { href: `/writing/${newer.id}/`, label: "newer" } : undefined}
-      older={older ? { href: `/writing/${older.id}/`, label: "older" } : undefined}
+      indexHref="/notes/"
+      indexLabel="all notes"
+      newer={newer ? { href: `/notes/${newer.id}/`, label: "newer" } : undefined}
+      older={older ? { href: `/notes/${older.id}/`, label: "older" } : undefined}
     />
   </div>
 </Base>

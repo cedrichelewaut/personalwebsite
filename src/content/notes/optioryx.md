@@ -1,6 +1,5 @@
 ---
-title: "3D Bin Packing at Optioryx"
-subtitle: "AI-Powered Transport Optimization: Reducing Costs and Boosting Sustainability"
+title: "3D bin packing at Optioryx"
 date: "2023-05-01"
 order: 3
 stub: false

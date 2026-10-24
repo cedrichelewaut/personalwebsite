@@ -1,6 +1,5 @@
 ---
-title: "Volunteering at IZG"
-subtitle: "Joining Belgium's Engineering Without Borders Community"
+title: "Engineers Without Borders (IZG)"
 date: "2024-09-01"
 order: 6
 stub: false

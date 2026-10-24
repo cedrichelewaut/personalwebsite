@@ -1,6 +1,5 @@
 ---
-title: "Proximus Young Graduate Program"
-subtitle: "Bridging the Gap Between Technical and Business Expertise"
+title: "Proximus graduate programme"
 date: "2023-09-01"
 order: 5
 stub: false

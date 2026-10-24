@@ -1,12 +1,12 @@
 ---
-title: "2026: A Year of Juggling"
+title: "House renovation, Ghent"
 order: 8
 stub: true
 photos: []
 draft: false
 ---
 
-Coming soon — a note on renovating a house in Ghent with my sister and parents.
+In progress — photos and write-up to follow.
 
 <!--
 Intended outline, to be written after the renovation is finished and after checking with his sister how she envisioned it:

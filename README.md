@@ -71,16 +71,16 @@ An optional longer note.
 
 Name the file `field-notes.md`. That is the permalink `/projects/field-notes/`. An empty `url` is not rendered, so the row has no dead link. `src/content/projects/built-with-flexviz.md` is that kind of placeholder: title, a one-line description, and no link.
 
-## Add an essay
+## Add a note
 
-Copy `src/content/writing/example.md`. Set `draft` to `false`. The Writing page is a list of titles, oldest first (`order` 1, then 2). The filename is the permalink: `field-notes.md` is `/writing/field-notes/`.
+Copy `src/content/notes/example.md`. Set `draft` to `false`. The Notes page is a list of titles, most recent first (a higher `order` sits higher). The filename is the permalink: `field-notes.md` is `/notes/field-notes/`.
 
 ```yaml
 ---
-title: "Essay title"
-subtitle: "Optional second line"
+title: "Short factual title"
+subtitle: ""         # optional mono line; leave empty when it would read as a tagline
 date: "2026-01-13"   # omit when there is no date yet
-order: 8
+order: 9
 stub: false          # true marks an unfinished note; the list still shows the title
 photos: []           # { src, alt } objects; nothing is drawn while this is empty
 # image:             # optional single picture
@@ -90,7 +90,7 @@ draft: false
 ---
 ```
 
-Links in an essay are Red earth. `src/content/writing/2026-a-year-of-juggling.md` is a stub (`stub: true`, `photos: []`) and sits last.
+Links in a note are Red earth. `src/content/notes/house-renovation-ghent.md` is a stub (`stub: true`, `photos: []`) and sits at the top while its `order` is the highest.
 
 ## Add a photograph
 

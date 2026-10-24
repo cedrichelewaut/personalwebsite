@@ -31,12 +31,12 @@
 
 [[redirects]]
   from = "/posts"
-  to = "/writing/"
+  to = "/notes/"
   status = 301
 
 [[redirects]]
   from = "/posts/"
-  to = "/writing/"
+  to = "/notes/"
   status = 301
 
 [[redirects]]
@@ -51,70 +51,96 @@
 
 [[redirects]]
   from = "/2026/01/13/pxg"
-  to = "/writing/pxg/"
+  to = "/notes/pxg/"
   status = 301
 
 [[redirects]]
   from = "/2026/01/13/pxg.html"
-  to = "/writing/pxg/"
+  to = "/notes/pxg/"
   status = 301
 
 [[redirects]]
   from = "/2024/09/01/izg"
-  to = "/writing/izg/"
+  to = "/notes/izg/"
   status = 301
 
 [[redirects]]
   from = "/2024/09/01/izg.html"
-  to = "/writing/izg/"
+  to = "/notes/izg/"
   status = 301
 
 [[redirects]]
   from = "/2023/09/01/proximus"
-  to = "/writing/proximus/"
+  to = "/notes/proximus/"
   status = 301
 
 [[redirects]]
   from = "/2023/09/01/proximus.html"
-  to = "/writing/proximus/"
+  to = "/notes/proximus/"
   status = 301
 
 [[redirects]]
   from = "/2023/06/30/thesis"
-  to = "/writing/thesis/"
+  to = "/notes/thesis/"
   status = 301
 
 [[redirects]]
   from = "/2023/06/30/thesis.html"
-  to = "/writing/thesis/"
+  to = "/notes/thesis/"
   status = 301
 
 [[redirects]]
   from = "/2023/05/01/optioryx"
-  to = "/writing/optioryx/"
+  to = "/notes/optioryx/"
   status = 301
 
 [[redirects]]
   from = "/2023/05/01/optioryx.html"
-  to = "/writing/optioryx/"
+  to = "/notes/optioryx/"
   status = 301
 
 [[redirects]]
   from = "/2022/06/01/excellence"
-  to = "/writing/excellence/"
+  to = "/notes/excellence/"
   status = 301
 
 [[redirects]]
   from = "/2022/06/01/excellence.html"
-  to = "/writing/excellence/"
+  to = "/notes/excellence/"
   status = 301
 
 [[redirects]]
   from = "/2021/09/01/internship_itp"
-  to = "/writing/internship-itp/"
+  to = "/notes/internship-itp/"
   status = 301
 
 [[redirects]]
   from = "/2021/09/01/internship_itp.html"
-  to = "/writing/internship-itp/"
+  to = "/notes/internship-itp/"
+  status = 301
+
+# Earlier name for this section.
+[[redirects]]
+  from = "/writing"
+  to = "/notes/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/"
+  to = "/notes/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/2026-a-year-of-juggling"
+  to = "/notes/house-renovation-ghent/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/2026-a-year-of-juggling/"
+  to = "/notes/house-renovation-ghent/"
+  status = 301
+
+[[redirects]]
+  from = "/writing/*"
+  to = "/notes/:splat"
   status = 301

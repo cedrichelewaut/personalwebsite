@@ -1,6 +1,5 @@
 ---
-title: "Ghent University FEA Excellence Program"
-subtitle: "Facial Recognition Systems: A Case Study in the Dangers of AI"
+title: "Innovation for Society, Ghent University"
 date: "2022-06-01"
 order: 2
 stub: false

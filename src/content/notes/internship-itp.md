@@ -1,6 +1,5 @@
 ---
-title: "Machine Learning Internship at In The Pocket"
-subtitle: "Data science and Machine Learning: Tools for solving real-world problems"
+title: "Machine learning internship, In The Pocket"
 date: "2021-09-01"
 order: 1
 stub: false

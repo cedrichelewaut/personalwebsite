@@ -1,6 +1,5 @@
 ---
-title: "Master's Thesis: Detecting Immersion with Machine Learning"
-subtitle: "Understanding User Experience Through Physiological Data"
+title: "Master's thesis: detecting immersion with EEG"
 date: "2023-06-30"
 order: 4
 stub: false
