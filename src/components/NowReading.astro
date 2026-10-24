@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  author: string;
+  edition: string;
+  url: string;
+  level?: "h2" | "h3";
+}
+
+const { title, author, edition, url, level = "h2" } = Astro.props;
+const Heading = level;
+---
+
+<section class="now">
+  <Heading class="now-kicker">currently reading</Heading>
+  <p class="now-title">{title}</p>
+  <p class="now-author">{author}</p>
+  <p class="now-edition">{edition}</p>
+  <p class="now-link"><a href={url}>goodreads</a></p>
+</section>

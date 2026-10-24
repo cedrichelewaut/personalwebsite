@@ -1,7 +1,0 @@
----
-title: "On Grand Strategy"
-author: "John Lewis Gaddis"
-read: "2024-11-03"
-highly: false
-draft: false
----

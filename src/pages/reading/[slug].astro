@@ -55,7 +55,6 @@ const Content = rendered?.Content;
       ]}
     >
       {hasNote(entry) ? <Content /> : entry.data.summary ? <p>{entry.data.summary}</p> : null}
-      {entry.data.highly && <p class="flag">highly recommended</p>}
       <Pager
         slot="pager"
         indexHref="/reading/"

@@ -2,10 +2,12 @@
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
-import IndexTable from "../../components/IndexTable.astro";
+import BookPoster from "../../components/BookPoster.astro";
+import NowReading from "../../components/NowReading.astro";
 import CollectionIndex from "../../components/CollectionIndex.astro";
-import { hasNote, isLive } from "../../lib/content";
-import { formatRead, readSortKey } from "../../lib/dates";
+import { isLive } from "../../lib/content";
+import { loadCurrent } from "../../lib/current";
+import { readSortKey } from "../../lib/dates";
 import { assertReadableSlug } from "../../lib/slugs";
 
 const all = await getCollection("reading");
@@ -17,37 +19,26 @@ const books = all.filter(isLive).sort((a, b) => {
   return a.data.title.localeCompare(b.data.title);
 });
 
-const showNote = books.some((book) => book.data.summary.trim().length > 0);
-const rows = books.map((entry) => ({
-  cells: {
-    dates: formatRead(entry.data.read),
-    title: entry.data.title,
-    author: entry.data.author,
-    ...(showNote ? { note: entry.data.summary } : {}),
-  },
-  href: hasNote(entry) ? `/reading/${entry.id}/` : undefined,
-  linkKey: "title",
-  flag: entry.data.highly ? "highly recommended" : undefined,
-}));
+const current = await loadCurrent();
 ---
 
 <Base
   title="Reading"
   page="reading"
   current="reading"
-  description="Books Cedric recommends, drawn from what he has read. Not reviews."
+  description="The book Cedric is reading now, and a short list of the books he recommends most."
 >
-  <Section num="04" title="Reading">
-    <p class="lede">Books I recommend, drawn from what I have read. Not reviews.</p>
-  </Section>
+  <Section num="04" title="Reading" />
   <CollectionIndex section="reading" reserved={all.map((entry) => entry.id)} />
-  <IndexTable
-    columns={[
-      { key: "dates", label: "read" },
-      { key: "title", label: "title" },
-      { key: "author", label: "author" },
-      ...(showNote ? [{ key: "note", label: "note" }] : []),
-    ]}
-    rows={rows}
+  <NowReading
+    title={current.data.title}
+    author={current.data.author}
+    edition={current.data.edition}
+    url={current.data.url}
   />
+  <section class="part" aria-labelledby="recommendations">
+    <h2 class="part-title" id="recommendations">Recommendations</h2>
+    <p class="lede">A short list of the books I recommend most.</p>
+    <BookPoster books={books} />
+  </section>
 </Base>

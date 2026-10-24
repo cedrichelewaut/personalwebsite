@@ -22,7 +22,20 @@ A single book, project, photograph, or role does not get a catalogue code. Its f
 
 A catalogue code is only for a finished collection, such as a photo series, an essay series, or a CV. The code is a short prefix, an underscore, and a number (`F_02`, `CV_01`, `W_014`). It is a quiet mark on the collection. The URL stays the readable slug.
 
-Where a section has no real entries yet, the index shows a row titled `[Placeholder]`. That row is an empty slot, not a work. Reading is filled from books he recommends, so it has no placeholder row.
+Where a section has no real entries yet, the index shows a row titled `[Placeholder]`. That row is an empty slot, not a work. Reading lists the books he recommends most, so it has no placeholder row.
+
+## Currently reading
+
+Edit `src/content/current.md`. That one file is the book at the top of Reading and in the home-page reading excerpt. Replace the fields to swap it. Do not add a second file.
+
+```yaml
+---
+title: "De eeuwigheid in een kort moment"
+author: "Elif Shafak"
+edition: "Dutch edition, Wereldbibliotheek, 2026"
+url: "https://www.goodreads.com/book/show/257232432-de-eeuwigheid-in-een-kort-moment"
+---
+```
 
 ## Add a book
 
@@ -33,12 +46,11 @@ Copy `src/content/reading/example.md`. Set `draft` to `false` and replace the fi
 title: "The book title"
 author: "Author name"
 read: "2026-05-12"   # YYYY-MM-DD, YYYY-MM, or ""
-highly: false        # true marks the title "highly recommended"
 draft: false
 ---
 ```
 
-Name the file `the-book.md`, not a code. `read` is when he finished it. Leave it empty when that date was not recorded. The index prints `12 may 26` or, for a month without a day, `may 26`. Newest dates come first. Undated books come last. `highly: true` adds a crimson “highly recommended” mark. It is not a star rating. A body is optional. With no body, the title stays in the list and does not get its own page.
+Name the file `the-book.md`, not a code. `read` is when he finished it. Leave it empty when that date was not recorded. The list prints `12 may 26` or, for a month without a day, `may 26`. Newest dates come first. Undated books come last. A body is optional. With no body, the title stays in the list and does not get its own page.
 
 ## Add a project
 

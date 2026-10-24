@@ -73,10 +73,20 @@ const reading = defineCollection({
     title: z.string(),
     author: z.string(),
     read: readOn.default(""),
-    highly: z.boolean().default(false),
     summary: z.string().default(""),
     noteDate,
     draft: z.boolean().default(false),
+  }),
+});
+
+/** One file, one book. Edit src/content/current.md to change what is being read. */
+const current = defineCollection({
+  loader: glob({ pattern: "current.md", base: "./src/content", generateId: fileId }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    edition: z.string(),
+    url: z.string().url(),
   }),
 });
 
@@ -98,4 +108,4 @@ const series = defineCollection({
     }),
 });
 
-export const collections = { work, projects, reading, series };
+export const collections = { work, projects, reading, current, series };

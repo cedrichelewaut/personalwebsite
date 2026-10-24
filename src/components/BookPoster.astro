@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { hasNote } from "../lib/content";
+import { formatRead } from "../lib/dates";
+
+interface Props {
+  books: CollectionEntry<"reading">[];
+}
+
+const { books } = Astro.props;
+---
+
+<ol class="poster">
+  {
+    books.map((entry, index) => {
+      const href = hasNote(entry) ? `/reading/${entry.id}/` : undefined;
+      const number = String(index + 1).padStart(2, "0");
+      return (
+        <li>
+          <span class="poster-no">{number}</span>
+          {href ? (
+            <a class="poster-title" href={href}>
+              {entry.data.title}
+            </a>
+          ) : (
+            <p class="poster-title">{entry.data.title}</p>
+          )}
+          <p class="poster-by">{entry.data.author}</p>
+          <p class="poster-date">{formatRead(entry.data.read)}</p>
+        </li>
+      );
+    })
+  }
+</ol>
