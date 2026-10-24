@@ -36,32 +36,33 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
   <header class="intro">
     <h1 class="intro-title"><span class="hl">{site.name}</span></h1>
     <p class="intro-copy"><span class="hl">{intro}</span></p>
+    <p class="intro-contact"><a class="hl" href="/contact/">Get in touch →</a></p>
   </header>
 
   <section class="digest" aria-labelledby="home-work">
     <h2 class="digest-title" id="home-work">
-      <a href="/work/"><span class="num">01</span>Work</a>
+      <a href="/work/">Work</a>
     </h2>
     <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
   </section>
 
   <section class="digest" aria-labelledby="home-study">
     <h2 class="digest-title" id="home-study">
-      <a href="/study/"><span class="num">02</span>Study</a>
+      <a href="/study/">Study</a>
     </h2>
     <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
   </section>
 
   <section class="digest" aria-labelledby="home-projects">
     <h2 class="digest-title" id="home-projects">
-      <a href="/projects/"><span class="num">03</span>Projects</a>
+      <a href="/projects/">Projects</a>
     </h2>
     <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
   </section>
 
   <section class="digest" aria-labelledby="home-photographs">
     <h2 class="digest-title" id="home-photographs">
-      <a href="/photographs/"><span class="num">04</span>Photographs</a>
+      <a href="/photographs/">Photographs</a>
     </h2>
     <div class="grid thumbs">
       {
@@ -77,7 +78,7 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
 
   <section class="digest" aria-labelledby="home-reading">
     <h2 class="digest-title" id="home-reading">
-      <a href="/reading/"><span class="num">05</span>Reading</a>
+      <a href="/reading/">Reading</a>
     </h2>
     <NowReading
       level="h3"

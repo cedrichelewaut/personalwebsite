@@ -38,12 +38,18 @@ const year = new Date().getFullYear();
   <body class={page}>
     <a class="skip" href="#content">Skip to content</a>
     <div class="sheet">
-      <header class="band">
-        <div class="grid mast">
-          <a class="brand" href="/">{site.name}</a>
-          <span class="place">{site.location.toLowerCase()}</span>
-        </div>
-      </header>
+      {
+        page !== "home" && (
+          <header class="band">
+            <div class="grid mast">
+              <a class="brand" href="/">
+                {site.name}
+              </a>
+              <span class="place">{site.location.toLowerCase()}</span>
+            </div>
+          </header>
+        )
+      }
       <nav aria-label="Sections">
         <ul class="nav-list">
           {
