@@ -373,8 +373,29 @@ main {
 
 /* Home intro sits above the section index. The highlight follows the text, line by line. */
 .intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  gap: var(--gutter);
+  align-items: end;
   padding-bottom: var(--gutter);
   border-bottom: 1px solid var(--ink);
+}
+
+.intro-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+  .intro-photo {
+    max-width: 14rem;
+  }
 }
 
 h1.intro-title {
