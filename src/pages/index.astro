@@ -34,11 +34,13 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
 
 <Base title={site.name} page="home" current="index" description={intro}>
   <header class="intro">
-    <img class="intro-photo" src="/img/cedric-portrait.jpg" alt="Portrait of Cedric Helewaut" width="800" height="1200" loading="eager" decoding="async" />
+    <div class="intro-photo">
+      <img src="/img/cedric-portrait.jpg" alt="Portrait of Cedric Helewaut" width="800" height="1200" loading="eager" decoding="async" />
+    </div>
     <div class="intro-text">
-    <h1 class="intro-title"><span class="hl">{site.name}</span></h1>
-    <p class="intro-copy"><span class="hl">{intro}</span></p>
-    <p class="intro-contact"><a class="hl" href="/contact/">Get in touch →</a></p>
+      <h1 class="intro-title"><span class="hl">{site.name}</span></h1>
+      <p class="intro-copy"><span class="hl">{intro}</span></p>
+      <p class="intro-contact"><a class="hl" href="/contact/">Get in touch →</a></p>
     </div>
   </header>
 
