@@ -45,6 +45,7 @@ export const navGroups = [
       { href: "/projects/", id: "projects", label: "Projects" },
       { href: "/photographs/", id: "photographs", label: "Photographs" },
       { href: "/reading/", id: "reading", label: "Reading" },
+      { href: "/marathoning/", id: "marathoning", label: "Marathon training" },
     ],
   },
 ] as const;

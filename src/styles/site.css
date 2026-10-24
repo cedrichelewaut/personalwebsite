@@ -1467,10 +1467,28 @@ footer {
   }
 }
 
+.board-link {
+  margin-top: 0.85rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.4;
+}
+
+.board-frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 1600px;
+  margin-top: var(--gutter);
+  border: 0;
+  background: #ffffff;
+}
+
 @media print {
   .skip,
   .sheet::before,
-  .sheet::after {
+  .sheet::after,
+  .board-frame {
     display: none;
   }
 
