@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import TitleList from "../../components/TitleList.astro";
+import CollectionIndex from "../../components/CollectionIndex.astro";
+import { byOrder, isLive } from "../../lib/content";
+import { assertReadableSlug } from "../../lib/slugs";
+
+const all = await getCollection("study");
+for (const entry of all) assertReadableSlug(entry.id, "Study");
+const entries = byOrder(all.filter(isLive));
+---
+
+<Base title="Study" page="study" current="study" description="Study, most recent first.">
+  <Section num="02" title="Study" />
+  <CollectionIndex section="study" reserved={all.map((entry) => entry.id)} />
+  <TitleList items={entries.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
+</Base>

@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+
+interface Plate {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  page: string;
+  current: string;
+  kicker: string;
+  kickerHref: string;
+  meta?: string[];
+  image?: Plate;
+  photos?: Plate[];
+  link?: string;
+}
+
+const {
+  title,
+  description,
+  page,
+  current,
+  kicker,
+  kickerHref,
+  meta = [],
+  image,
+  photos = [],
+  link = "",
+} = Astro.props;
+const href = link.trim();
+---
+
+<Base title={title} description={description} page={page} current={current} ogType="article">
+  <header class="article-head">
+    <p class="kicker signal-links"><a href={kickerHref}>{kicker}</a></p>
+    <h1>{title}</h1>
+    {
+      meta.map((line) => (
+        <p class="article-meta">{line}</p>
+      ))
+    }
+    {
+      href && (
+        <p class="article-meta signal-links">
+          <a href={href} target="_blank" rel="noopener noreferrer">{href.replace(/^https?:\/\//, "")}</a>
+        </p>
+      )
+    }
+  </header>
+  {
+    image && (
+      <figure class="article-figure">
+        <img src={image.src} alt={image.alt} />
+      </figure>
+    )
+  }
+  <div class="prose article signal-links">
+    <slot />
+  </div>
+  {
+    photos.length > 0 && (
+      <div class="article-photos">
+        {photos.map((photo) => (
+          <img src={photo.src} alt={photo.alt} />
+        ))}
+      </div>
+    )
+  }
+  <div class="block signal-links">
+    <slot name="pager" />
+  </div>
+</Base>

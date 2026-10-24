@@ -1,20 +1,21 @@
 ---
 import { getCollection, render } from "astro:content";
-import Note from "../../layouts/Note.astro";
+import EntryArticle from "../../components/EntryArticle.astro";
 import Pager from "../../components/Pager.astro";
 import SetPage from "../../components/SetPage.astro";
 import { byOrder, hasNote, isLive, neighbours } from "../../lib/content";
+import { formatRange } from "../../lib/dates";
 import { loadSeries } from "../../lib/series";
 
 export async function getStaticPaths() {
   const all = await getCollection("projects");
-  const notes = byOrder(all.filter(isLive));
+  const items = byOrder(all.filter(isLive));
   const sets = await loadSeries(
     "projects",
     all.map((entry) => entry.id),
   );
   return [
-    ...notes.map((entry) => ({
+    ...items.map((entry) => ({
       params: { slug: entry.id },
       props: { kind: "item" as const, entry },
     })),
@@ -28,36 +29,32 @@ export async function getStaticPaths() {
 const props = Astro.props;
 const entry = props.kind === "item" ? props.entry : undefined;
 const rendered = entry ? await render(entry) : undefined;
-const notes = byOrder((await getCollection("projects")).filter(isLive));
-const { newer, older } = entry ? neighbours(notes, entry.id) : { newer: undefined, older: undefined };
-const link = entry?.data.url?.trim() ?? "";
-const meta = entry
-  ? [
-      { label: "dates", value: entry.data.year },
-      ...(link
-        ? [{ label: "link", value: link.replace(/^https?:\/\//, ""), href: link }]
-        : []),
-    ]
-  : [];
 const Content = rendered?.Content;
+const items = byOrder((await getCollection("projects")).filter(isLive));
+const { newer, older } = entry ? neighbours(items, entry.id) : { newer: undefined, older: undefined };
+const link = entry?.data.url?.trim() ?? "";
+const dates =
+  entry?.data.start && entry?.data.end ? formatRange(entry.data.start, entry.data.end) : "";
 ---
 
 {
   props.kind === "set" && <SetPage entry={props.entry} />
 }
 {
-  entry && Content && (
-    <Note
+  entry && (
+    <EntryArticle
       page="entry projects"
       current="projects"
-      section="02"
       title={entry.data.title}
       description={entry.data.summary}
       kickerHref="/projects/"
       kicker="projects"
-      meta={meta}
+      meta={dates ? [dates] : []}
+      image={entry.data.image}
+      photos={entry.data.photos}
+      link={link}
     >
-      {hasNote(entry) ? <Content /> : <p>{entry.data.summary}</p>}
+      {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}
       <Pager
         slot="pager"
         indexHref="/projects/"
@@ -65,6 +62,6 @@ const Content = rendered?.Content;
         newer={newer ? { href: `/projects/${newer.id}/`, label: "newer" } : undefined}
         older={older ? { href: `/projects/${older.id}/`, label: "older" } : undefined}
       />
-    </Note>
+    </EntryArticle>
   )
 }

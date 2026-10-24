@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import Note from "../../layouts/Note.astro";
+import EntryArticle from "../../components/EntryArticle.astro";
 import Pager from "../../components/Pager.astro";
 import SetPage from "../../components/SetPage.astro";
 import { byOrder, hasNote, isLive, neighbours } from "../../lib/content";
@@ -9,15 +9,15 @@ import { loadSeries } from "../../lib/series";
 
 export async function getStaticPaths() {
   const roles = await getCollection("work");
-  const notes = byOrder(roles.filter((entry) => isLive(entry) && hasNote(entry)));
+  const items = byOrder(roles.filter(isLive));
   const sets = await loadSeries(
     "work",
     roles.map((entry) => entry.id),
   );
   return [
-    ...notes.map((entry) => ({
+    ...items.map((entry) => ({
       params: { slug: entry.id },
-      props: { kind: "role" as const, entry },
+      props: { kind: "item" as const, entry },
     })),
     ...sets.map((entry) => ({
       params: { slug: entry.id },
@@ -27,51 +27,37 @@ export async function getStaticPaths() {
 }
 
 const props = Astro.props;
-const entry = props.kind === "role" ? props.entry : undefined;
+const entry = props.kind === "item" ? props.entry : undefined;
 const rendered = entry ? await render(entry) : undefined;
 const Content = rendered?.Content;
-const notes = byOrder((await getCollection("work")).filter((item) => isLive(item) && hasNote(item)));
-const { newer, older } = entry ? neighbours(notes, entry.id) : { newer: undefined, older: undefined };
-const meta = entry
-  ? [
-      { label: "dates", value: formatRange(entry.data.start, entry.data.end) },
-      { label: "organisation", value: entry.data.org },
-    ]
-  : [];
+const items = byOrder((await getCollection("work")).filter(isLive));
+const { newer, older } = entry ? neighbours(items, entry.id) : { newer: undefined, older: undefined };
 ---
 
 {
   props.kind === "set" && <SetPage entry={props.entry} />
 }
 {
-  entry && Content && (
-<Note
-  page="entry work"
-  current="work"
-  section="01"
-  title={entry.data.title}
-  description={entry.data.summary}
-  kickerHref="/work/"
-  kicker="work"
-  dek={entry.data.subtitle}
-  meta={meta}
->
-  {
-    entry.data.figure && (
-      <figure class="figure">
-        <img src={entry.data.figure.src} alt={entry.data.figure.alt} />
-        <figcaption>{entry.data.figure.caption}</figcaption>
-      </figure>
-    )
-  }
-  <Content />
-  <Pager
-    slot="pager"
-    indexHref="/work/"
-    indexLabel="all work"
-    newer={newer ? { href: `/work/${newer.id}/`, label: "newer" } : undefined}
-    older={older ? { href: `/work/${older.id}/`, label: "older" } : undefined}
-  />
-</Note>
+  entry && (
+    <EntryArticle
+      page="entry work"
+      current="work"
+      title={entry.data.title}
+      description={entry.data.summary}
+      kickerHref="/work/"
+      kicker="work"
+      meta={[formatRange(entry.data.start, entry.data.end)]}
+      image={entry.data.image}
+      photos={entry.data.photos}
+    >
+      {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}
+      <Pager
+        slot="pager"
+        indexHref="/work/"
+        indexLabel="all work"
+        newer={newer ? { href: `/work/${newer.id}/`, label: "newer" } : undefined}
+        older={older ? { href: `/work/${older.id}/`, label: "older" } : undefined}
+      />
+    </EntryArticle>
   )
 }

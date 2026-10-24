@@ -4,5 +4,8 @@ org: "Ghent University"
 start: "Sept 2021"
 end: "June 2023"
 summary: "Graduated as engineer from Ghent University."
-order: 4
+order: 2
+photos: []
 ---
+
+Graduated as engineer from Ghent University.

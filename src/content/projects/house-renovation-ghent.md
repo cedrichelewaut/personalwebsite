@@ -1,9 +1,10 @@
 ---
 title: "House renovation, Ghent"
-order: 8
+summary: "In progress — photos and write-up to follow."
+url: ""
+order: 1
 stub: true
 photos: []
-draft: false
 ---
 
 In progress — photos and write-up to follow.

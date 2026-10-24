@@ -14,7 +14,7 @@ interface Props {
 const { indexHref, indexLabel, newer, older } = Astro.props;
 ---
 
-<nav class="pager" aria-label="Adjacent notes">
+<nav class="pager" aria-label="Adjacent entries">
   <a href={indexHref}>{indexLabel}</a>
   {newer && <a href={newer.href}>{newer.label}</a>}
   {older && <a href={older.href}>{older.label}</a>}

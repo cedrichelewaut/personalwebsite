@@ -16,6 +16,11 @@ const figure = z
   })
   .optional();
 
+const plate = z.object({
+  src: z.string(),
+  alt: z.string(),
+});
+
 const noteDate = z.preprocess((value) => {
   if (value instanceof Date) {
     const year = value.getUTCFullYear();
@@ -39,6 +44,27 @@ const work = defineCollection({
     order: z.number(),
     noteDate,
     figure,
+    stub: z.boolean().default(false),
+    photos: z.array(plate).default([]),
+    image: plate.optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const study = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/study", generateId: fileId }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(),
+    org: z.string(),
+    start: z.string(),
+    end: z.string(),
+    summary: z.string(),
+    order: z.number(),
+    noteDate,
+    stub: z.boolean().default(false),
+    photos: z.array(plate).default([]),
+    image: plate.optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -55,6 +81,12 @@ const projects = defineCollection({
       .refine((value) => value === "" || z.string().url().safeParse(value).success, "Link must be a URL or empty."),
     order: z.number().default(0),
     noteDate,
+    org: z.string().optional(),
+    start: z.string().optional(),
+    end: z.string().optional(),
+    stub: z.boolean().default(false),
+    photos: z.array(plate).default([]),
+    image: plate.optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -77,6 +109,8 @@ const reading = defineCollection({
     author: z.string(),
     read: readOn.default(""),
     summary: z.string().default(""),
+    /** Dutch books set nl. Omit for English. */
+    lang: z.enum(["nl"]).optional(),
     noteDate,
     draft: z.boolean().default(false),
   }),
@@ -90,6 +124,8 @@ const current = defineCollection({
     author: z.string(),
     edition: z.string(),
     url: z.string().url(),
+    /** Dutch books set nl. Omit for English. */
+    lang: z.enum(["nl"]).optional(),
   }),
 });
 
@@ -100,7 +136,7 @@ const series = defineCollection({
       title: z.string(),
       summary: z.string().default(""),
       code: z.string().regex(collectionCode, "A collection code looks like F_02, CV_01, or W_014."),
-      section: z.enum(["work", "projects", "photographs", "reading"]),
+      section: z.enum(["work", "study", "projects", "photographs", "reading"]),
       photos: z.array(z.string()).optional(),
       order: z.number().default(0),
       noteDate,
@@ -111,33 +147,4 @@ const series = defineCollection({
     }),
 });
 
-const notes = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/notes", generateId: fileId }),
-  schema: z.object({
-    title: z.string(),
-    subtitle: z.string().default(""),
-    date: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}$/)
-      .optional(),
-    order: z.number(),
-    stub: z.boolean().default(false),
-    photos: z
-      .array(
-        z.object({
-          src: z.string(),
-          alt: z.string(),
-        }),
-      )
-      .default([]),
-    image: z
-      .object({
-        src: z.string(),
-        alt: z.string(),
-      })
-      .optional(),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { work, projects, reading, current, notes, series };
+export const collections = { work, study, projects, reading, current, series };

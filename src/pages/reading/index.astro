@@ -28,16 +28,17 @@ const current = await loadCurrent();
   current="reading"
   description="The book Cedric is reading now, and a short list of the books he recommends most."
 >
-  <Section num="04" title="Reading" />
+  <Section num="05" title="Reading" />
   <CollectionIndex section="reading" reserved={all.map((entry) => entry.id)} />
   <NowReading
     title={current.data.title}
     author={current.data.author}
     edition={current.data.edition}
     url={current.data.url}
+    lang={current.data.lang}
   />
   <section class="part" aria-labelledby="recommendations">
-    <h2 class="part-title" id="recommendations">Recommendations</h2>
+    <h2 class="part-title" id="recommendations">Latest recommendations</h2>
     <p class="lede">A short list of the books I recommend most.</p>
     <BookPoster books={books} />
   </section>

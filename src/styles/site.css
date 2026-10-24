@@ -371,6 +371,36 @@ main {
   grid-column: span 10;
 }
 
+/* Home intro sits above the section index. The highlight follows the text, line by line. */
+.intro {
+  padding-bottom: var(--gutter);
+  border-bottom: 1px solid var(--ink);
+}
+
+h1.intro-title {
+  margin: 0 0 0.85rem;
+  font-size: var(--poster);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.intro-copy {
+  margin: 0;
+  max-width: 66ch;
+  font-size: var(--body);
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.hl {
+  background: var(--signal);
+  color: var(--paper);
+  padding: 0 0.18em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 .lede,
 .prose p,
 .prose li {
@@ -456,12 +486,46 @@ main {
   font-size: var(--poster);
 }
 
-.poster-title {
+.poster-name {
   margin-top: 0.7rem;
+}
+
+.poster-title {
+  display: inline;
+  margin-top: 0;
   font-size: var(--poster);
   color: inherit;
   text-decoration: none;
   text-wrap: balance;
+}
+
+.lang {
+  display: inline-block;
+  margin: 0;
+  padding: 0.05em 0.32em 0.02em;
+  border: 1px solid var(--signal);
+  background: transparent;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: 0.25em;
+  margin-left: 0.45rem;
+}
+
+.now .lang {
+  color: var(--paper);
+  border-color: var(--paper);
+}
+
+a.poster-title:hover .lang,
+.poster-name:hover .lang {
+  text-decoration: none;
 }
 
 .poster-by,
@@ -576,6 +640,17 @@ a.poster-title:hover {
   .now-edition,
   .now-link a {
     color: CanvasText;
+  }
+
+  .lang,
+  .now .lang {
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+
+  .hl {
+    background: Highlight;
+    color: HighlightText;
   }
 }
 

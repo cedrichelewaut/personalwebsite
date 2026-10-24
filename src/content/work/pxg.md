@@ -1,16 +1,18 @@
 ---
-title: "GTM Specialist for Security"
-indexTitle: "GTM Specialist at Proximus Global"
-subtitle: "Bridging technical expertise and market strategy in cybersecurity"
+title: "Go-to-market for security, Proximus Global"
 org: "Proximus Global"
 start: "Sept. 2025"
 end: "Present"
 summary: "Responsible for the go-to-market strategy for security solutions."
 order: 1
 noteDate: 2026-01-13
+photos: []
+image:
+  src: /img/companies/pxs.jpg
+  alt: "A flock of birds in a dense shape above a line of bare trees, against a purple and blue sky."
 ---
 
-## Current Role
+#### Current Role
 
 In September 2025, I rejoined Proximus's international division, which has now been renamed Proximus Global, focusing on delivering digital communication solutions across their Connect, Engage, and Protect portfolio.
 
