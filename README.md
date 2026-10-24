@@ -60,13 +60,9 @@ Everything that names the owner lives in `src/site.config.ts`.
 | `running` | on | `/running/` |
 | `bookshelf` | off | `/reading/` and the home reading block |
 
-The menu and the home index are built from the flags that are on.
+The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left.
 
-- **Experience:** Work, Study
-- **Personal Projects:** Projects, Photographs, Reading, Running, Blog
-- **Contact** sits on its own
-
-A group with no enabled sections is omitted. A disabled section has no menu item, no home block, and no pages.
+Experience opens `/experience/`, which lists Work and Study when those sections are on. Personal Projects opens `/personal-projects/`, which lists Projects, Photographs, Reading, Running, and Blog for the sections that are on. Turning a section off removes it from that landing page and from the home index. `/work/`, `/study/`, `/projects/`, `/photographs/`, `/reading/`, `/running/`, and `/blog/` stay as they are. If every section in a group is off, that header link is omitted too.
 
 `bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,photos`). `node scripts/check-sections.mjs` builds every on/off combination.
 
@@ -88,7 +84,7 @@ sections: {
 }
 ```
 
-With `study` and `running` off, those items leave the menu and the home index, and `/study/` and `/running/` are not generated.
+With `study` off, Study leaves `/experience/` and the home index, and `/study/` is not generated. With `running` off, Running leaves `/personal-projects/` and the home index, and `/running/` is not generated.
 
 ## Add a work entry
 
@@ -181,7 +177,8 @@ Colours are custom properties on `:root` in `src/styles/site.css`. Change them t
 | `--paper` | `#FAFAF7` | Page background |
 | `--ink` | `#151515` | Text and content rules |
 | `--grey` | `#5E5B55` | Metadata |
-| `--signal` | `#9A2400` | Red earth. Links, the introduction, thick rules |
+| `--signal` | `#9A2400` | Red earth. The introduction, thick rules, and link underlines |
+| `--link` | `var(--ink)` | Link text. Underline is `--link-line` (Red earth). Hover is `--link-hover` (red) |
 | `--rule` | `#CFCDC6` | Thin decorative column line |
 
 The site ships in light mode (`color-scheme: light` on `:root`). The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper.

@@ -102,6 +102,14 @@ async function runWorker(id) {
       if (!state[key] && present) unexpected.push(rel);
     }
     if (!existsSync(path.join(outDir, "index.html"))) missing.push("index.html");
+    const experience = state.work || state.study;
+    const personal = state.projects || state.photos || state.bookshelf || state.running || state.blog;
+    const experiencePage = existsSync(path.join(outDir, "experience/index.html"));
+    const personalPage = existsSync(path.join(outDir, "personal-projects/index.html"));
+    if (experience && !experiencePage) missing.push("experience/index.html");
+    if (!experience && experiencePage) unexpected.push("experience/index.html");
+    if (personal && !personalPage) missing.push("personal-projects/index.html");
+    if (!personal && personalPage) unexpected.push("personal-projects/index.html");
     if (missing.length || unexpected.length) {
       failed += 1;
       console.error(`FAIL routes ${label} missing=${missing.join(",")} unexpected=${unexpected.join(",")}`);

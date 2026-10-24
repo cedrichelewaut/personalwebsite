@@ -22,6 +22,10 @@ export const GET: APIRoute = async () => {
 
   const paths = [
     "/",
+    ...(sections.work || sections.study ? ["/experience/"] : []),
+    ...(sections.projects || sections.photos || sections.bookshelf || sections.running || sections.blog
+      ? ["/personal-projects/"]
+      : []),
     ...(sections.work ? ["/work/"] : []),
     ...(sections.study ? ["/study/"] : []),
     ...(sections.projects ? ["/projects/"] : []),

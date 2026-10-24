@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import TitleList from "../../components/TitleList.astro";
+import { sections } from "../../site";
+import { sectionMeta } from "../../site.sections";
+import { byOrder, isLive } from "../../lib/content";
+
+const work = sections.work ? byOrder((await getCollection("work")).filter(isLive)) : [];
+const study = sections.study ? byOrder((await getCollection("study")).filter(isLive)) : [];
+---
+
+<Base title="Experience" page="experience" current="experience" description="Work and study.">
+  <div class="grid head">
+    <div class="head-copy span-all">
+      <h1>Experience</h1>
+    </div>
+  </div>
+  {
+    sections.work && (
+      <section class="digest" aria-labelledby="experience-work">
+        <h2 class="digest-title" id="experience-work">
+          <a href={sectionMeta.work.href}>{sectionMeta.work.label}</a>
+        </h2>
+        <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
+      </section>
+    )
+  }
+  {
+    sections.study && (
+      <section class="digest" aria-labelledby="experience-study">
+        <h2 class="digest-title" id="experience-study">
+          <a href={sectionMeta.study.href}>{sectionMeta.study.label}</a>
+        </h2>
+        <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
+      </section>
+    )
+  }
+</Base>
