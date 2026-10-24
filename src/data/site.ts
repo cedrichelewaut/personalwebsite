@@ -29,12 +29,24 @@ export const site = {
   ],
 } as const;
 
-export const nav = [
-  { href: "/", id: "index", num: "00", label: "index" },
-  { href: "/work/", id: "work", num: "01", label: "work" },
-  { href: "/study/", id: "study", num: "02", label: "study" },
-  { href: "/projects/", id: "projects", num: "03", label: "projects" },
-  { href: "/photographs/", id: "photographs", num: "04", label: "photographs" },
-  { href: "/reading/", id: "reading", num: "05", label: "reading" },
-  { href: "/contact/", id: "contact", num: "06", label: "contact" },
+export const navGroups = [
+  {
+    id: "experience",
+    label: "Experience",
+    items: [
+      { href: "/work/", id: "work", label: "Work" },
+      { href: "/study/", id: "study", label: "Study" },
+    ],
+  },
+  {
+    id: "personal",
+    label: "Personal Projects",
+    items: [
+      { href: "/projects/", id: "projects", label: "Projects" },
+      { href: "/photographs/", id: "photographs", label: "Photographs" },
+      { href: "/reading/", id: "reading", label: "Reading" },
+    ],
+  },
 ] as const;
+
+export const navContact = { href: "/contact/", id: "contact", label: "Contact" } as const;

@@ -44,47 +44,52 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
     </div>
   </header>
 
-  <section class="digest" aria-labelledby="home-work">
-    <h2 class="digest-title" id="home-work">
-      <a href="/work/">Work</a>
-    </h2>
-    <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
+  <section class="home-group" aria-labelledby="home-experience">
+    <h2 class="home-group-title" id="home-experience">Experience</h2>
+    <section class="digest" aria-labelledby="home-work">
+      <h3 class="digest-title" id="home-work">
+        <a href="/work/">Work</a>
+      </h3>
+      <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
+    </section>
+
+    <section class="digest" aria-labelledby="home-study">
+      <h3 class="digest-title" id="home-study">
+        <a href="/study/">Study</a>
+      </h3>
+      <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
+    </section>
   </section>
 
-  <section class="digest" aria-labelledby="home-study">
-    <h2 class="digest-title" id="home-study">
-      <a href="/study/">Study</a>
-    </h2>
-    <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
-  </section>
+  <section class="home-group" aria-labelledby="home-personal">
+    <h2 class="home-group-title" id="home-personal">Personal Projects</h2>
+    <section class="digest" aria-labelledby="home-projects">
+      <h3 class="digest-title" id="home-projects">
+        <a href="/projects/">Projects</a>
+      </h3>
+      <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
+    </section>
 
-  <section class="digest" aria-labelledby="home-projects">
-    <h2 class="digest-title" id="home-projects">
-      <a href="/projects/">Projects</a>
-    </h2>
-    <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
-  </section>
+    <section class="digest" aria-labelledby="home-photographs">
+      <h3 class="digest-title" id="home-photographs">
+        <a href="/photographs/">Photographs</a>
+      </h3>
+      <div class="grid thumbs">
+        {
+          plates.map((photo) => (
+            <a class="thumb" href={`/photographs/${photo.slug}/`}>
+              <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
+              <span class="thumb-label">{photo.caption}</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
 
-  <section class="digest" aria-labelledby="home-photographs">
-    <h2 class="digest-title" id="home-photographs">
-      <a href="/photographs/">Photographs</a>
-    </h2>
-    <div class="grid thumbs">
-      {
-        plates.map((photo) => (
-          <a class="thumb" href={`/photographs/${photo.slug}/`}>
-            <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
-            <span class="thumb-label">{photo.caption}</span>
-          </a>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="digest" aria-labelledby="home-reading">
-    <h2 class="digest-title" id="home-reading">
-      <a href="/reading/">Reading</a>
-    </h2>
+    <section class="digest" aria-labelledby="home-reading">
+      <h3 class="digest-title" id="home-reading">
+        <a href="/reading/">Reading</a>
+      </h3>
     <NowReading
       level="h3"
       title={current.data.title}
@@ -95,5 +100,6 @@ const plates = photos.slice(0, latestCount).map((photo, index) => ({
     />
     <h3 class="excerpt-label">Latest recommendations</h3>
     <BookPoster books={books} />
+    </section>
   </section>
 </Base>
