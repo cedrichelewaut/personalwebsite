@@ -61,7 +61,7 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
   },
   photos: {
     id: "photographs",
-    label: "Photographs",
+    label: "Photography",
     href: "/photographs/",
     routes: [
       { pattern: "/photographs", entry: "./src/sections/photographs/index.astro" },
@@ -70,7 +70,7 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
   },
   bookshelf: {
     id: "reading",
-    label: "Reading",
+    label: "Readings",
     href: "/reading/",
     routes: [
       { pattern: "/reading", entry: "./src/personal/bookshelf/pages/index.astro" },
@@ -146,7 +146,7 @@ export function navModel(sections: SectionFlags) {
     navItems.push({ href: "/experience/", id: "experience", label: "Experience" });
   }
   if (groupOn(sections, personalKeys)) {
-    navItems.push({ href: "/personal-projects/", id: "personal", label: "Personal Projects" });
+    navItems.push({ href: "/personal-projects/", id: "personal", label: "Projects" });
   }
   if (sections.contact) {
     navItems.push({ href: "/contact/", id: "contact", label: "Contact" });

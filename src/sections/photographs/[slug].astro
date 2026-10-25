@@ -33,10 +33,9 @@ const caption =
   ) : (
     <Base title={props.photo.title} page="entry photographs" current="photographs" description={caption}>
         <div class="grid head">
-          <p class="section-no">04</p>
-          <div class="head-copy">
+          <div class="head-copy span-all">
             <p class="kicker">
-              <a href="/photographs/">photographs</a>
+              <a href="/photographs/">photography</a>
             </p>
             <h1>{props.photo.title}</h1>
             <p class="dek">{caption}</p>
@@ -52,7 +51,7 @@ const caption =
           </figcaption>
         </figure>
         <p class="block pager">
-          <a href={`/photographs/#${props.photo.slug}`}>all photographs</a>
+          <a href={`/photographs/#${props.photo.slug}`}>all photography</a>
         </p>
     </Base>
   )
