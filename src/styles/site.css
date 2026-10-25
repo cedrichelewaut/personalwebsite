@@ -5,7 +5,8 @@
    (--paper, --ink, --grey, --signal, --rule, --link) and nothing else.
    --rule is the thin decorative column line: #CFCDC6 on #FAFAF7.
    --signal is Red earth, #9A2400. It is the introduction and the thick rules.
-   Links are a muted grey at rest. Hover turns the text and the underline to --ink.
+   Links are muted Red earth at rest, with no underline. Hover and focus
+   turn them to Red earth and add a thin underline. Nav stays ink.
    Content rules stay --ink. */
 
 @font-face {
@@ -46,10 +47,12 @@
   --grey: #5e5b55;
   --signal: #9a2400;
   --rule: #cfcdc6;
-  /* Links. Muted grey-ink at rest. Hover is the theme ink, text and underline. */
-  --link: #4a4a46;
-  --link-line: var(--link);
-  --link-hover: var(--ink);
+  /* Links. Muted Red earth, no underline at rest. Hover and focus are Red earth with a thin line.
+     Aileron has 400 and 700 only, and font-synthesis is none, so weight 500 would still draw as 400.
+     The colour is the distinction: #8C4A3A on #FAFAF7 is 6.4:1. */
+  --link: #8c4a3a;
+  --link-line: var(--link-hover);
+  --link-hover: #9a2400;
   --gutter: 32px;
   --cols: 12;
   --max: 1440px;
@@ -153,16 +156,18 @@ h1 {
 
 a {
   color: var(--link);
-  text-decoration: underline;
-  text-decoration-color: var(--link-line);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
+  font-weight: 400;
+  text-decoration: none;
   transition: color 100ms linear, text-decoration-color 100ms linear, background-color 100ms linear, border-color 100ms linear;
 }
 
-a:hover {
+a:hover,
+a:focus {
   color: var(--link-hover);
+  text-decoration: underline;
   text-decoration-color: var(--link-hover);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
 }
 
 a:focus-visible,
@@ -312,10 +317,11 @@ figcaption,
   color: var(--grey);
 }
 
-.brand:hover {
-  color: var(--link-hover);
+.brand:hover,
+.brand:focus {
+  color: var(--ink);
   text-decoration: underline;
-  text-decoration-color: var(--link-hover);
+  text-decoration-color: var(--ink);
   text-underline-offset: 0.15em;
 }
 
@@ -335,10 +341,11 @@ figcaption,
   text-decoration: none;
 }
 
-.nav-links a:hover {
-  color: var(--link-hover);
+.nav-links a:hover,
+.nav-links a:focus {
+  color: var(--ink);
   text-decoration: underline;
-  text-decoration-color: var(--link-hover);
+  text-decoration-color: var(--ink);
   text-underline-offset: 0.15em;
 }
 
@@ -346,7 +353,7 @@ figcaption,
   color: var(--ink);
   font-style: italic;
   text-decoration: underline;
-  text-decoration-color: var(--link-line);
+  text-decoration-color: var(--ink);
   text-underline-offset: 0.15em;
 }
 
@@ -499,9 +506,14 @@ h1.intro-title {
   padding-bottom: 0.22em;
 }
 
-.intro-contact a:hover {
+.intro-contact a:hover,
+.intro-contact a:focus {
   color: var(--paper);
   text-decoration-color: var(--paper);
+}
+
+.intro-contact a:focus-visible {
+  outline-color: var(--paper);
 }
 
 .hl {
@@ -699,12 +711,15 @@ a.poster-title:hover .lang,
 }
 
 .shelf-title a {
-  color: inherit;
+  color: var(--link);
   text-decoration: none;
 }
 
-.shelf-title a:hover {
+.shelf-title a:hover,
+.shelf-title a:focus {
   color: var(--link-hover);
+  text-decoration: underline;
+  text-decoration-color: var(--link-hover);
   text-underline-offset: 0.08em;
 }
 
@@ -801,11 +816,16 @@ a.poster-title:hover {
 }
 
 .now-link a,
-.now-link a:hover {
+.now-link a:hover,
+.now-link a:focus {
   color: var(--paper);
   text-decoration: underline;
   text-decoration-color: var(--paper);
   text-underline-offset: 0.15em;
+}
+
+.now-link a:focus-visible {
+  outline-color: var(--paper);
 }
 
 .part {
@@ -981,7 +1001,6 @@ a.poster-title:hover {
 }
 
 .kicker a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
@@ -1020,7 +1039,6 @@ a.poster-title:hover {
 }
 
 .meta a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
   overflow-wrap: anywhere;
 }
@@ -1046,7 +1064,6 @@ a.poster-title:hover {
 }
 
 .prose a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
@@ -1156,7 +1173,6 @@ table.index .mark {
 }
 
 figcaption a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
@@ -1226,7 +1242,6 @@ figcaption a {
 }
 
 .direct a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
@@ -1269,7 +1284,6 @@ button {
 }
 
 .pager a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
@@ -1287,7 +1301,6 @@ footer {
 }
 
 .foot a {
-  text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
