@@ -1,7 +1,8 @@
 /* Aileron for display and text. IBM Plex Mono for metadata and nav.
    Headings stay in normal case. Every colour is a custom property.
-   Light is the default. prefers-color-scheme: dark overrides the same
-   tokens, including the muted link colour.
+   The page is light only. It does not follow prefers-color-scheme.
+   A manual dark theme would override these variables
+   (--paper, --ink, --grey, --signal, --rule, --link) and nothing else.
    --rule is the thin decorative column line: #CFCDC6 on #FAFAF7.
    --signal is Red earth, #9A2400. It is the introduction and the thick rules.
    Links are a muted grey at rest. Hover turns the text and the underline to --ink.
@@ -71,19 +72,6 @@
   :root {
     --gutter: 16px;
     --cols: 4;
-  }
-}
-
-/* Same contrast step as #4A4A46 on #FAFAF7: about 8.5:1, quieter than the ink. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --paper: #151515;
-    --ink: #fafaf7;
-    --grey: #a39e96;
-    --signal: #e26a45;
-    --rule: #3a3834;
-    --link: #b1b1ad;
   }
 }
 
