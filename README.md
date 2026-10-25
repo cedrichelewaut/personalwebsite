@@ -41,7 +41,7 @@ Everything that names the owner lives in `src/site.config.ts`.
 | `intro` | Highlighted home introduction |
 | `contactLink` | Label and href of the link inside the introduction |
 | `portrait` | Home portrait (`src`, `alt`, `width`, `height`) |
-| `socials` | Contact-page links |
+| `socials` | Links in the contact section on the home page |
 | `formspree` | Contact form endpoint |
 | `ogImage` | Open Graph image path |
 | `sections` | On/off flags for each part of the site |
@@ -51,20 +51,24 @@ Everything that names the owner lives in `src/site.config.ts`.
 | Flag | Default here | What it controls |
 | --- | --- | --- |
 | `intro` | on | Home portrait and introduction |
-| `work` | on | `/work/` |
-| `study` | on | `/study/` |
-| `projects` | on | `/projects/` |
-| `photos` | on | `/photographs/`, labelled Photography |
-| `blog` | off | `/blog/` |
-| `contact` | on | `/contact/` and the intro contact link |
-| `running` | on | `/running/` |
-| `bookshelf` | off | `/reading/`, labelled Readings, and the home readings block |
+| `work` | on | Work list on the home page (`/#work`) and each `/work/…/` article |
+| `study` | on | Study list on the home page (`/#study`) and each `/study/…/` article |
+| `projects` | on | Projects list on the home page (`/#projects`) and each `/projects/…/` article |
+| `photos` | on | Photography albums on the home page (`/#photography`) and each `/photography/…/` album |
+| `contact` | on | Contact form on the home page (`/#contact`) and the intro contact link |
+| `running` | on | Running note on the home page and the marathon page at `/running/` |
+| `bookshelf` | off | Home reading block and the full list at `/reading/` |
+| `blog` | off | Blog list on the home page (`/#blog`) and each `/blog/…/` post |
 
-The header is four links, in this order: Home, Experience, Projects, Contact. They stay in one row at every width, including a 320px-wide window. The Projects item opens `/personal-projects/`. That page’s title stays Personal Projects.
+The site has two levels. The home page is the only overview. Detail pages are the role, study, and project notes, photo albums, blog posts, book notes, the bookshelf, and the marathon page.
 
-Experience opens `/experience/`, which lists Work and Study when those sections are on. Personal Projects lists Projects, Photography, Readings, Running, and Blog for the sections that are on. Turning a section off removes it from that landing page and from the home index. `/work/`, `/study/`, `/projects/`, `/photographs/`, `/reading/`, `/running/`, and `/blog/` stay as they are. If every section in a group is off, that header link is omitted too.
+The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left. Home is `/`. Experience is `/#experience`. Personal Projects is `/#personal-projects`. Contact is `/#contact`.
 
-`bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,photos`). `node scripts/check-sections.mjs` builds every on/off combination.
+Experience on the home page lists Work and Study when those sections are on. Personal Projects lists Projects, Photography, Reading, Running, and Blog for the sections that are on. Photography appears when `photos` is on and at least one album is published. The home page lists every published album, so there is no `/photography/` index. Turning a section off removes that block from the home page and does not generate its detail pages. `/reading/` and `/running/` stay as their own pages. If every section in a group is off, that header link is omitted too.
+
+Old overview URLs redirect to the matching home anchor. `/experience/` goes to `/#experience`, `/personal-projects/` to `/#personal-projects`, `/contact/` to `/#contact`, `/work/` to `/#work`, `/study/` to `/#study`, and `/projects/` to `/#projects`. Each rule is also listed without the trailing slash. `/about` and `/about.html` go to `/#work` in one hop, and `/contact.html` goes to `/#contact`. Role, study, and project URLs such as `/work/pxg/` are unchanged. `/blog` and `/blog/` go to `/#blog`. A published post stays at `/blog/…/`. `/photographs` and `/photographs/…/` go to `/#photography`. `/photography` and `/photography/` go there too, because the album list lives on the home page. Those rules use `force`. The rules are in `netlify.toml`.
+
+`bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,running`). `node scripts/check-sections.mjs` builds every on/off combination.
 
 ## Turn sections on or off
 
@@ -77,14 +81,14 @@ sections: {
   study: false,
   projects: true,
   photos: true,
-  blog: true,
   contact: true,
   running: false,
   bookshelf: false,
+  blog: false,
 }
 ```
 
-With `study` off, Study leaves `/experience/` and the home index, and `/study/` is not generated. With `running` off, Running leaves `/personal-projects/` and the home index, and `/running/` is not generated.
+With `study` off, Study leaves the home page and `/study/…/` articles are not generated. With `running` off, Running leaves the home page and `/running/` is not generated. With `photos` off, Photography leaves the home page and `/photography/…/` albums are not generated.
 
 ## Add a work entry
 
@@ -105,11 +109,11 @@ draft: false
 Write the note in Markdown. With no body, the detail page shows the summary.
 ```
 
-`start` and `end` may be `Month YYYY` or `D Month YYYY`. The detail page prints them as `sep 25 > present`. An optional `image` is one picture. `photos` is a list of `{ src, alt }`. Nothing is drawn while `photos` is empty.
+`start` and `end` may be `Month YYYY` or `D Month YYYY`. The detail page prints them as `sep 25 > present`.
 
 ## Add a study entry
 
-Add `src/content/study/short-name.md`. The fields match a work entry: `title`, `org`, `start`, `end`, `summary`, `order`. `image` and `photos` are optional.
+Add `src/content/study/short-name.md`. The fields match a work entry: `title`, `org`, `start`, `end`, `summary`, `order`.
 
 ## Add a project
 
@@ -130,43 +134,28 @@ An optional longer note.
 
 An empty `url` is not a link.
 
-## Add a photograph
+## Add a photo album
 
-Put the image in `public/img/` and add an object to `src/data/photographs.json`:
-
-```json
-{
-  "slug": "ghent",
-  "title": "Ghent",
-  "src": "/img/example.jpg",
-  "place": "Ghent",
-  "date": "06.2022",
-  "width": 2000,
-  "height": 1200,
-  "alt": "What is in the frame.",
-  "note": ""
-}
-```
-
-`slug` is `/photographs/ghent/`. The caption is `Fig. 01 — Ghent, 06.2022`. Leave `date` as `""` when the month is unknown. `width` and `height` are the file’s pixel size.
-
-## Add a blog post
-
-Turn `blog` on in `src/site.config.ts`. Add `src/content/blog/field-notes.md`. That is `/blog/field-notes/`.
+1. Create a folder `src/content/photography/mexico/`. The folder name is the URL: this one is `/photography/mexico/`.
+2. Add `index.md` in that folder.
+3. Drop the photographs into the same folder, for example `01.jpg`, `02.jpg`, and `10.jpg`. Every image is picked up automatically and sorted by filename, so `2.jpg` comes before `10.jpg`.
+4. Leave `photos: true` in `src/site.config.ts`.
+5. Commit and push. Netlify builds the site and publishes the album.
 
 ```yaml
 ---
-title: "Post title"
-summary: "One line for the index."
-noteDate: 2026-01-13
-order: 1
-draft: false
+title: "Mexico"
+date: 2026-04-02          # YYYY-MM-DD. Newest albums are listed first
+cover: ./cover.jpg        # optional. Without it, the first image is the thumbnail
+draft: false              # true hides the album from the build
 ---
 
-The post.
+An optional note. It is shown above the photographs.
 ```
 
-`src/content/blog/example.md` stays a draft and is not published. Old `/notes/` and `/writing/` URLs still redirect home. That redirect is in `netlify.toml`.
+The home Photography section lists every published album, newest first. Each entry is one thumbnail and the title, and the thumbnail links to the album. The thumbnail is `cover` when that field is set, and the first image in the folder otherwise. The album page shows the note and every photograph in the folder. Images are optimised with `astro:assets` and load lazily. There is no separate `/photography/` index, because the home section already lists every album.
+
+`src/content/photography/example/` is a draft with no images. It is not published. Copy that folder to start a new album.
 
 ## Theme
 
@@ -178,12 +167,12 @@ Colours are custom properties on `:root` in `src/styles/site.css`. Change them t
 | `--ink` | `#151515` | Text and content rules |
 | `--grey` | `#5E5B55` | Metadata |
 | `--signal` | `#9A2400` | Red earth. The introduction and the thick rules |
-| `--link` | `#151515` | Link text at rest, same as the ink, no underline. Hover and focus (`--link-hover`) are `#9A2400` with a thin underline |
+| `--link` | `#151515` | Link text. No underline at rest. Hover and focus stay ink and add a 1px underline |
 | `--rule` | `#CFCDC6` | Thin decorative column line |
 
 The site stays light. `:root` sets `color-scheme: light` and the page background stays `#FAFAF7`. It does not follow the system colour scheme. The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper. There is no theme toggle.
 
-A dark theme is a manual edit. Add this block to `src/styles/site.css` if you want one. It is not in the stylesheet. Resting links follow the light ink. On the dark paper, `#9A2400` is too dim for a hover (about 2.3:1), so the block uses `#E26A45` there.
+A dark theme is a manual edit. Add this block to `src/styles/site.css` if you want one. It is not in the stylesheet. Resting links and their hover follow the light ink. The underline is the only change.
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -195,21 +184,21 @@ A dark theme is a manual edit. Add this block to `src/styles/site.css` if you wa
     --signal: #e26a45;
     --rule: #3a3834;
     --link: #fafaf7;
-    --link-hover: #e26a45;
+    --link-hover: #fafaf7;
   }
 }
 ```
 
 `@media (forced-colors: active)` maps those variables, including the link tokens, to the operating system’s high-contrast colours. That is separate from a dark theme.
 
-Headings use Aileron at regular weight. Page titles use `--page` (1.75rem). Section and entry titles use `--heading` (1.15rem). Body text is `--body` (1rem). Navigation, home section labels, captions, and metadata use IBM Plex Mono at `--meta`. The files are in `public/fonts/`.
+Headings use Aileron. Navigation, captions, and metadata use IBM Plex Mono. The files are in `public/fonts/`.
 
 ## Bookshelf (personal add-on)
 
 The bookshelf is personal to Cedric. It lives in `src/personal/bookshelf/`. The folder README starts with “Personal to Cedric — delete or keep disabled”.
 
 - Default: `bookshelf: false` in `src/site.config.ts`. The home page does not render the reading block, and `/reading/` is not built.
-- This repo: `netlify.toml` sets `PERSONAL_BOOKSHELF=true` under `[build.environment]`. Netlify injects that variable when it runs `npm run build`. Cedric’s live site keeps Readings, the currently-reading book, and Latest recommendations without a dashboard change.
+- This repo: `netlify.toml` sets `PERSONAL_BOOKSHELF=true` under `[build.environment]`. Netlify injects that variable when it runs `npm run build`. Cedric’s live site keeps Reading, the currently-reading book, and Latest recommendations without a dashboard change.
 - Cloners delete the `PERSONAL_BOOKSHELF` line. To preview Cedric’s bookshelf locally, run `PERSONAL_BOOKSHELF=true npm run dev`.
 
 To keep the add-on and add a book, copy `src/personal/bookshelf/content/reading/example.md` and edit `src/personal/bookshelf/content/current.md`. Books rated 3 or higher are listed, newest first. Home “Latest recommendations” is the three newest with a rating above 4. Do not link a Goodreads profile.
@@ -220,14 +209,14 @@ To keep the add-on and add a book, copy `src/personal/bookshelf/content/reading/
 npm run reset-template
 ```
 
-This replaces work, study, project, photograph, portrait, and book entries with one or two files marked “Example — replace this”. It turns the blog flag on, leaves the bookshelf off, and removes the `PERSONAL_BOOKSHELF` line from `netlify.toml`. Run it on a clone, not against the published content, unless that replacement is what you want.
+This replaces work, study, project, blog, photography, portrait, and book entries with one or two files marked “Example — replace this”. It turns the blog flag on, leaves the bookshelf off, and removes the `PERSONAL_BOOKSHELF` line from `netlify.toml`. Run it on a clone, not against the published content, unless that replacement is what you want.
 
 ## Collections
 
-A single role, project, photograph, or book does not get a catalogue code. Its filename is the URL.
+A single role, project, or book does not get a catalogue code. Its filename is the URL. An album’s folder name is the URL.
 
 A catalogue code is only for a finished collection. Copy `src/content/collections/example-series.md`. The code looks like `F_02` or `W_014` and is a quiet mark. The URL stays the readable slug. `example-series.md` is not published.
 
 ## Feed
 
-Entries with a body and a `noteDate` are included in `/rss.xml` when their section is on. `/feed.xml` redirects there.
+Entries with a body and a `noteDate` are included in `/rss.xml` when their section is on. Published albums are included when `photos` is on. `/feed.xml` redirects there.

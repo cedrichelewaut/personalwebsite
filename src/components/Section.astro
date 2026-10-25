@@ -4,12 +4,13 @@ interface Props {
   title: string;
 }
 
-const { title } = Astro.props;
+const { num, title } = Astro.props;
 ---
 
 <div class="grid head">
-  <div class="head-copy span-all">
-    <h1 class="page-title">{title}</h1>
+  <p class="section-no">{num}</p>
+  <div class="head-copy">
+    <h1>{title}</h1>
     <slot />
   </div>
 </div>

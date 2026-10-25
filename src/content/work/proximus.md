@@ -6,10 +6,6 @@ end: "Aug. 2025"
 summary: "Rotated across strategy and product roles, focusing on security and AI."
 order: 2
 noteDate: 2023-09-01
-photos: []
-image:
-  src: /img/companies/pxs.jpg
-  alt: "A flock of birds in a dense shape above a line of bare trees, against a purple and blue sky."
 ---
 
 #### A Transformative Journey

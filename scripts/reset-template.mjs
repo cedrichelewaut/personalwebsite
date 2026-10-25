@@ -55,12 +55,21 @@ Example note. Replace this file.
 const post = (title, order) => `---
 title: "${title}"
 summary: "Example summary. Replace this entry."
-noteDate: 2026-01-0${order}
+noteDate: 2026-01-01
 order: ${order}
 draft: false
 ---
 
 Example note. Replace this file.
+`;
+
+const album = `---
+title: "Example album — replace this"
+date: 2026-01-01
+draft: true
+---
+
+Replace this note. Add photographs to this folder. They are picked up automatically.
 `;
 
 const book = (title, rating, read) => `---
@@ -72,13 +81,6 @@ draft: false
 ---
 `;
 
-const plate = (n) => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-  <rect width="1200" height="800" fill="#fafaf7"/>
-  <rect x="24" y="24" width="1152" height="752" fill="none" stroke="#151515"/>
-  <text x="600" y="400" text-anchor="middle" font-family="sans-serif" font-size="32" fill="#151515">Example plate ${n} — replace this</text>
-</svg>
-`;
-
 const portrait = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200">
   <rect width="800" height="1200" fill="#fafaf7"/>
   <rect x="24" y="24" width="752" height="1152" fill="none" stroke="#151515"/>
@@ -86,17 +88,13 @@ const portrait = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="12
 </svg>
 `;
 
-const photosPath = path.join(root, "src/data/photographs.json");
-if (existsSync(photosPath)) {
-  const photos = JSON.parse(readFileSync(photosPath, "utf8"));
-  for (const photo of photos) removePublic(photo.src);
-}
-
 removeMarkdown("src/content/work");
 removeMarkdown("src/content/study");
 removeMarkdown("src/content/projects");
-removeMarkdown("src/content/blog");
 removeMarkdown("src/personal/bookshelf/content/reading");
+rmSync(path.join(root, "src/content/articles"), { recursive: true, force: true });
+rmSync(path.join(root, "src/content/blog"), { recursive: true, force: true });
+rmSync(path.join(root, "src/content/photography"), { recursive: true, force: true });
 
 write("src/content/work/example-role.md", role("Example role — replace this", "Example organisation", 1));
 write("src/content/work/example-earlier-role.md", role("Example earlier role — replace this", "Example organisation", 2));
@@ -106,6 +104,7 @@ write("src/content/projects/example-project.md", project("Example project — re
 write("src/content/projects/example-second-project.md", project("Example second project — replace this", 2));
 write("src/content/blog/example-post.md", post("Example post — replace this", 1));
 write("src/content/blog/example-second-post.md", post("Example second post — replace this", 2));
+write("src/content/photography/example/index.md", album);
 write("src/personal/bookshelf/content/reading/example-book.md", book("Example book — replace this", 5, "2026-05-12"));
 write(
   "src/personal/bookshelf/content/reading/example-second-book.md",
@@ -124,47 +123,12 @@ Replace this file to change the book in progress.
 `,
 );
 
-write("public/img/example-plate-1.svg", plate(1));
-write("public/img/example-plate-2.svg", plate(2));
 write("public/img/example-portrait.svg", portrait);
 removePublic("/img/cedric-portrait.jpg");
-removePublic("/img/cedric.jpg");
-
-write(
-  "src/data/photographs.json",
-  `${JSON.stringify(
-    [
-      {
-        slug: "example-one",
-        title: "Example one — replace this",
-        src: "/img/example-plate-1.svg",
-        place: "Example",
-        date: "",
-        width: 1200,
-        height: 800,
-        alt: "Example plate. Replace this.",
-        note: "Example note. Replace this.",
-      },
-      {
-        slug: "example-two",
-        title: "Example two — replace this",
-        src: "/img/example-plate-2.svg",
-        place: "Example",
-        date: "",
-        width: 1200,
-        height: 800,
-        alt: "Example plate. Replace this.",
-        note: "",
-      },
-    ],
-    null,
-    2,
-  )}\n`,
-);
 
 const configPath = path.join(root, "src/site.config.ts");
 let config = readFileSync(configPath, "utf8");
-config = config.replace(/ogImage: "\/img\/cedric\.jpg"/, 'ogImage: "/img/example-portrait.svg"');
+config = config.replace(/ogImage: "\/img\/cedric-portrait\.jpg"/, 'ogImage: "/img/example-portrait.svg"');
 config = config.replace(
   /portrait:\s*\{[\s\S]*?\n  \},/,
   `portrait: {
@@ -174,8 +138,8 @@ config = config.replace(
     height: 1200,
   },`,
 );
-config = config.replace(/blog:\s*false/, "blog: true");
 config = config.replace(/bookshelf:\s*true/, "bookshelf: false");
+config = config.replace(/blog:\s*false/, "blog: true");
 writeFileSync(configPath, config);
 
 const netlifyPath = path.join(root, "netlify.toml");

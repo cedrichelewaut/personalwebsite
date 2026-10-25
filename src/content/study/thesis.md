@@ -6,10 +6,6 @@ end: "June 2023"
 summary: "Understanding user experience through physiological data."
 order: 1
 noteDate: 2023-06-30
-photos: []
-image:
-  src: /img/cities/munich.jpg
-  alt: "A round columned temple on a wooded rise. The file is named Munich."
 ---
 
 #### Research Overview

@@ -4,7 +4,6 @@ summary: "In progress — photos and write-up to follow."
 url: ""
 order: 1
 stub: true
-photos: []
 ---
 
 In progress — photos and write-up to follow.

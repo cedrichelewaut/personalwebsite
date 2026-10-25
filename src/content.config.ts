@@ -16,11 +16,6 @@ const figure = z
   })
   .optional();
 
-const plate = z.object({
-  src: z.string(),
-  alt: z.string(),
-});
-
 const noteDate = z.preprocess((value) => {
   if (value instanceof Date) {
     const year = value.getUTCFullYear();
@@ -45,8 +40,6 @@ const work = defineCollection({
     noteDate,
     figure,
     stub: z.boolean().default(false),
-    photos: z.array(plate).default([]),
-    image: plate.optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -63,8 +56,6 @@ const study = defineCollection({
     order: z.number(),
     noteDate,
     stub: z.boolean().default(false),
-    photos: z.array(plate).default([]),
-    image: plate.optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -85,8 +76,6 @@ const projects = defineCollection({
     start: z.string().optional(),
     end: z.string().optional(),
     stub: z.boolean().default(false),
-    photos: z.array(plate).default([]),
-    image: plate.optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -138,16 +127,22 @@ const series = defineCollection({
       title: z.string(),
       summary: z.string().default(""),
       code: z.string().regex(collectionCode, "A collection code looks like F_02, CV_01, or W_014."),
-      section: z.enum(["work", "study", "projects", "photographs", "reading"]),
-      photos: z.array(z.string()).optional(),
+      section: z.enum(["work", "study", "projects", "reading"]),
       order: z.number().default(0),
       noteDate,
       draft: z.boolean().default(false),
-    })
-    .refine((entry) => entry.section === "photographs" || !entry.photos?.length, {
-      message: "Only a photograph collection lists plates.",
     }),
 });
+
+const isoDate = z.preprocess((value) => {
+  if (value instanceof Date) {
+    const year = value.getUTCFullYear();
+    const month = String(value.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(value.getUTCDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  return value;
+}, z.string().regex(/^\d{4}-\d{2}-\d{2}$/));
 
 const blog = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/blog", generateId: fileId }),
@@ -160,4 +155,19 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { work, study, projects, reading, current, series, blog };
+const photography = defineCollection({
+  loader: glob({
+    pattern: "**/index.md",
+    base: "./src/content/photography",
+    generateId: ({ entry }) => entry.replace(/\/index\.md$/, "").replaceAll("\\", "/"),
+  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: isoDate,
+      cover: image().optional(),
+      draft: z.boolean().default(false),
+    }),
+});
+
+export const collections = { work, study, projects, reading, current, series, blog, photography };

@@ -6,10 +6,6 @@ end: "Aug. 2021"
 summary: "Gaining my first machine learning experience at a digital product studio."
 order: 4
 noteDate: 2021-09-01
-photos: []
-image:
-  src: /img/companies/itp.JPG
-  alt: "A group of people at a rooftop table, with city buildings behind them and red light across the right side of the frame."
 ---
 
 #### Summer 2021 Internship

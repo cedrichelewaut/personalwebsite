@@ -23,12 +23,12 @@ const current = await loadCurrent();
 ---
 
 <Base
-  title="Readings"
+  title="Bookshelf"
   page="reading"
   current="reading"
   description="The book Cedric is reading now, and the books he has read and rated 3 or higher."
 >
-  <Section num="05" title="Readings" />
+  <Section num="05" title="Bookshelf" />
   <CollectionIndex section="reading" reserved={all.map((entry) => entry.id)} />
   <NowReading
     title={current.data.title}

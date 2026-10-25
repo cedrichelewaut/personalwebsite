@@ -4,10 +4,10 @@ export type SectionFlags = {
   study: boolean;
   projects: boolean;
   photos: boolean;
-  blog: boolean;
   contact: boolean;
   running: boolean;
   bookshelf: boolean;
+  blog: boolean;
 };
 
 export type SectionKey = keyof SectionFlags;
@@ -35,42 +35,30 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
   work: {
     id: "work",
     label: "Work",
-    href: "/work/",
-    routes: [
-      { pattern: "/work", entry: "./src/sections/work/index.astro" },
-      { pattern: "/work/[slug]", entry: "./src/sections/work/[slug].astro" },
-    ],
+    href: "/#work",
+    routes: [{ pattern: "/work/[slug]", entry: "./src/sections/work/[slug].astro" }],
   },
   study: {
     id: "study",
     label: "Study",
-    href: "/study/",
-    routes: [
-      { pattern: "/study", entry: "./src/sections/study/index.astro" },
-      { pattern: "/study/[slug]", entry: "./src/sections/study/[slug].astro" },
-    ],
+    href: "/#study",
+    routes: [{ pattern: "/study/[slug]", entry: "./src/sections/study/[slug].astro" }],
   },
   projects: {
     id: "projects",
     label: "Projects",
-    href: "/projects/",
-    routes: [
-      { pattern: "/projects", entry: "./src/sections/projects/index.astro" },
-      { pattern: "/projects/[slug]", entry: "./src/sections/projects/[slug].astro" },
-    ],
+    href: "/#projects",
+    routes: [{ pattern: "/projects/[slug]", entry: "./src/sections/projects/[slug].astro" }],
   },
   photos: {
-    id: "photographs",
+    id: "photography",
     label: "Photography",
-    href: "/photographs/",
-    routes: [
-      { pattern: "/photographs", entry: "./src/sections/photographs/index.astro" },
-      { pattern: "/photographs/[slug]", entry: "./src/sections/photographs/[slug].astro" },
-    ],
+    href: "/#photography",
+    routes: [{ pattern: "/photography/[slug]", entry: "./src/sections/photography/[slug].astro" }],
   },
   bookshelf: {
     id: "reading",
-    label: "Readings",
+    label: "Reading",
     href: "/reading/",
     routes: [
       { pattern: "/reading", entry: "./src/personal/bookshelf/pages/index.astro" },
@@ -83,20 +71,16 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
     href: "/running/",
     routes: [{ pattern: "/running", entry: "./src/sections/running/index.astro" }],
   },
-  blog: {
-    id: "blog",
-    label: "Blog",
-    href: "/blog/",
-    routes: [
-      { pattern: "/blog", entry: "./src/sections/blog/index.astro" },
-      { pattern: "/blog/[slug]", entry: "./src/sections/blog/[slug].astro" },
-    ],
-  },
   contact: {
     id: "contact",
     label: "Contact",
-    href: "/contact/",
-    routes: [{ pattern: "/contact", entry: "./src/sections/contact/index.astro" }],
+    href: "/#contact",
+  },
+  blog: {
+    id: "blog",
+    label: "Blog",
+    href: "/#blog",
+    routes: [{ pattern: "/blog/[slug]", entry: "./src/sections/blog/[slug].astro" }],
   },
 };
 
@@ -125,12 +109,6 @@ export function resolveSections(defaults: SectionFlags, env: NodeJS.ProcessEnv =
 
 export function routesFor(sections: SectionFlags): SectionRoute[] {
   const routes: SectionRoute[] = [];
-  if (groupOn(sections, experienceKeys)) {
-    routes.push({ pattern: "/experience", entry: "./src/sections/experience/index.astro" });
-  }
-  if (groupOn(sections, personalKeys)) {
-    routes.push({ pattern: "/personal-projects", entry: "./src/sections/personal/index.astro" });
-  }
   for (const key of Object.keys(sections) as SectionKey[]) {
     if (!sections[key]) continue;
     const meta = sectionMeta[key];
@@ -143,13 +121,13 @@ export function routesFor(sections: SectionFlags): SectionRoute[] {
 export function navModel(sections: SectionFlags) {
   const navItems: NavItem[] = [{ href: "/", id: "home", label: "Home" }];
   if (groupOn(sections, experienceKeys)) {
-    navItems.push({ href: "/experience/", id: "experience", label: "Experience" });
+    navItems.push({ href: "/#experience", id: "experience", label: "Experience" });
   }
   if (groupOn(sections, personalKeys)) {
-    navItems.push({ href: "/personal-projects/", id: "personal", label: "Projects" });
+    navItems.push({ href: "/#personal-projects", id: "personal", label: "Personal Projects" });
   }
   if (sections.contact) {
-    navItems.push({ href: "/contact/", id: "contact", label: "Contact" });
+    navItems.push({ href: "/#contact", id: "contact", label: "Contact" });
   }
   return { navItems };
 }
