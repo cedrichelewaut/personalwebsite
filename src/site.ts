@@ -20,4 +20,4 @@ export const site = {
   sections,
 };
 
-export const { navGroups, navContact } = navModel(sections);
+export const { navItems } = navModel(sections);
