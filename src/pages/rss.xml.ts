@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { site } from "../data/site";
+import { site, sections } from "../site";
 import { hasNote, isLive } from "../lib/content";
 import { loadSeries } from "../lib/series";
 
@@ -20,60 +20,121 @@ interface FeedItem {
 }
 
 export const GET: APIRoute = async () => {
-  const [work, study, projects, reading, ...sets] = await Promise.all([
+  const [work, study, projects, reading, posts, ...sets] = await Promise.all([
     getCollection("work"),
     getCollection("study"),
     getCollection("projects"),
     getCollection("reading"),
+    getCollection("blog"),
     loadSeries("work"),
     loadSeries("study"),
     loadSeries("projects"),
     loadSeries("photographs"),
     loadSeries("reading"),
   ]);
-  const series = sets.flat();
+  const [workSets, studySets, projectSets, photoSets, readingSets] = sets;
 
   const items: FeedItem[] = [
-    ...work
-      .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/work/${entry.id}/`,
-        summary: entry.data.summary,
-        date: entry.data.noteDate as string,
-      })),
-    ...study
-      .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/study/${entry.id}/`,
-        summary: entry.data.summary,
-        date: entry.data.noteDate as string,
-      })),
-    ...projects
-      .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/projects/${entry.id}/`,
-        summary: entry.data.summary,
-        date: entry.data.noteDate as string,
-      })),
-    ...reading
-      .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/reading/${entry.id}/`,
-        summary: entry.data.summary || entry.data.title,
-        date: entry.data.noteDate as string,
-      })),
-    ...series
-      .filter((entry) => hasNote(entry) && entry.data.noteDate)
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/${entry.data.section}/${entry.id}/`,
-        summary: entry.data.summary,
-        date: entry.data.noteDate as string,
-      })),
+    ...(sections.work
+      ? work
+          .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/work/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.study
+      ? study
+          .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/study/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.projects
+      ? projects
+          .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/projects/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.bookshelf
+      ? reading
+          .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/reading/${entry.id}/`,
+            summary: entry.data.summary || entry.data.title,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.blog
+      ? posts
+          .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/blog/${entry.id}/`,
+            summary: entry.data.summary || entry.data.title,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.work
+      ? workSets
+          .filter((entry) => hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/work/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.study
+      ? studySets
+          .filter((entry) => hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/study/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.projects
+      ? projectSets
+          .filter((entry) => hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/projects/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.photos
+      ? photoSets
+          .filter((entry) => hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/photographs/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.bookshelf
+      ? readingSets
+          .filter((entry) => hasNote(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/reading/${entry.id}/`,
+            summary: entry.data.summary,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
   ].sort((a, b) => (a.date < b.date ? 1 : -1));
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

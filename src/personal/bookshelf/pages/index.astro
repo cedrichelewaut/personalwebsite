@@ -1,14 +1,14 @@
 ---
 import { getCollection } from "astro:content";
-import Base from "../../layouts/Base.astro";
-import Section from "../../components/Section.astro";
-import Bookshelf from "../../components/Bookshelf.astro";
-import NowReading from "../../components/NowReading.astro";
-import CollectionIndex from "../../components/CollectionIndex.astro";
-import { isLive } from "../../lib/content";
-import { loadCurrent } from "../../lib/current";
-import { readSortKey } from "../../lib/dates";
-import { assertReadableSlug } from "../../lib/slugs";
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Bookshelf from "../components/Bookshelf.astro";
+import NowReading from "../components/NowReading.astro";
+import CollectionIndex from "../../../components/CollectionIndex.astro";
+import { isLive } from "../../../lib/content";
+import { loadCurrent } from "../current";
+import { readSortKey } from "../../../lib/dates";
+import { assertReadableSlug } from "../../../lib/slugs";
 
 const all = await getCollection("reading");
 for (const entry of all) assertReadableSlug(entry.id, "Books");

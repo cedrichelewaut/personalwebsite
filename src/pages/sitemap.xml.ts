@@ -1,17 +1,18 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { site } from "../data/site";
+import { site, sections } from "../site";
 import photos from "../data/photographs.json";
 import { hasNote, isLive } from "../lib/content";
 import { loadSeries } from "../lib/series";
 
 export const GET: APIRoute = async () => {
-  const [work, study, projects, reading, workSets, studySets, projectSets, photoSets, readingSets] =
+  const [work, study, projects, reading, posts, workSets, studySets, projectSets, photoSets, readingSets] =
     await Promise.all([
       getCollection("work"),
       getCollection("study"),
       getCollection("projects"),
       getCollection("reading"),
+      getCollection("blog"),
       loadSeries("work"),
       loadSeries("study"),
       loadSeries("projects"),
@@ -21,23 +22,31 @@ export const GET: APIRoute = async () => {
 
   const paths = [
     "/",
-    "/work/",
-    "/study/",
-    "/projects/",
-    "/photographs/",
-    "/reading/",
-    "/running/",
-    "/contact/",
-    ...work.filter(isLive).map((entry) => `/work/${entry.id}/`),
-    ...study.filter(isLive).map((entry) => `/study/${entry.id}/`),
-    ...projects.filter(isLive).map((entry) => `/projects/${entry.id}/`),
-    ...reading.filter((entry) => isLive(entry) && hasNote(entry)).map((entry) => `/reading/${entry.id}/`),
-    ...photos.map((photo) => `/photographs/${photo.slug}/`),
-    ...workSets.map((entry) => `/work/${entry.id}/`),
-    ...studySets.map((entry) => `/study/${entry.id}/`),
-    ...projectSets.map((entry) => `/projects/${entry.id}/`),
-    ...photoSets.map((entry) => `/photographs/${entry.id}/`),
-    ...readingSets.map((entry) => `/reading/${entry.id}/`),
+    ...(sections.work || sections.study ? ["/experience/"] : []),
+    ...(sections.projects || sections.photos || sections.bookshelf || sections.running || sections.blog
+      ? ["/personal-projects/"]
+      : []),
+    ...(sections.work ? ["/work/"] : []),
+    ...(sections.study ? ["/study/"] : []),
+    ...(sections.projects ? ["/projects/"] : []),
+    ...(sections.photos ? ["/photographs/"] : []),
+    ...(sections.bookshelf ? ["/reading/"] : []),
+    ...(sections.running ? ["/running/"] : []),
+    ...(sections.contact ? ["/contact/"] : []),
+    ...(sections.blog ? ["/blog/"] : []),
+    ...(sections.work ? work.filter(isLive).map((entry) => `/work/${entry.id}/`) : []),
+    ...(sections.study ? study.filter(isLive).map((entry) => `/study/${entry.id}/`) : []),
+    ...(sections.projects ? projects.filter(isLive).map((entry) => `/projects/${entry.id}/`) : []),
+    ...(sections.bookshelf
+      ? reading.filter((entry) => isLive(entry) && hasNote(entry)).map((entry) => `/reading/${entry.id}/`)
+      : []),
+    ...(sections.photos ? photos.map((photo) => `/photographs/${photo.slug}/`) : []),
+    ...(sections.blog ? posts.filter(isLive).map((entry) => `/blog/${entry.id}/`) : []),
+    ...(sections.work ? workSets.map((entry) => `/work/${entry.id}/`) : []),
+    ...(sections.study ? studySets.map((entry) => `/study/${entry.id}/`) : []),
+    ...(sections.projects ? projectSets.map((entry) => `/projects/${entry.id}/`) : []),
+    ...(sections.photos ? photoSets.map((entry) => `/photographs/${entry.id}/`) : []),
+    ...(sections.bookshelf ? readingSets.map((entry) => `/reading/${entry.id}/`) : []),
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

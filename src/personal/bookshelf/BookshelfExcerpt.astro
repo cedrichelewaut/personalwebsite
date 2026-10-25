@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import BookPoster from "./components/BookPoster.astro";
+import NowReading from "./components/NowReading.astro";
+import { isLive } from "../../lib/content";
+import { readSortKey } from "../../lib/dates";
+import { loadCurrent } from "./current";
+
+const books = (await getCollection("reading"))
+  .filter((entry) => isLive(entry) && (entry.data.rating ?? 0) > 4)
+  .sort((a, b) => readSortKey(b.data.read) - readSortKey(a.data.read) || a.data.title.localeCompare(b.data.title))
+  .slice(0, 3);
+const current = await loadCurrent();
+---
+
+<section class="digest" aria-labelledby="home-reading">
+  <h3 class="digest-title" id="home-reading">
+    <a href="/reading/">Reading</a>
+  </h3>
+  <NowReading
+    level="h3"
+    title={current.data.title}
+    author={current.data.author}
+    edition={current.data.edition}
+    url={current.data.url}
+    lang={current.data.lang}
+  />
+  <h3 class="excerpt-label">Latest recommendations</h3>
+  <BookPoster books={books} />
+</section>

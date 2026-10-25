@@ -1,12 +1,12 @@
 ---
 import { existsSync } from "node:fs";
 import path from "node:path";
-import Base from "../layouts/Base.astro";
-import Section from "../components/Section.astro";
-import CollectionIndex from "../components/CollectionIndex.astro";
-import photos from "../data/photographs.json";
-import { figCaption } from "../lib/figures";
-import { assertReadableSlug } from "../lib/slugs";
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import CollectionIndex from "../../components/CollectionIndex.astro";
+import photos from "../../data/photographs.json";
+import { figCaption } from "../../lib/figures";
+import { assertReadableSlug } from "../../lib/slugs";
 
 const seen = new Set<string>();
 for (const photo of photos) {

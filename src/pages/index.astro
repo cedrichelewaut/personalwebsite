@@ -2,111 +2,142 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import TitleList from "../components/TitleList.astro";
-import BookPoster from "../components/BookPoster.astro";
-import NowReading from "../components/NowReading.astro";
-import { site } from "../data/site";
+import { site, sections } from "../site";
+import { sectionMeta } from "../site.sections";
 import photos from "../data/photographs.json";
 import { byOrder, isLive } from "../lib/content";
-import { loadCurrent } from "../lib/current";
-import { readSortKey } from "../lib/dates";
 import { figCaption } from "../lib/figures";
-
-const intro =
-  "I’m Cedric, a Ghent-based engineer passionate about building products and taking them to market. I love working on innovation, especially around security and sustainability.";
 
 const latestCount = 3;
 
-const work = byOrder((await getCollection("work")).filter(isLive)).slice(0, latestCount);
-const study = byOrder((await getCollection("study")).filter(isLive)).slice(0, latestCount);
-const projects = byOrder((await getCollection("projects")).filter(isLive)).slice(0, latestCount);
+const work = sections.work ? byOrder((await getCollection("work")).filter(isLive)).slice(0, latestCount) : [];
+const study = sections.study ? byOrder((await getCollection("study")).filter(isLive)).slice(0, latestCount) : [];
+const projects = sections.projects
+  ? byOrder((await getCollection("projects")).filter(isLive)).slice(0, latestCount)
+  : [];
+const posts = sections.blog ? byOrder((await getCollection("blog")).filter(isLive)).slice(0, latestCount) : [];
 
-const books = (await getCollection("reading"))
-  .filter((entry) => isLive(entry) && (entry.data.rating ?? 0) > 4)
-  .sort((a, b) => readSortKey(b.data.read) - readSortKey(a.data.read) || a.data.title.localeCompare(b.data.title))
-  .slice(0, latestCount);
-const current = await loadCurrent();
+const BookshelfExcerpt = sections.bookshelf
+  ? (await import("../personal/bookshelf/BookshelfExcerpt.astro")).default
+  : null;
 
-const plates = photos.slice(0, latestCount).map((photo, index) => ({
-  ...photo,
-  caption: figCaption(index + 1, photo.place, photo.date),
-}));
+const plates = sections.photos
+  ? photos.slice(0, latestCount).map((photo, index) => ({
+      ...photo,
+      caption: figCaption(index + 1, photo.place, photo.date),
+    }))
+  : [];
+
+const showExperience = sections.work || sections.study;
+const showPersonal = sections.projects || sections.photos || sections.bookshelf || sections.running || sections.blog;
 ---
 
-<Base title={site.name} page="home" current="index" description={intro}>
-  <header slot="lead" class="intro" id="intro">
-    <div class="intro-photo">
-      <img src="/img/cedric-portrait.jpg" alt="Portrait of Cedric Helewaut" width="800" height="1200" loading="eager" decoding="async" />
-    </div>
-    <div class="intro-text">
-      <h1 class="intro-title"><span class="hl">{site.name}</span></h1>
-      <p class="intro-copy"><span class="hl">{intro}</span></p>
-      <p class="intro-contact"><a class="hl" href="/contact/">Get in touch →</a></p>
-    </div>
-  </header>
+<Base title={site.name} page="home" current="index" description={sections.intro ? site.intro : site.description}>
+  {
+    sections.intro && (
+      <header slot="lead" class="intro" id="intro">
+        <div class="intro-photo">
+          <img
+            src={site.portrait.src}
+            alt={site.portrait.alt}
+            width={site.portrait.width}
+            height={site.portrait.height}
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <div class="intro-text">
+          <h1 class="intro-title">
+            <span class="hl">{site.name}</span>
+          </h1>
+          <p class="intro-copy">
+            <span class="hl">{site.intro}</span>
+          </p>
+          {sections.contact && (
+            <p class="intro-contact">
+              <a class="hl" href={site.contactLink.href}>
+                {site.contactLink.label}
+              </a>
+            </p>
+          )}
+        </div>
+      </header>
+    )
+  }
 
-  <section class="home-group" aria-labelledby="home-experience">
-    <h2 class="home-group-title" id="home-experience">Experience</h2>
-    <section class="digest" aria-labelledby="home-work">
-      <h3 class="digest-title" id="home-work">
-        <a href="/work/">Work</a>
-      </h3>
-      <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
-    </section>
+  {
+    showExperience && (
+      <section class="home-group" aria-labelledby="home-experience">
+        <h2 class="home-group-title" id="home-experience">
+          Experience
+        </h2>
+        {sections.work && (
+          <section class="digest" aria-labelledby="home-work">
+            <h3 class="digest-title" id="home-work">
+              <a href={sectionMeta.work.href}>{sectionMeta.work.label}</a>
+            </h3>
+            <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
+          </section>
+        )}
+        {sections.study && (
+          <section class="digest" aria-labelledby="home-study">
+            <h3 class="digest-title" id="home-study">
+              <a href={sectionMeta.study.href}>{sectionMeta.study.label}</a>
+            </h3>
+            <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
+          </section>
+        )}
+      </section>
+    )
+  }
 
-    <section class="digest" aria-labelledby="home-study">
-      <h3 class="digest-title" id="home-study">
-        <a href="/study/">Study</a>
-      </h3>
-      <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
-    </section>
-  </section>
-
-  <section class="home-group" aria-labelledby="home-personal">
-    <h2 class="home-group-title" id="home-personal">Personal Projects</h2>
-    <section class="digest" aria-labelledby="home-projects">
-      <h3 class="digest-title" id="home-projects">
-        <a href="/projects/">Projects</a>
-      </h3>
-      <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
-    </section>
-
-    <section class="digest" aria-labelledby="home-photographs">
-      <h3 class="digest-title" id="home-photographs">
-        <a href="/photographs/">Photographs</a>
-      </h3>
-      <div class="grid thumbs">
-        {
-          plates.map((photo) => (
-            <a class="thumb" href={`/photographs/${photo.slug}/`}>
-              <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
-              <span class="thumb-label">{photo.caption}</span>
-            </a>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="digest" aria-labelledby="home-reading">
-      <h3 class="digest-title" id="home-reading">
-        <a href="/reading/">Reading</a>
-      </h3>
-    <NowReading
-      level="h3"
-      title={current.data.title}
-      author={current.data.author}
-      edition={current.data.edition}
-      url={current.data.url}
-      lang={current.data.lang}
-    />
-    <h3 class="excerpt-label">Latest recommendations</h3>
-    <BookPoster books={books} />
-    </section>
-
-    <section class="digest" aria-labelledby="home-running">
-      <h3 class="digest-title" id="home-running">
-        <a href="/running/">Running</a>
-      </h3>
-      <p class="lede">Currently training for Hamburg Marathon 2027. Progress so far:</p>
-    </section>
-  </section>
+  {
+    showPersonal && (
+      <section class="home-group" aria-labelledby="home-personal">
+        <h2 class="home-group-title" id="home-personal">
+          Personal Projects
+        </h2>
+        {sections.projects && (
+          <section class="digest" aria-labelledby="home-projects">
+            <h3 class="digest-title" id="home-projects">
+              <a href={sectionMeta.projects.href}>{sectionMeta.projects.label}</a>
+            </h3>
+            <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
+          </section>
+        )}
+        {sections.photos && (
+          <section class="digest" aria-labelledby="home-photographs">
+            <h3 class="digest-title" id="home-photographs">
+              <a href={sectionMeta.photos.href}>{sectionMeta.photos.label}</a>
+            </h3>
+            <div class="grid thumbs">
+              {plates.map((photo) => (
+                <a class="thumb" href={`/photographs/${photo.slug}/`}>
+                  <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
+                  <span class="thumb-label">{photo.caption}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+        {BookshelfExcerpt && <BookshelfExcerpt />}
+        {sections.running && (
+          <section class="digest" aria-labelledby="home-running">
+            <h3 class="digest-title" id="home-running">
+              <a href={sectionMeta.running.href}>{sectionMeta.running.label}</a>
+            </h3>
+            <p class="lede">Currently training for Hamburg Marathon 2027. Progress so far:</p>
+          </section>
+        )}
+        {sections.blog && (
+          <section class="digest" aria-labelledby="home-blog">
+            <h3 class="digest-title" id="home-blog">
+              <a href={sectionMeta.blog.href}>{sectionMeta.blog.label}</a>
+            </h3>
+            <TitleList items={posts.map((entry) => ({ href: `/blog/${entry.id}/`, title: entry.data.title }))} />
+          </section>
+        )}
+      </section>
+    )
+  }
 </Base>

@@ -1,5 +1,5 @@
 ---
-import { navContact, navGroups } from "../data/site";
+import { navItems } from "../site";
 
 interface Props {
   current: string;
@@ -7,33 +7,35 @@ interface Props {
 }
 
 const { current, narrow = false } = Astro.props;
-const prefix = narrow ? "nav-narrow" : "nav";
+
+const active: Record<string, string> = {
+  index: "home",
+  home: "home",
+  experience: "experience",
+  work: "experience",
+  study: "experience",
+  personal: "personal",
+  projects: "personal",
+  photographs: "personal",
+  reading: "personal",
+  running: "personal",
+  blog: "personal",
+  contact: "contact",
+};
+
+const here = active[current] ?? current;
 ---
 
 <nav class:list={["site-nav", narrow && "site-nav-narrow"]} aria-label="Sections">
-  <ul class="nav-groups">
+  <ul class="nav-links">
     {
-      navGroups.map((group) => (
-        <li class="nav-group">
-          <span class="nav-label" id={`${prefix}-${group.id}`}>
-            {group.label}
-          </span>
-          <ul class="nav-sub" aria-labelledby={`${prefix}-${group.id}`}>
-            {group.items.map((item) => (
-              <li>
-                <a href={item.href} aria-current={item.id === current ? "page" : undefined}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+      navItems.map((item) => (
+        <li>
+          <a href={item.href} aria-current={item.id === here ? "page" : undefined}>
+            {item.label}
+          </a>
         </li>
       ))
     }
-    <li class="nav-contact">
-      <a href={navContact.href} aria-current={navContact.id === current ? "page" : undefined}>
-        {navContact.label}
-      </a>
-    </li>
   </ul>
 </nav>
