@@ -12,4 +12,4 @@ order: 0
 draft: true
 ---
 
-Replace this note. Plates, if this is a photograph collection, are listed as `photos` slugs in the front matter.
+Replace this note.

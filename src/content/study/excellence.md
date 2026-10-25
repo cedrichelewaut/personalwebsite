@@ -6,10 +6,6 @@ end: "June 2022"
 summary: "Analyzed racial bias in AI-based facial recognition systems."
 order: 4
 noteDate: 2022-06-01
-photos: []
-image:
-  src: /img/cities/prague.jpg
-  alt: "A winged figure on a tall column against the sky. The file is named Prague."
 ---
 
 #### Innovation for Society Program

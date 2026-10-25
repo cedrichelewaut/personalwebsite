@@ -929,6 +929,44 @@ a.poster-title:hover {
   line-height: 1.45;
 }
 
+.article-cards {
+  list-style: none;
+  margin: 1.15rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.article-card a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.article-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.article-card-title {
+  font-family: "Aileron", Helvetica, Arial, sans-serif;
+  font-size: var(--body);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.article-card-date {
+  color: var(--grey);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.4;
+}
+
 .article-meta {
   margin-top: 0.85rem;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -1360,6 +1398,10 @@ footer {
 
   .place {
     justify-self: start;
+  }
+
+  .article-cards {
+    grid-template-columns: 1fr;
   }
 
   .nav-links {

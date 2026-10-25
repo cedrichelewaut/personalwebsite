@@ -3,8 +3,6 @@ type SiteSections = {
   work: boolean;
   study: boolean;
   projects: boolean;
-  photos: boolean;
-  blog: boolean;
   contact: boolean;
   running: boolean;
   bookshelf: boolean;

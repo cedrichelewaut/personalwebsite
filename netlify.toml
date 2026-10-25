@@ -116,13 +116,37 @@
 
 [[redirects]]
   from = "/blog"
-  to = "/#blog"
+  to = "/articles/"
   status = 301
   force = true
 
 [[redirects]]
   from = "/blog/"
-  to = "/#blog"
+  to = "/articles/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/articles/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/photographs"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/photographs/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/photographs/*"
+  to = "/"
   status = 301
   force = true
 

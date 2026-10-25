@@ -3,40 +3,33 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import TitleList from "../components/TitleList.astro";
 import CollectionIndex from "../components/CollectionIndex.astro";
+import ArticleCards from "../components/ArticleCards.astro";
 import { site, sections } from "../site";
 import { sectionMeta } from "../site.sections";
-import photos from "../data/photographs.json";
+import { byArticleDate } from "../lib/articles";
 import { byOrder, isLive } from "../lib/content";
-import { figCaption } from "../lib/figures";
 import { assertReadableSlug } from "../lib/slugs";
 
 const workAll = sections.work ? await getCollection("work") : [];
 const studyAll = sections.study ? await getCollection("study") : [];
 const projectAll = sections.projects ? await getCollection("projects") : [];
-const postAll = sections.blog ? await getCollection("blog") : [];
+const articleAll = await getCollection("articles");
 for (const entry of workAll) assertReadableSlug(entry.id, "Roles");
 for (const entry of studyAll) assertReadableSlug(entry.id, "Study");
 for (const entry of projectAll) assertReadableSlug(entry.id, "Projects");
-for (const entry of postAll) assertReadableSlug(entry.id, "Posts");
+for (const entry of articleAll) assertReadableSlug(entry.id, "Articles");
 
 const work = byOrder(workAll.filter(isLive));
 const study = byOrder(studyAll.filter(isLive));
 const projects = byOrder(projectAll.filter(isLive));
-const posts = byOrder(postAll.filter(isLive));
+const latestArticles = byArticleDate(articleAll.filter(isLive)).slice(0, 3);
 
 const BookshelfExcerpt = sections.bookshelf
   ? (await import("../personal/bookshelf/BookshelfExcerpt.astro")).default
   : null;
 
-const plates = sections.photos
-  ? photos.map((photo, index) => ({
-      ...photo,
-      caption: figCaption(index + 1, photo.place, photo.date),
-    }))
-  : [];
-
 const showExperience = sections.work || sections.study;
-const showPersonal = sections.projects || sections.photos || sections.bookshelf || sections.running || sections.blog;
+const showPersonal = sections.projects || sections.bookshelf || sections.running;
 ---
 
 <Base title={site.name} page="home" current="index" description={sections.intro ? site.intro : site.description}>
@@ -69,6 +62,20 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
           )}
         </div>
       </header>
+    )
+  }
+
+  {
+    latestArticles.length > 0 && (
+      <section class="home-group" id="articles" aria-labelledby="articles-title">
+        <h2 class="digest-title" id="articles-title">
+          <a href="/articles/">Articles</a>
+        </h2>
+        <ArticleCards articles={latestArticles} />
+        <p class="lede">
+          <a href="/articles/">All articles</a>
+        </p>
+      </section>
     )
   }
 
@@ -115,21 +122,6 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
             <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
-        {sections.photos && (
-          <section class="digest" id="photographs" aria-labelledby="photographs-title">
-            <h3 class="digest-title" id="photographs-title">
-              <a href={sectionMeta.photos.href}>{sectionMeta.photos.label}</a>
-            </h3>
-            <div class="grid thumbs">
-              {plates.map((photo) => (
-                <a class="thumb" href={`/photographs/${photo.slug}/`}>
-                  <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
-                  <span class="thumb-label">{photo.caption}</span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
         {BookshelfExcerpt && <BookshelfExcerpt />}
         {sections.running && (
           <section class="digest" id="running" aria-labelledby="running-title">
@@ -137,14 +129,6 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
               <a href={sectionMeta.running.href}>{sectionMeta.running.label}</a>
             </h3>
             <p class="lede">Currently training for Hamburg Marathon 2027. Progress so far:</p>
-          </section>
-        )}
-        {sections.blog && (
-          <section class="digest" id="blog" aria-labelledby="blog-title">
-            <h3 class="digest-title" id="blog-title">
-              {sectionMeta.blog.label}
-            </h3>
-            <TitleList items={posts.map((entry) => ({ href: `/blog/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
       </section>

@@ -20,19 +20,18 @@ interface FeedItem {
 }
 
 export const GET: APIRoute = async () => {
-  const [work, study, projects, reading, posts, ...sets] = await Promise.all([
+  const [work, study, projects, reading, articles, ...sets] = await Promise.all([
     getCollection("work"),
     getCollection("study"),
     getCollection("projects"),
     getCollection("reading"),
-    getCollection("blog"),
+    getCollection("articles"),
     loadSeries("work"),
     loadSeries("study"),
     loadSeries("projects"),
-    loadSeries("photographs"),
     loadSeries("reading"),
   ]);
-  const [workSets, studySets, projectSets, photoSets, readingSets] = sets;
+  const [workSets, studySets, projectSets, readingSets] = sets;
 
   const items: FeedItem[] = [
     ...(sections.work
@@ -75,16 +74,14 @@ export const GET: APIRoute = async () => {
             date: entry.data.noteDate as string,
           }))
       : []),
-    ...(sections.blog
-      ? posts
-          .filter((entry) => isLive(entry) && hasNote(entry) && entry.data.noteDate)
-          .map((entry) => ({
-            title: entry.data.title,
-            path: `/blog/${entry.id}/`,
-            summary: entry.data.summary || entry.data.title,
-            date: entry.data.noteDate as string,
-          }))
-      : []),
+    ...articles
+      .filter((entry) => isLive(entry))
+      .map((entry) => ({
+        title: entry.data.title,
+        path: `/articles/${entry.id}/`,
+        summary: entry.data.summary || entry.data.title,
+        date: entry.data.date,
+      })),
     ...(sections.work
       ? workSets
           .filter((entry) => hasNote(entry) && entry.data.noteDate)
@@ -111,16 +108,6 @@ export const GET: APIRoute = async () => {
           .map((entry) => ({
             title: entry.data.title,
             path: `/projects/${entry.id}/`,
-            summary: entry.data.summary,
-            date: entry.data.noteDate as string,
-          }))
-      : []),
-    ...(sections.photos
-      ? photoSets
-          .filter((entry) => hasNote(entry) && entry.data.noteDate)
-          .map((entry) => ({
-            title: entry.data.title,
-            path: `/photographs/${entry.id}/`,
             summary: entry.data.summary,
             date: entry.data.noteDate as string,
           }))

@@ -53,8 +53,6 @@ const dates =
       kickerHref={sectionMeta.projects.href}
       kicker="projects"
       meta={dates ? [dates] : []}
-      image={entry.data.image}
-      photos={entry.data.photos}
       link={link}
     >
       {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}

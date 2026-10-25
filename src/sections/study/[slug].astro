@@ -50,8 +50,6 @@ const { newer, older } = entry ? neighbours(items, entry.id) : { newer: undefine
       kickerHref={sectionMeta.study.href}
       kicker="study"
       meta={[formatRange(entry.data.start, entry.data.end)]}
-      image={entry.data.image}
-      photos={entry.data.photos}
     >
       {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}
       <Pager

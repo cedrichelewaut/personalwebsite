@@ -54,21 +54,19 @@ Everything that names the owner lives in `src/site.config.ts`.
 | `work` | on | Work list on the home page (`/#work`) and each `/work/…/` article |
 | `study` | on | Study list on the home page (`/#study`) and each `/study/…/` article |
 | `projects` | on | Projects list on the home page (`/#projects`) and each `/projects/…/` article |
-| `photos` | on | Every photograph on the home page, the gallery at `/photographs/`, and each plate |
-| `blog` | off | Blog list on the home page (`/#blog`) and each `/blog/…/` post |
 | `contact` | on | Contact form on the home page (`/#contact`) and the intro contact link |
 | `running` | on | Running note on the home page and the marathon page at `/running/` |
 | `bookshelf` | off | Home reading block and the full list at `/reading/` |
 
-The site has two levels. The home page is the only overview. Detail pages are the articles, posts, photograph plates, book notes, the full photograph gallery, the bookshelf, and the marathon page.
+The site has two levels. The home page is the only overview. Detail pages are the role, study, and project notes, the articles at `/articles/…/`, book notes, the bookshelf, and the marathon page.
 
 The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left. Home is `/`. Experience is `/#experience`. Personal Projects is `/#personal-projects`. Contact is `/#contact`.
 
-Experience on the home page lists Work and Study when those sections are on. Personal Projects lists Projects, Photographs, Reading, Running, and Blog for the sections that are on. Turning a section off removes that block from the home page and does not generate its detail pages. `/photographs/`, `/reading/`, and `/running/` stay as their own pages. If every section in a group is off, that header link is omitted too.
+Experience on the home page lists Work and Study when those sections are on. Personal Projects lists Projects, Reading, and Running for the sections that are on. The home page also shows the three newest articles and links to the full list at `/articles/`. Turning a section off removes that block from the home page and does not generate its detail pages. `/reading/` and `/running/` stay as their own pages. If every section in a group is off, that header link is omitted too.
 
-Old overview URLs redirect to the matching home anchor. `/experience/` goes to `/#experience`, `/personal-projects/` to `/#personal-projects`, `/contact/` to `/#contact`, `/work/` to `/#work`, `/study/` to `/#study`, `/projects/` to `/#projects`, and `/blog/` to `/#blog`. Each rule is also listed without the trailing slash. `/about` and `/about.html` go to `/#work` in one hop, and `/contact.html` goes to `/#contact`. Article URLs such as `/work/pxg/` are unchanged. Those rules use `force` so the article directories do not shadow `/work/`, `/study/`, `/projects/`, or `/blog/`. The rules are in `netlify.toml`.
+Old overview URLs redirect to the matching home anchor. `/experience/` goes to `/#experience`, `/personal-projects/` to `/#personal-projects`, `/contact/` to `/#contact`, `/work/` to `/#work`, `/study/` to `/#study`, and `/projects/` to `/#projects`. Each rule is also listed without the trailing slash. `/about` and `/about.html` go to `/#work` in one hop, and `/contact.html` goes to `/#contact`. Role, study, and project URLs such as `/work/pxg/` are unchanged. `/blog/` and `/blog/…/` go to `/articles/`. `/photographs` and `/photographs/…/` go to `/`. Those rules use `force`. The rules are in `netlify.toml`.
 
-`bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,photos`). `node scripts/check-sections.mjs` builds every on/off combination.
+`bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,running`). `node scripts/check-sections.mjs` builds every on/off combination.
 
 ## Turn sections on or off
 
@@ -80,8 +78,6 @@ sections: {
   work: true,
   study: false,
   projects: true,
-  photos: true,
-  blog: true,
   contact: true,
   running: false,
   bookshelf: false,
@@ -109,11 +105,11 @@ draft: false
 Write the note in Markdown. With no body, the detail page shows the summary.
 ```
 
-`start` and `end` may be `Month YYYY` or `D Month YYYY`. The detail page prints them as `sep 25 > present`. An optional `image` is one picture. `photos` is a list of `{ src, alt }`. Nothing is drawn while `photos` is empty.
+`start` and `end` may be `Month YYYY` or `D Month YYYY`. The detail page prints them as `sep 25 > present`.
 
 ## Add a study entry
 
-Add `src/content/study/short-name.md`. The fields match a work entry: `title`, `org`, `start`, `end`, `summary`, `order`. `image` and `photos` are optional.
+Add `src/content/study/short-name.md`. The fields match a work entry: `title`, `org`, `start`, `end`, `summary`, `order`.
 
 ## Add a project
 
@@ -134,43 +130,25 @@ An optional longer note.
 
 An empty `url` is not a link.
 
-## Add a photograph
+## Add an article
 
-Put the image in `public/img/` and add an object to `src/data/photographs.json`:
-
-```json
-{
-  "slug": "ghent",
-  "title": "Ghent",
-  "src": "/img/example.jpg",
-  "place": "Ghent",
-  "date": "06.2022",
-  "width": 2000,
-  "height": 1200,
-  "alt": "What is in the frame.",
-  "note": ""
-}
-```
-
-`slug` is `/photographs/ghent/`. The caption is `Fig. 01 — Ghent, 06.2022`. Leave `date` as `""` when the month is unknown. `width` and `height` are the file’s pixel size.
-
-## Add a blog post
-
-Turn `blog` on in `src/site.config.ts`. Add `src/content/blog/field-notes.md`. That is `/blog/field-notes/`.
+1. Create a folder `src/content/articles/short-name/`.
+2. Add `index.md` in that folder, and drop any images next to it.
+3. Commit and push. Netlify builds the site and publishes `/articles/short-name/`.
 
 ```yaml
 ---
-title: "Post title"
-summary: "One line for the index."
-noteDate: 2026-01-13
-order: 1
-draft: false
+title: "Article title"
+date: 2026-01-13
+summary: "One line for the list."   # optional
+cover: ./cover.jpg                   # optional
+draft: false                         # true hides the article from the build
 ---
 
-The post.
+The article. Refer to an image in this folder as `./photo.jpg`.
 ```
 
-`src/content/blog/example.md` stays a draft and is not published. Old `/notes/` and `/writing/` URLs still redirect home. That redirect is in `netlify.toml`.
+The folder name is the URL. `date` is `YYYY-MM-DD`. The home page shows the three newest articles, with a cover and a title, and links to every article at `/articles/`. If `cover` is omitted, the first image in the folder is the cover. Images are optimised with `astro:assets`. `src/content/articles/example/` is a draft and is not published. Old `/notes/` and `/writing/` URLs still redirect. That redirect is in `netlify.toml`.
 
 ## Theme
 
@@ -228,7 +206,7 @@ This replaces work, study, project, photograph, portrait, and book entries with 
 
 ## Collections
 
-A single role, project, photograph, or book does not get a catalogue code. Its filename is the URL.
+A single role, project, or book does not get a catalogue code. Its filename is the URL. An article’s folder name is the URL.
 
 A catalogue code is only for a finished collection. Copy `src/content/collections/example-series.md`. The code looks like `F_02` or `W_014` and is a quiet mark. The URL stays the readable slug. `example-series.md` is not published.
 

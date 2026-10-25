@@ -1,11 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
 
-interface Plate {
-  src: string;
-  alt: string;
-}
-
 interface Props {
   title: string;
   description?: string;
@@ -14,8 +9,6 @@ interface Props {
   kicker: string;
   kickerHref: string;
   meta?: string[];
-  image?: Plate;
-  photos?: Plate[];
   link?: string;
 }
 
@@ -27,8 +20,6 @@ const {
   kicker,
   kickerHref,
   meta = [],
-  image,
-  photos = [],
   link = "",
 } = Astro.props;
 const href = link.trim();
@@ -51,25 +42,9 @@ const href = link.trim();
       )
     }
   </header>
-  {
-    image && (
-      <figure class="article-figure">
-        <img src={image.src} alt={image.alt} />
-      </figure>
-    )
-  }
   <div class="prose article signal-links">
     <slot />
   </div>
-  {
-    photos.length > 0 && (
-      <div class="article-photos">
-        {photos.map((photo) => (
-          <img src={photo.src} alt={photo.alt} />
-        ))}
-      </div>
-    )
-  }
   <div class="block signal-links">
     <slot name="pager" />
   </div>

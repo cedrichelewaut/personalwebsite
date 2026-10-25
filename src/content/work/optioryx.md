@@ -6,10 +6,6 @@ end: "May 2023"
 summary: "Worked as a student employee at a logistics start-up."
 order: 3
 noteDate: 2023-05-01
-photos: []
-image:
-  src: /img/companies/optioryx.png
-  alt: "The Optioryx wordmark in white on blue. A hexagon of connected nodes stands in for the second O."
 ---
 
 #### Student Role at a Growing Start-up

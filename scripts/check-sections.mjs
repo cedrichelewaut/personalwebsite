@@ -6,21 +6,18 @@ import { spawn } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
-const keys = ["intro", "work", "study", "projects", "photos", "blog", "contact", "running", "bookshelf"];
+const keys = ["intro", "work", "study", "projects", "contact", "running", "bookshelf"];
 const defaults = {
   intro: true,
   work: true,
   study: true,
   projects: true,
-  photos: true,
-  blog: false,
   contact: true,
   running: true,
   bookshelf: false,
 };
 
 const level2 = {
-  photos: "photographs/index.html",
   running: "running/index.html",
   bookshelf: "reading/index.html",
 };
@@ -33,9 +30,10 @@ const removed = [
   "study/index.html",
   "projects/index.html",
   "blog/index.html",
+  "photographs/index.html",
 ];
 
-const overviewHref = /href="\/(experience|personal-projects|contact|work|study|projects|blog)\/?"/;
+const overviewHref = /href="\/(experience|personal-projects|contact|work|study|projects|blog|photographs)\/?"/;
 
 function envFor(state) {
   const on = [];
@@ -114,7 +112,7 @@ async function runWorker(id) {
     const homePath = path.join(outDir, "index.html");
     if (!existsSync(homePath)) missing.push("index.html");
     const experience = state.work || state.study;
-    const personal = state.projects || state.photos || state.bookshelf || state.running || state.blog;
+    const personal = state.projects || state.bookshelf || state.running;
     if (existsSync(homePath)) {
       const home = readFileSync(homePath, "utf8");
       const anchors = {
@@ -124,10 +122,8 @@ async function runWorker(id) {
         work: state.work,
         study: state.study,
         projects: state.projects,
-        photographs: state.photos,
         reading: state.bookshelf,
         running: state.running,
-        blog: state.blog,
       };
       for (const [id, on] of Object.entries(anchors)) {
         const present = home.includes(`id="${id}"`);
@@ -163,8 +159,8 @@ async function runWorker(id) {
     if (missing.length || unexpected.length) {
       failed += 1;
       console.error(`FAIL routes ${label} missing=${missing.join(",")} unexpected=${unexpected.join(",")}`);
-    } else if (done % 32 === 0 || done === 512) {
-      console.log(`${done}/512`);
+    } else if (done % 16 === 0 || done === 128) {
+      console.log(`${done}/128`);
     }
   }
 }

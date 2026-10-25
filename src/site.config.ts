@@ -12,7 +12,7 @@ export const siteConfig = {
   email: "cedrichelewaut18@gmail.com",
   location: "Ghent",
   formspree: "https://formspree.io/f/xzbngqdy",
-  ogImage: "/img/cedric.jpg",
+  ogImage: "/img/cedric-portrait.jpg",
   intro:
     "I’m Cedric, a Ghent-based engineer passionate about building products and taking them to market. I love working on innovation, especially around security and sustainability.",
   contactLink: { href: "/#contact", label: "Get in touch →" },
@@ -49,8 +49,6 @@ export const siteConfig = {
     work: true,
     study: true,
     projects: true,
-    photos: true,
-    blog: false,
     contact: true,
     running: true,
     bookshelf: false,

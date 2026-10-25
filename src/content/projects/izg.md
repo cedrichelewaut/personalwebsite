@@ -7,10 +7,6 @@ start: "Mar. 2024"
 end: "Present"
 order: 2
 noteDate: 2024-09-01
-photos: []
-image:
-  src: /img/uganda.jpg
-  alt: "A black water tank and a white downpipe against a brick building with a red metal roof."
 ---
 
 #### Making an Impact

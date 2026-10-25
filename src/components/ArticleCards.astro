@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { articleCover } from "../lib/articles";
+import { formatRead } from "../lib/dates";
+
+interface Props {
+  articles: CollectionEntry<"articles">[];
+}
+
+const { articles } = Astro.props;
+---
+
+<ul class="article-cards">
+  {
+    articles.map((article) => {
+      const cover = articleCover(article);
+      return (
+        <li class="article-card">
+          <a href={`/articles/${article.id}/`}>
+            {cover && (
+              <Image
+                src={cover}
+                alt=""
+                widths={[480, 768, 1200]}
+                sizes="(min-width: 720px) 30vw, 100vw"
+              />
+            )}
+            <span class="article-card-title">{article.data.title}</span>
+            <span class="article-card-date">{formatRead(article.data.date)}</span>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

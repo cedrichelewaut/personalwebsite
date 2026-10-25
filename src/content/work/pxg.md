@@ -6,10 +6,6 @@ end: "Present"
 summary: "Responsible for the go-to-market strategy for security solutions."
 order: 1
 noteDate: 2026-01-13
-photos: []
-image:
-  src: /img/companies/pxs.jpg
-  alt: "A flock of birds in a dense shape above a line of bare trees, against a purple and blue sky."
 ---
 
 #### Current Role
