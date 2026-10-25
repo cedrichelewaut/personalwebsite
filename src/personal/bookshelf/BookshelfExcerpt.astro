@@ -13,8 +13,8 @@ const books = (await getCollection("reading"))
 const current = await loadCurrent();
 ---
 
-<section class="digest" aria-labelledby="home-reading">
-  <h3 class="digest-title" id="home-reading">
+<section class="digest" id="reading" aria-labelledby="reading-title">
+  <h3 class="digest-title" id="reading-title">
     <a href="/reading/">Reading</a>
   </h3>
   <NowReading

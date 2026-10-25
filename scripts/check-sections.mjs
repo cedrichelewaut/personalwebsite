@@ -3,7 +3,7 @@
  * Usage: node scripts/check-sections.mjs
  */
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
 const keys = ["intro", "work", "study", "projects", "photos", "blog", "contact", "running", "bookshelf"];
@@ -19,16 +19,23 @@ const defaults = {
   bookshelf: false,
 };
 
-const pages = {
-  work: "work/index.html",
-  study: "study/index.html",
-  projects: "projects/index.html",
+const level2 = {
   photos: "photographs/index.html",
-  blog: "blog/index.html",
-  contact: "contact/index.html",
   running: "running/index.html",
   bookshelf: "reading/index.html",
 };
+
+const removed = [
+  "experience/index.html",
+  "personal-projects/index.html",
+  "contact/index.html",
+  "work/index.html",
+  "study/index.html",
+  "projects/index.html",
+  "blog/index.html",
+];
+
+const overviewHref = /href="\/(experience|personal-projects|contact|work|study|projects|blog)\/?"/;
 
 function envFor(state) {
   const on = [];
@@ -96,20 +103,63 @@ async function runWorker(id) {
     }
     const missing = [];
     const unexpected = [];
-    for (const [key, rel] of Object.entries(pages)) {
+    for (const [key, rel] of Object.entries(level2)) {
       const present = existsSync(path.join(outDir, rel));
       if (state[key] && !present) missing.push(rel);
       if (!state[key] && present) unexpected.push(rel);
     }
-    if (!existsSync(path.join(outDir, "index.html"))) missing.push("index.html");
+    for (const rel of removed) {
+      if (existsSync(path.join(outDir, rel))) unexpected.push(rel);
+    }
+    const homePath = path.join(outDir, "index.html");
+    if (!existsSync(homePath)) missing.push("index.html");
     const experience = state.work || state.study;
     const personal = state.projects || state.photos || state.bookshelf || state.running || state.blog;
-    const experiencePage = existsSync(path.join(outDir, "experience/index.html"));
-    const personalPage = existsSync(path.join(outDir, "personal-projects/index.html"));
-    if (experience && !experiencePage) missing.push("experience/index.html");
-    if (!experience && experiencePage) unexpected.push("experience/index.html");
-    if (personal && !personalPage) missing.push("personal-projects/index.html");
-    if (!personal && personalPage) unexpected.push("personal-projects/index.html");
+    if (existsSync(homePath)) {
+      const home = readFileSync(homePath, "utf8");
+      const anchors = {
+        experience,
+        "personal-projects": personal,
+        contact: state.contact,
+        work: state.work,
+        study: state.study,
+        projects: state.projects,
+        photographs: state.photos,
+        reading: state.bookshelf,
+        running: state.running,
+        blog: state.blog,
+      };
+      for (const [id, on] of Object.entries(anchors)) {
+        const present = home.includes(`id="${id}"`);
+        if (on && !present) missing.push(`#${id}`);
+        if (!on && present) unexpected.push(`#${id}`);
+      }
+      const nav = {
+        "/#experience": experience,
+        "/#personal-projects": personal,
+        "/#contact": state.contact,
+      };
+      for (const [href, on] of Object.entries(nav)) {
+        const present = home.includes(`href="${href}"`);
+        if (on && !present) missing.push(href);
+        if (!on && present) unexpected.push(href);
+      }
+    }
+    const stale = [];
+    const walk = (dir) => {
+      for (const name of readdirSync(dir)) {
+        const full = path.join(dir, name);
+        if (statSync(full).isDirectory()) {
+          walk(full);
+          continue;
+        }
+        if (!name.endsWith(".html")) continue;
+        const html = readFileSync(full, "utf8");
+        if (overviewHref.test(html)) stale.push(path.relative(outDir, full));
+      }
+    };
+    if (existsSync(outDir)) walk(outDir);
+    if (stale.length) unexpected.push(`overview href in ${stale.join(" ")}`);
     if (missing.length || unexpected.length) {
       failed += 1;
       console.error(`FAIL routes ${label} missing=${missing.join(",")} unexpected=${unexpected.join(",")}`);

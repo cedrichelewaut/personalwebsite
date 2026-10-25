@@ -15,7 +15,7 @@ export const siteConfig = {
   ogImage: "/img/cedric.jpg",
   intro:
     "I’m Cedric, a Ghent-based engineer passionate about building products and taking them to market. I love working on innovation, especially around security and sustainability.",
-  contactLink: { href: "/contact/", label: "Get in touch →" },
+  contactLink: { href: "/#contact", label: "Get in touch →" },
   portrait: {
     src: "/img/cedric-portrait.jpg",
     alt: "Portrait of Cedric Helewaut",

@@ -41,7 +41,7 @@ Everything that names the owner lives in `src/site.config.ts`.
 | `intro` | Highlighted home introduction |
 | `contactLink` | Label and href of the link inside the introduction |
 | `portrait` | Home portrait (`src`, `alt`, `width`, `height`) |
-| `socials` | Contact-page links |
+| `socials` | Links in the contact section on the home page |
 | `formspree` | Contact form endpoint |
 | `ogImage` | Open Graph image path |
 | `sections` | On/off flags for each part of the site |
@@ -51,18 +51,22 @@ Everything that names the owner lives in `src/site.config.ts`.
 | Flag | Default here | What it controls |
 | --- | --- | --- |
 | `intro` | on | Home portrait and introduction |
-| `work` | on | `/work/` |
-| `study` | on | `/study/` |
-| `projects` | on | `/projects/` |
-| `photos` | on | `/photographs/` |
-| `blog` | off | `/blog/` |
-| `contact` | on | `/contact/` and the intro contact link |
-| `running` | on | `/running/` |
-| `bookshelf` | off | `/reading/` and the home reading block |
+| `work` | on | Work list on the home page (`/#work`) and each `/work/…/` article |
+| `study` | on | Study list on the home page (`/#study`) and each `/study/…/` article |
+| `projects` | on | Projects list on the home page (`/#projects`) and each `/projects/…/` article |
+| `photos` | on | Every photograph on the home page, the gallery at `/photographs/`, and each plate |
+| `blog` | off | Blog list on the home page (`/#blog`) and each `/blog/…/` post |
+| `contact` | on | Contact form on the home page (`/#contact`) and the intro contact link |
+| `running` | on | Running note on the home page and the marathon page at `/running/` |
+| `bookshelf` | off | Home reading block and the full list at `/reading/` |
 
-The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left.
+The site has two levels. The home page is the only overview. Detail pages are the articles, posts, photograph plates, book notes, the full photograph gallery, the bookshelf, and the marathon page.
 
-Experience opens `/experience/`, which lists Work and Study when those sections are on. Personal Projects opens `/personal-projects/`, which lists Projects, Photographs, Reading, Running, and Blog for the sections that are on. Turning a section off removes it from that landing page and from the home index. `/work/`, `/study/`, `/projects/`, `/photographs/`, `/reading/`, `/running/`, and `/blog/` stay as they are. If every section in a group is off, that header link is omitted too.
+The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left. Home is `/`. Experience is `/#experience`. Personal Projects is `/#personal-projects`. Contact is `/#contact`.
+
+Experience on the home page lists Work and Study when those sections are on. Personal Projects lists Projects, Photographs, Reading, Running, and Blog for the sections that are on. Turning a section off removes that block from the home page and does not generate its detail pages. `/photographs/`, `/reading/`, and `/running/` stay as their own pages. If every section in a group is off, that header link is omitted too.
+
+Old overview URLs redirect to the matching home anchor. `/experience/` goes to `/#experience`, `/personal-projects/` to `/#personal-projects`, `/contact/` to `/#contact`, `/work/` to `/#work`, `/study/` to `/#study`, `/projects/` to `/#projects`, and `/blog/` to `/#blog`. Each rule is also listed without the trailing slash. `/about` and `/about.html` go to `/#work` in one hop, and `/contact.html` goes to `/#contact`. Article URLs such as `/work/pxg/` are unchanged. Those rules use `force` so the article directories do not shadow `/work/`, `/study/`, `/projects/`, or `/blog/`. The rules are in `netlify.toml`.
 
 `bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,photos`). `node scripts/check-sections.mjs` builds every on/off combination.
 
@@ -84,7 +88,7 @@ sections: {
 }
 ```
 
-With `study` off, Study leaves `/experience/` and the home index, and `/study/` is not generated. With `running` off, Running leaves `/personal-projects/` and the home index, and `/running/` is not generated.
+With `study` off, Study leaves the home page and `/study/…/` articles are not generated. With `running` off, Running leaves the home page and `/running/` is not generated.
 
 ## Add a work entry
 

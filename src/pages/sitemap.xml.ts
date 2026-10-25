@@ -22,18 +22,9 @@ export const GET: APIRoute = async () => {
 
   const paths = [
     "/",
-    ...(sections.work || sections.study ? ["/experience/"] : []),
-    ...(sections.projects || sections.photos || sections.bookshelf || sections.running || sections.blog
-      ? ["/personal-projects/"]
-      : []),
-    ...(sections.work ? ["/work/"] : []),
-    ...(sections.study ? ["/study/"] : []),
-    ...(sections.projects ? ["/projects/"] : []),
     ...(sections.photos ? ["/photographs/"] : []),
     ...(sections.bookshelf ? ["/reading/"] : []),
     ...(sections.running ? ["/running/"] : []),
-    ...(sections.contact ? ["/contact/"] : []),
-    ...(sections.blog ? ["/blog/"] : []),
     ...(sections.work ? work.filter(isLive).map((entry) => `/work/${entry.id}/`) : []),
     ...(sections.study ? study.filter(isLive).map((entry) => `/study/${entry.id}/`) : []),
     ...(sections.projects ? projects.filter(isLive).map((entry) => `/projects/${entry.id}/`) : []),

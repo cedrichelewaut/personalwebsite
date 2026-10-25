@@ -2,27 +2,34 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import TitleList from "../components/TitleList.astro";
+import CollectionIndex from "../components/CollectionIndex.astro";
 import { site, sections } from "../site";
 import { sectionMeta } from "../site.sections";
 import photos from "../data/photographs.json";
 import { byOrder, isLive } from "../lib/content";
 import { figCaption } from "../lib/figures";
+import { assertReadableSlug } from "../lib/slugs";
 
-const latestCount = 3;
+const workAll = sections.work ? await getCollection("work") : [];
+const studyAll = sections.study ? await getCollection("study") : [];
+const projectAll = sections.projects ? await getCollection("projects") : [];
+const postAll = sections.blog ? await getCollection("blog") : [];
+for (const entry of workAll) assertReadableSlug(entry.id, "Roles");
+for (const entry of studyAll) assertReadableSlug(entry.id, "Study");
+for (const entry of projectAll) assertReadableSlug(entry.id, "Projects");
+for (const entry of postAll) assertReadableSlug(entry.id, "Posts");
 
-const work = sections.work ? byOrder((await getCollection("work")).filter(isLive)).slice(0, latestCount) : [];
-const study = sections.study ? byOrder((await getCollection("study")).filter(isLive)).slice(0, latestCount) : [];
-const projects = sections.projects
-  ? byOrder((await getCollection("projects")).filter(isLive)).slice(0, latestCount)
-  : [];
-const posts = sections.blog ? byOrder((await getCollection("blog")).filter(isLive)).slice(0, latestCount) : [];
+const work = byOrder(workAll.filter(isLive));
+const study = byOrder(studyAll.filter(isLive));
+const projects = byOrder(projectAll.filter(isLive));
+const posts = byOrder(postAll.filter(isLive));
 
 const BookshelfExcerpt = sections.bookshelf
   ? (await import("../personal/bookshelf/BookshelfExcerpt.astro")).default
   : null;
 
 const plates = sections.photos
-  ? photos.slice(0, latestCount).map((photo, index) => ({
+  ? photos.map((photo, index) => ({
       ...photo,
       caption: figCaption(index + 1, photo.place, photo.date),
     }))
@@ -67,23 +74,25 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
 
   {
     showExperience && (
-      <section class="home-group" aria-labelledby="home-experience">
-        <h2 class="home-group-title" id="home-experience">
+      <section class="home-group" id="experience" aria-labelledby="experience-title">
+        <h2 class="home-group-title" id="experience-title">
           Experience
         </h2>
         {sections.work && (
-          <section class="digest" aria-labelledby="home-work">
-            <h3 class="digest-title" id="home-work">
-              <a href={sectionMeta.work.href}>{sectionMeta.work.label}</a>
+          <section class="digest" id="work" aria-labelledby="work-title">
+            <h3 class="digest-title" id="work-title">
+              {sectionMeta.work.label}
             </h3>
+            <CollectionIndex section="work" reserved={workAll.map((entry) => entry.id)} />
             <TitleList items={work.map((entry) => ({ href: `/work/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
         {sections.study && (
-          <section class="digest" aria-labelledby="home-study">
-            <h3 class="digest-title" id="home-study">
-              <a href={sectionMeta.study.href}>{sectionMeta.study.label}</a>
+          <section class="digest" id="study" aria-labelledby="study-title">
+            <h3 class="digest-title" id="study-title">
+              {sectionMeta.study.label}
             </h3>
+            <CollectionIndex section="study" reserved={studyAll.map((entry) => entry.id)} />
             <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
@@ -93,21 +102,22 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
 
   {
     showPersonal && (
-      <section class="home-group" aria-labelledby="home-personal">
-        <h2 class="home-group-title" id="home-personal">
+      <section class="home-group" id="personal-projects" aria-labelledby="personal-title">
+        <h2 class="home-group-title" id="personal-title">
           Personal Projects
         </h2>
         {sections.projects && (
-          <section class="digest" aria-labelledby="home-projects">
-            <h3 class="digest-title" id="home-projects">
-              <a href={sectionMeta.projects.href}>{sectionMeta.projects.label}</a>
+          <section class="digest" id="projects" aria-labelledby="projects-title">
+            <h3 class="digest-title" id="projects-title">
+              {sectionMeta.projects.label}
             </h3>
+            <CollectionIndex section="projects" reserved={projectAll.map((entry) => entry.id)} />
             <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
         {sections.photos && (
-          <section class="digest" aria-labelledby="home-photographs">
-            <h3 class="digest-title" id="home-photographs">
+          <section class="digest" id="photographs" aria-labelledby="photographs-title">
+            <h3 class="digest-title" id="photographs-title">
               <a href={sectionMeta.photos.href}>{sectionMeta.photos.label}</a>
             </h3>
             <div class="grid thumbs">
@@ -122,21 +132,77 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
         )}
         {BookshelfExcerpt && <BookshelfExcerpt />}
         {sections.running && (
-          <section class="digest" aria-labelledby="home-running">
-            <h3 class="digest-title" id="home-running">
+          <section class="digest" id="running" aria-labelledby="running-title">
+            <h3 class="digest-title" id="running-title">
               <a href={sectionMeta.running.href}>{sectionMeta.running.label}</a>
             </h3>
             <p class="lede">Currently training for Hamburg Marathon 2027. Progress so far:</p>
           </section>
         )}
         {sections.blog && (
-          <section class="digest" aria-labelledby="home-blog">
-            <h3 class="digest-title" id="home-blog">
-              <a href={sectionMeta.blog.href}>{sectionMeta.blog.label}</a>
+          <section class="digest" id="blog" aria-labelledby="blog-title">
+            <h3 class="digest-title" id="blog-title">
+              {sectionMeta.blog.label}
             </h3>
             <TitleList items={posts.map((entry) => ({ href: `/blog/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
+      </section>
+    )
+  }
+
+  {
+    sections.contact && (
+      <section class="home-group" id="contact" aria-labelledby="contact-title">
+        <h2 class="digest-title" id="contact-title">
+          Contact
+        </h2>
+        <p class="lede">
+          Open for questions, business inquiries, or just grabbing a coffee. Get in touch through this form
+          or on LinkedIn!
+        </p>
+        <div class="grid block">
+          <form class="form-col" action={site.formspree} method="POST">
+            <p class="kicker">form</p>
+            <input type="hidden" name="_subject" value="Website — Cedric Helewaut" />
+            <p class="hp">
+              <label for="gotcha">Leave this empty</label>
+              <input id="gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            </p>
+            <div class="field">
+              <label for="name">name</label>
+              <input id="name" type="text" name="name" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="email">email</label>
+              <input id="email" type="email" name="email" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="message">message</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button class="submit" type="submit">send message</button>
+          </form>
+          <div class="direct-col">
+            <p class="kicker">direct</p>
+            <dl class="direct">
+              {site.profiles.map((profile) => (
+                <div>
+                  <dt>{profile.label.toLowerCase()}</dt>
+                  <dd>
+                    <a
+                      href={profile.href}
+                      rel={profile.href.startsWith("http") ? "me noopener noreferrer" : "me"}
+                      target={profile.href.startsWith("http") ? "_blank" : undefined}
+                    >
+                      {profile.display}
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
       </section>
     )
   }

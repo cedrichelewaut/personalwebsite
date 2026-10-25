@@ -6,9 +6,12 @@ import SetPage from "../../components/SetPage.astro";
 import { byOrder, hasNote, isLive, neighbours } from "../../lib/content";
 import { formatRange } from "../../lib/dates";
 import { loadSeries } from "../../lib/series";
+import { assertReadableSlug } from "../../lib/slugs";
+import { sectionMeta } from "../../site.sections";
 
 export async function getStaticPaths() {
   const all = await getCollection("projects");
+  for (const entry of all) assertReadableSlug(entry.id, "Projects");
   const items = byOrder(all.filter(isLive));
   const sets = await loadSeries(
     "projects",
@@ -47,7 +50,7 @@ const dates =
       current="projects"
       title={entry.data.title}
       description={entry.data.summary}
-      kickerHref="/projects/"
+      kickerHref={sectionMeta.projects.href}
       kicker="projects"
       meta={dates ? [dates] : []}
       image={entry.data.image}
@@ -57,7 +60,7 @@ const dates =
       {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}
       <Pager
         slot="pager"
-        indexHref="/projects/"
+        indexHref={sectionMeta.projects.href}
         indexLabel="all projects"
         newer={newer ? { href: `/projects/${newer.id}/`, label: "newer" } : undefined}
         older={older ? { href: `/projects/${older.id}/`, label: "older" } : undefined}

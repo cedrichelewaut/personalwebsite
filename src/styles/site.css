@@ -546,6 +546,11 @@ h1.intro-title {
   margin-top: calc(var(--gutter) * 1.5);
 }
 
+.home-group,
+.digest {
+  scroll-margin-top: var(--gutter);
+}
+
 .home-group {
   margin-top: calc(var(--gutter) * 1.5);
 }

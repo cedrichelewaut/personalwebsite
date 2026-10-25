@@ -22,20 +22,109 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 # One hop to the current page. No splat that lands on another redirect.
+# Overview pages now live on the home page. The fragment is part of the target.
+# force: /work/, /study/, /projects/, and /blog/ are also directories of articles.
 [[redirects]]
   from = "/about"
-  to = "/work/"
+  to = "/#work"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/about.html"
-  to = "/work/"
+  to = "/#work"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/contact.html"
-  to = "/contact/"
+  to = "/#contact"
   status = 301
+  force = true
+
+[[redirects]]
+  from = "/experience"
+  to = "/#experience"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/experience/"
+  to = "/#experience"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/personal-projects"
+  to = "/#personal-projects"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/personal-projects/"
+  to = "/#personal-projects"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact"
+  to = "/#contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact/"
+  to = "/#contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/work"
+  to = "/#work"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/work/"
+  to = "/#work"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/study"
+  to = "/#study"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/study/"
+  to = "/#study"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects"
+  to = "/#projects"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/projects/"
+  to = "/#projects"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog"
+  to = "/#blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/"
+  to = "/#blog"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/feed.xml"
