@@ -47,10 +47,10 @@
   --grey: #5e5b55;
   --signal: #9a2400;
   --rule: #cfcdc6;
-  /* Links. Ink at rest, no underline. Hover and focus are Red earth with a thin line. */
+  /* Links. Ink at rest, no underline. Hover and focus stay ink; a 1px underline is the only change. */
   --link: #151515;
   --link-line: var(--link-hover);
-  --link-hover: #9a2400;
+  --link-hover: #151515;
   --gutter: 32px;
   --cols: 12;
   --max: 1440px;
