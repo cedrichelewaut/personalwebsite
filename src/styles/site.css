@@ -5,8 +5,8 @@
    (--paper, --ink, --grey, --signal, --rule, --link) and nothing else.
    --rule is the thin decorative column line: #CFCDC6 on #FAFAF7.
    --signal is Red earth, #9A2400. It is the introduction and the thick rules.
-   Links are muted Red earth at rest, with no underline. Hover and focus
-   turn them to Red earth and add a thin underline. Nav stays ink.
+   Links are ink at rest, with no underline. Hover and focus turn them
+   to Red earth and add a thin underline. Nav stays ink.
    Content rules stay --ink. */
 
 @font-face {
@@ -47,10 +47,8 @@
   --grey: #5e5b55;
   --signal: #9a2400;
   --rule: #cfcdc6;
-  /* Links. Muted Red earth, no underline at rest. Hover and focus are Red earth with a thin line.
-     Aileron has 400 and 700 only, and font-synthesis is none, so weight 500 would still draw as 400.
-     The colour is the distinction: #8C4A3A on #FAFAF7 is 6.4:1. */
-  --link: #8c4a3a;
+  /* Links. Ink at rest, no underline. Hover and focus are Red earth with a thin line. */
+  --link: #151515;
   --link-line: var(--link-hover);
   --link-hover: #9a2400;
   --gutter: 32px;

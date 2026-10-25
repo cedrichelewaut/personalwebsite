@@ -178,12 +178,12 @@ Colours are custom properties on `:root` in `src/styles/site.css`. Change them t
 | `--ink` | `#151515` | Text and content rules |
 | `--grey` | `#5E5B55` | Metadata |
 | `--signal` | `#9A2400` | Red earth. The introduction and the thick rules |
-| `--link` | `#8C4A3A` | Link text at rest, no underline. Hover and focus (`--link-hover`) are `#9A2400` with a thin underline |
+| `--link` | `#151515` | Link text at rest, same as the ink, no underline. Hover and focus (`--link-hover`) are `#9A2400` with a thin underline |
 | `--rule` | `#CFCDC6` | Thin decorative column line |
 
 The site stays light. `:root` sets `color-scheme: light` and the page background stays `#FAFAF7`. It does not follow the system colour scheme. The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper. There is no theme toggle.
 
-A dark theme is a manual edit. Add this block to `src/styles/site.css` if you want one. It is not in the stylesheet. On the dark paper, `#9A2400` is too dim for a link (about 2.3:1), so the block uses `#E67A5F` at rest and `#E26A45` on hover.
+A dark theme is a manual edit. Add this block to `src/styles/site.css` if you want one. It is not in the stylesheet. Resting links follow the light ink. On the dark paper, `#9A2400` is too dim for a hover (about 2.3:1), so the block uses `#E26A45` there.
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -194,7 +194,7 @@ A dark theme is a manual edit. Add this block to `src/styles/site.css` if you wa
     --grey: #a39e96;
     --signal: #e26a45;
     --rule: #3a3834;
-    --link: #e67a5f;
+    --link: #fafaf7;
     --link-hover: #e26a45;
   }
 }
