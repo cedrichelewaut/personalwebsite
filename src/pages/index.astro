@@ -55,7 +55,9 @@ const showPersonal = sections.projects || sections.photos || sections.bookshelf 
           </p>
           {sections.contact && (
             <p class="intro-contact">
-              <a href={site.contactLink.href}>{site.contactLink.label}</a>
+              <a class="hl" href={site.contactLink.href}>
+                {site.contactLink.label}
+              </a>
             </p>
           )}
         </div>

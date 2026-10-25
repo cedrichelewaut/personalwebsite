@@ -15,11 +15,11 @@ const posts = sections.blog ? byOrder((await getCollection("blog")).filter(isLiv
   title="Personal Projects"
   page="personal"
   current="personal"
-  description="Projects, photography, and readings."
+  description="Projects, photographs, and reading."
 >
   <div class="grid head">
     <div class="head-copy span-all">
-      <h1 class="page-title">Personal Projects</h1>
+      <h1>Personal Projects</h1>
     </div>
   </div>
   {
@@ -49,7 +49,7 @@ const posts = sections.blog ? byOrder((await getCollection("blog")).filter(isLiv
           <a href={sectionMeta.bookshelf.href}>{sectionMeta.bookshelf.label}</a>
         </h2>
         <p class="lede">
-          <a href="/reading/">Readings</a>
+          <a href="/reading/">Bookshelf</a>
         </p>
       </section>
     )

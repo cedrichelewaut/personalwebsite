@@ -14,7 +14,7 @@ export const siteConfig = {
   formspree: "https://formspree.io/f/xzbngqdy",
   ogImage: "/img/cedric.jpg",
   intro:
-    "Cedric is a Ghent-based engineer passionate about building products and taking them to market. He loves working on innovation, especially around security and sustainability.",
+    "I’m Cedric, a Ghent-based engineer passionate about building products and taking them to market. I love working on innovation, especially around security and sustainability.",
   contactLink: { href: "/contact/", label: "Get in touch →" },
   portrait: {
     src: "/img/cedric-portrait.jpg",

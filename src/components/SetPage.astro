@@ -19,20 +19,12 @@ const numbers: Record<SectionName, string> = {
   reading: "05",
 };
 
-const kickerLabel: Record<SectionName, string> = {
-  work: "work",
-  study: "study",
-  projects: "projects",
-  photographs: "photography",
-  reading: "readings",
-};
-
 const indexLabel: Record<SectionName, string> = {
   work: "all work",
   study: "all study",
   projects: "all projects",
-  photographs: "all photography",
-  reading: "all readings",
+  photographs: "all photographs",
+  reading: "all reading",
 };
 
 const { entry } = Astro.props;
@@ -53,7 +45,7 @@ const plates = (entry.data.photos ?? []).map((slug) => {
   title={entry.data.title}
   description={entry.data.summary || entry.data.title}
   kickerHref={`/${section}/`}
-  kicker={kickerLabel[section]}
+  kicker={section}
   dek={entry.data.summary}
   mark={entry.data.code}
 >
