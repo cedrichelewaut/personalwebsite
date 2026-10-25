@@ -1,9 +1,10 @@
 /* Aileron for display and text. IBM Plex Mono for metadata and nav.
    Headings stay in normal case. Every colour is a custom property.
-   The page is light only. A later dark theme should override these
-   variables (--paper, --ink, --grey, --signal, --rule) and nothing else.
+   Light is the default. prefers-color-scheme: dark overrides the same
+   tokens, including the muted link colour.
    --rule is the thin decorative column line: #CFCDC6 on #FAFAF7.
-   --signal is Red earth, #9A2400.
+   --signal is Red earth, #9A2400. It is the introduction and the thick rules.
+   Links are a muted grey at rest. Hover turns the text and the underline to --ink.
    Content rules stay --ink. */
 
 @font-face {
@@ -44,10 +45,10 @@
   --grey: #5e5b55;
   --signal: #9a2400;
   --rule: #cfcdc6;
-  /* Links. Default is ink with a thin Red earth underline. Hover is red. */
-  --link: var(--ink);
-  --link-line: var(--signal);
-  --link-hover: var(--signal);
+  /* Links. Muted grey-ink at rest. Hover is the theme ink, text and underline. */
+  --link: #4a4a46;
+  --link-line: var(--link);
+  --link-hover: var(--ink);
   --gutter: 32px;
   --cols: 12;
   --max: 1440px;
@@ -73,6 +74,19 @@
   }
 }
 
+/* Same contrast step as #4A4A46 on #FAFAF7: about 8.5:1, quieter than the ink. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #151515;
+    --ink: #fafaf7;
+    --grey: #a39e96;
+    --signal: #e26a45;
+    --rule: #3a3834;
+    --link: #b1b1ad;
+  }
+}
+
 @media (forced-colors: active) {
   :root {
     --paper: Canvas;
@@ -80,6 +94,9 @@
     --grey: CanvasText;
     --signal: LinkText;
     --rule: GrayText;
+    --link: LinkText;
+    --link-line: LinkText;
+    --link-hover: CanvasText;
   }
 }
 
@@ -795,9 +812,11 @@ a.poster-title:hover {
   margin-top: 0.9rem;
 }
 
-.now-link a {
+.now-link a,
+.now-link a:hover {
   color: var(--paper);
   text-decoration: underline;
+  text-decoration-color: var(--paper);
   text-underline-offset: 0.15em;
 }
 

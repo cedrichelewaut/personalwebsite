@@ -177,13 +177,13 @@ Colours are custom properties on `:root` in `src/styles/site.css`. Change them t
 | `--paper` | `#FAFAF7` | Page background |
 | `--ink` | `#151515` | Text and content rules |
 | `--grey` | `#5E5B55` | Metadata |
-| `--signal` | `#9A2400` | Red earth. The introduction, thick rules, and link underlines |
-| `--link` | `var(--ink)` | Link text. Underline is `--link-line` (Red earth). Hover is `--link-hover` (red) |
+| `--signal` | `#9A2400` | Red earth. The introduction and the thick rules |
+| `--link` | `#4A4A46` | Link text and underline at rest. Hover (`--link-hover`) is `--ink` |
 | `--rule` | `#CFCDC6` | Thin decorative column line |
 
-The site ships in light mode (`color-scheme: light` on `:root`). The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper.
+Light mode is the default (`color-scheme: light` on `:root`). The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper.
 
-A dark theme overrides the same five variables and nothing else:
+When the system prefers a dark scheme, `src/styles/site.css` swaps the same tokens. Links use `#B1B1AD`, the muted grey that sits on `#151515` the way `#4A4A46` sits on `#FAFAF7` (about 8.5:1). Hover still follows `--ink`, so it becomes `#FAFAF7`.
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -194,11 +194,12 @@ A dark theme overrides the same five variables and nothing else:
     --grey: #a39e96;
     --signal: #e26a45;
     --rule: #3a3834;
+    --link: #b1b1ad;
   }
 }
 ```
 
-That block is not in the stylesheet. Adding it is what turns dark mode on. `@media (forced-colors: active)` already maps the same variables to the operating system’s high-contrast colours.
+`@media (forced-colors: active)` maps those variables, including the link tokens, to the operating system’s high-contrast colours.
 
 Headings use Aileron. Navigation, captions, and metadata use IBM Plex Mono. The files are in `public/fonts/`.
 
