@@ -181,9 +181,9 @@ Colours are custom properties on `:root` in `src/styles/site.css`. Change them t
 | `--link` | `#4A4A46` | Link text and underline at rest. Hover (`--link-hover`) is `--ink` |
 | `--rule` | `#CFCDC6` | Thin decorative column line |
 
-Light mode is the default (`color-scheme: light` on `:root`). The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper.
+The site stays light. `:root` sets `color-scheme: light` and the page background stays `#FAFAF7`. It does not follow the system colour scheme. The browser theme colour in `src/layouts/Base.astro` is `#fafaf7`, the same paper. There is no theme toggle.
 
-When the system prefers a dark scheme, `src/styles/site.css` swaps the same tokens. Links use `#B1B1AD`, the muted grey that sits on `#151515` the way `#4A4A46` sits on `#FAFAF7` (about 8.5:1). Hover still follows `--ink`, so it becomes `#FAFAF7`.
+A dark theme is a manual edit. Add this block to `src/styles/site.css` if you want one. `#B1B1AD` is the muted link colour for the dark paper, the same step back from the ink as `#4A4A46` on `#FAFAF7`. That block is not in the stylesheet.
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -199,7 +199,7 @@ When the system prefers a dark scheme, `src/styles/site.css` swaps the same toke
 }
 ```
 
-`@media (forced-colors: active)` maps those variables, including the link tokens, to the operating system’s high-contrast colours.
+`@media (forced-colors: active)` maps those variables, including the link tokens, to the operating system’s high-contrast colours. That is separate from a dark theme.
 
 Headings use Aileron. Navigation, captions, and metadata use IBM Plex Mono. The files are in `public/fonts/`.
 
