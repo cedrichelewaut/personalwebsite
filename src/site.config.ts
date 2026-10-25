@@ -49,8 +49,10 @@ export const siteConfig = {
     work: true,
     study: true,
     projects: true,
+    photos: true,
     contact: true,
     running: true,
     bookshelf: false,
+    blog: false,
   } satisfies SectionFlags,
 };

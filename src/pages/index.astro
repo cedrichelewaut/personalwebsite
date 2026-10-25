@@ -1,35 +1,39 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import TitleList from "../components/TitleList.astro";
 import CollectionIndex from "../components/CollectionIndex.astro";
-import ArticleCards from "../components/ArticleCards.astro";
 import { site, sections } from "../site";
 import { sectionMeta } from "../site.sections";
-import { byArticleDate } from "../lib/articles";
 import { byOrder, isLive } from "../lib/content";
+import { albumThumb, byAlbumDate } from "../lib/photography";
 import { assertReadableSlug } from "../lib/slugs";
 
 const workAll = sections.work ? await getCollection("work") : [];
 const studyAll = sections.study ? await getCollection("study") : [];
 const projectAll = sections.projects ? await getCollection("projects") : [];
-const articleAll = await getCollection("articles");
+const postAll = sections.blog ? await getCollection("blog") : [];
+const albumAll = sections.photos ? await getCollection("photography") : [];
 for (const entry of workAll) assertReadableSlug(entry.id, "Roles");
 for (const entry of studyAll) assertReadableSlug(entry.id, "Study");
 for (const entry of projectAll) assertReadableSlug(entry.id, "Projects");
-for (const entry of articleAll) assertReadableSlug(entry.id, "Articles");
+for (const entry of postAll) assertReadableSlug(entry.id, "Posts");
+for (const entry of albumAll) assertReadableSlug(entry.id, "Albums");
 
 const work = byOrder(workAll.filter(isLive));
 const study = byOrder(studyAll.filter(isLive));
 const projects = byOrder(projectAll.filter(isLive));
-const latestArticles = byArticleDate(articleAll.filter(isLive)).slice(0, 3);
+const posts = byOrder(postAll.filter(isLive));
+const albums = byAlbumDate(albumAll.filter(isLive));
 
 const BookshelfExcerpt = sections.bookshelf
   ? (await import("../personal/bookshelf/BookshelfExcerpt.astro")).default
   : null;
 
 const showExperience = sections.work || sections.study;
-const showPersonal = sections.projects || sections.bookshelf || sections.running;
+const showPersonal =
+  sections.projects || sections.photos || sections.bookshelf || sections.running || sections.blog;
 ---
 
 <Base title={site.name} page="home" current="index" description={sections.intro ? site.intro : site.description}>
@@ -62,20 +66,6 @@ const showPersonal = sections.projects || sections.bookshelf || sections.running
           )}
         </div>
       </header>
-    )
-  }
-
-  {
-    latestArticles.length > 0 && (
-      <section class="home-group" id="articles" aria-labelledby="articles-title">
-        <h2 class="digest-title" id="articles-title">
-          <a href="/articles/">Articles</a>
-        </h2>
-        <ArticleCards articles={latestArticles} />
-        <p class="lede">
-          <a href="/articles/">All articles</a>
-        </p>
-      </section>
     )
   }
 
@@ -122,6 +112,33 @@ const showPersonal = sections.projects || sections.bookshelf || sections.running
             <TitleList items={projects.map((entry) => ({ href: `/projects/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
+        {sections.photos && albums.length > 0 && (
+          <section class="digest" id="photography" aria-labelledby="photography-title">
+            <h3 class="digest-title" id="photography-title">
+              {sectionMeta.photos.label}
+            </h3>
+            <div class="grid thumbs">
+              {albums.map((album) => {
+                const thumb = albumThumb(album);
+                return (
+                  <a class="thumb" href={`/photography/${album.id}/`}>
+                    {thumb && (
+                      <Image
+                        src={thumb}
+                        alt=""
+                        widths={[240, 480, 720]}
+                        sizes="(min-width: 720px) 160px, 50vw"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                    <span class="thumb-label">{album.data.title}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        )}
         {BookshelfExcerpt && <BookshelfExcerpt />}
         {sections.running && (
           <section class="digest" id="running" aria-labelledby="running-title">
@@ -129,6 +146,14 @@ const showPersonal = sections.projects || sections.bookshelf || sections.running
               <a href={sectionMeta.running.href}>{sectionMeta.running.label}</a>
             </h3>
             <p class="lede">Currently training for Hamburg Marathon 2027. Progress so far:</p>
+          </section>
+        )}
+        {sections.blog && (
+          <section class="digest" id="blog" aria-labelledby="blog-title">
+            <h3 class="digest-title" id="blog-title">
+              {sectionMeta.blog.label}
+            </h3>
+            <TitleList items={posts.map((entry) => ({ href: `/blog/${entry.id}/`, title: entry.data.title }))} />
           </section>
         )}
       </section>

@@ -6,16 +6,40 @@ import { spawn } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
-const keys = ["intro", "work", "study", "projects", "contact", "running", "bookshelf"];
+const keys = ["intro", "work", "study", "projects", "photos", "contact", "running", "bookshelf", "blog"];
 const defaults = {
   intro: true,
   work: true,
   study: true,
   projects: true,
+  photos: true,
   contact: true,
   running: true,
   bookshelf: false,
+  blog: false,
 };
+
+function hasPublishedAlbums() {
+  const base = path.resolve("src/content/photography");
+  if (!existsSync(base)) return false;
+  const walk = (dir) => {
+    for (const name of readdirSync(dir)) {
+      const full = path.join(dir, name);
+      if (statSync(full).isDirectory()) {
+        if (walk(full)) return true;
+        continue;
+      }
+      if (name !== "index.md") continue;
+      const text = readFileSync(full, "utf8");
+      if (!/^draft:\s*true\s*$/m.test(text)) return true;
+    }
+    return false;
+  };
+  return walk(base);
+}
+
+const publishedAlbums = hasPublishedAlbums();
+const total = 1 << keys.length;
 
 const level2 = {
   running: "running/index.html",
@@ -31,6 +55,8 @@ const removed = [
   "projects/index.html",
   "blog/index.html",
   "photographs/index.html",
+  "photography/index.html",
+  "articles/index.html",
 ];
 
 const overviewHref = /href="\/(experience|personal-projects|contact|work|study|projects|blog|photographs)\/?"/;
@@ -112,7 +138,7 @@ async function runWorker(id) {
     const homePath = path.join(outDir, "index.html");
     if (!existsSync(homePath)) missing.push("index.html");
     const experience = state.work || state.study;
-    const personal = state.projects || state.bookshelf || state.running;
+    const personal = state.projects || state.photos || state.bookshelf || state.running || state.blog;
     if (existsSync(homePath)) {
       const home = readFileSync(homePath, "utf8");
       const anchors = {
@@ -122,8 +148,10 @@ async function runWorker(id) {
         work: state.work,
         study: state.study,
         projects: state.projects,
+        photography: state.photos && publishedAlbums,
         reading: state.bookshelf,
         running: state.running,
+        blog: state.blog,
       };
       for (const [id, on] of Object.entries(anchors)) {
         const present = home.includes(`id="${id}"`);
@@ -150,8 +178,12 @@ async function runWorker(id) {
           continue;
         }
         if (!name.endsWith(".html")) continue;
+        const rel = path.relative(outDir, full).split(path.sep).join("/");
+        if (rel.startsWith("articles/")) unexpected.push(rel);
+        if (!state.photos && rel.startsWith("photography/")) unexpected.push(rel);
+        if (!state.blog && rel.startsWith("blog/")) unexpected.push(rel);
         const html = readFileSync(full, "utf8");
-        if (overviewHref.test(html)) stale.push(path.relative(outDir, full));
+        if (overviewHref.test(html)) stale.push(rel);
       }
     };
     if (existsSync(outDir)) walk(outDir);
@@ -159,8 +191,8 @@ async function runWorker(id) {
     if (missing.length || unexpected.length) {
       failed += 1;
       console.error(`FAIL routes ${label} missing=${missing.join(",")} unexpected=${unexpected.join(",")}`);
-    } else if (done % 16 === 0 || done === 128) {
-      console.log(`${done}/128`);
+    } else if (done % 32 === 0 || done === total) {
+      console.log(`${done}/${total}`);
     }
   }
 }

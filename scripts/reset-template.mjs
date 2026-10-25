@@ -52,14 +52,24 @@ draft: false
 Example note. Replace this file.
 `;
 
-const article = (title, date, draft) => `---
+const post = (title, order) => `---
 title: "${title}"
-date: ${date}
 summary: "Example summary. Replace this entry."
-draft: ${draft}
+noteDate: 2026-01-01
+order: ${order}
+draft: false
 ---
 
-Example article. Replace this file. Put images in this folder and refer to them as \`./photo.jpg\`.
+Example note. Replace this file.
+`;
+
+const album = `---
+title: "Example album — replace this"
+date: 2026-01-01
+draft: true
+---
+
+Replace this note. Add photographs to this folder. They are picked up automatically.
 `;
 
 const book = (title, rating, read) => `---
@@ -84,6 +94,7 @@ removeMarkdown("src/content/projects");
 removeMarkdown("src/personal/bookshelf/content/reading");
 rmSync(path.join(root, "src/content/articles"), { recursive: true, force: true });
 rmSync(path.join(root, "src/content/blog"), { recursive: true, force: true });
+rmSync(path.join(root, "src/content/photography"), { recursive: true, force: true });
 
 write("src/content/work/example-role.md", role("Example role — replace this", "Example organisation", 1));
 write("src/content/work/example-earlier-role.md", role("Example earlier role — replace this", "Example organisation", 2));
@@ -91,9 +102,9 @@ write("src/content/study/example-degree.md", role("Example degree — replace th
 write("src/content/study/example-course.md", role("Example course — replace this", "Example university", 2));
 write("src/content/projects/example-project.md", project("Example project — replace this", 1));
 write("src/content/projects/example-second-project.md", project("Example second project — replace this", 2));
-write("src/content/articles/example-article/index.md", article("Example article — replace this", "2026-05-12", false));
-write("src/content/articles/example-earlier-article/index.md", article("Example earlier article — replace this", "2026-01-03", false));
-write("src/content/articles/example/index.md", article("Example draft — replace this", "2026-01-01", true));
+write("src/content/blog/example-post.md", post("Example post — replace this", 1));
+write("src/content/blog/example-second-post.md", post("Example second post — replace this", 2));
+write("src/content/photography/example/index.md", album);
 write("src/personal/bookshelf/content/reading/example-book.md", book("Example book — replace this", 5, "2026-05-12"));
 write(
   "src/personal/bookshelf/content/reading/example-second-book.md",
@@ -128,6 +139,7 @@ config = config.replace(
   },`,
 );
 config = config.replace(/bookshelf:\s*true/, "bookshelf: false");
+config = config.replace(/blog:\s*false/, "blog: true");
 writeFileSync(configPath, config);
 
 const netlifyPath = path.join(root, "netlify.toml");

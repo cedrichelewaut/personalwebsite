@@ -23,7 +23,7 @@
 
 # One hop to the current page. No splat that lands on another redirect.
 # Overview pages now live on the home page. The fragment is part of the target.
-# force: /work/, /study/, /projects/, and /blog/ are also directories of articles.
+# force: /work/, /study/, /projects/, /blog/, and /photography/ are also directories of pages.
 [[redirects]]
   from = "/about"
   to = "/#work"
@@ -116,37 +116,43 @@
 
 [[redirects]]
   from = "/blog"
-  to = "/articles/"
+  to = "/#blog"
   status = 301
   force = true
 
 [[redirects]]
   from = "/blog/"
-  to = "/articles/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/blog/*"
-  to = "/articles/:splat"
+  to = "/#blog"
   status = 301
   force = true
 
 [[redirects]]
   from = "/photographs"
-  to = "/"
+  to = "/#photography"
   status = 301
   force = true
 
 [[redirects]]
   from = "/photographs/"
-  to = "/"
+  to = "/#photography"
   status = 301
   force = true
 
 [[redirects]]
   from = "/photographs/*"
-  to = "/"
+  to = "/#photography"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/photography"
+  to = "/#photography"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/photography/"
+  to = "/#photography"
   status = 301
   force = true
 

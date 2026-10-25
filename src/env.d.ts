@@ -3,9 +3,11 @@ type SiteSections = {
   work: boolean;
   study: boolean;
   projects: boolean;
+  photos: boolean;
   contact: boolean;
   running: boolean;
   bookshelf: boolean;
+  blog: boolean;
 };
 
 declare const __SITE_SECTIONS__: SiteSections;

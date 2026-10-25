@@ -20,12 +20,13 @@ interface FeedItem {
 }
 
 export const GET: APIRoute = async () => {
-  const [work, study, projects, reading, articles, ...sets] = await Promise.all([
+  const [work, study, projects, reading, posts, albums, ...sets] = await Promise.all([
     getCollection("work"),
     getCollection("study"),
     getCollection("projects"),
     getCollection("reading"),
-    getCollection("articles"),
+    getCollection("blog"),
+    getCollection("photography"),
     loadSeries("work"),
     loadSeries("study"),
     loadSeries("projects"),
@@ -74,14 +75,26 @@ export const GET: APIRoute = async () => {
             date: entry.data.noteDate as string,
           }))
       : []),
-    ...articles
-      .filter((entry) => isLive(entry))
-      .map((entry) => ({
-        title: entry.data.title,
-        path: `/articles/${entry.id}/`,
-        summary: entry.data.summary || entry.data.title,
-        date: entry.data.date,
-      })),
+    ...(sections.blog
+      ? posts
+          .filter((entry) => isLive(entry) && entry.data.noteDate)
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/blog/${entry.id}/`,
+            summary: entry.data.summary || entry.data.title,
+            date: entry.data.noteDate as string,
+          }))
+      : []),
+    ...(sections.photos
+      ? albums
+          .filter((entry) => isLive(entry))
+          .map((entry) => ({
+            title: entry.data.title,
+            path: `/photography/${entry.id}/`,
+            summary: entry.data.title,
+            date: entry.data.date,
+          }))
+      : []),
     ...(sections.work
       ? workSets
           .filter((entry) => hasNote(entry) && entry.data.noteDate)

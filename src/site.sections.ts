@@ -3,9 +3,11 @@ export type SectionFlags = {
   work: boolean;
   study: boolean;
   projects: boolean;
+  photos: boolean;
   contact: boolean;
   running: boolean;
   bookshelf: boolean;
+  blog: boolean;
 };
 
 export type SectionKey = keyof SectionFlags;
@@ -48,6 +50,12 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
     href: "/#projects",
     routes: [{ pattern: "/projects/[slug]", entry: "./src/sections/projects/[slug].astro" }],
   },
+  photos: {
+    id: "photography",
+    label: "Photography",
+    href: "/#photography",
+    routes: [{ pattern: "/photography/[slug]", entry: "./src/sections/photography/[slug].astro" }],
+  },
   bookshelf: {
     id: "reading",
     label: "Reading",
@@ -68,10 +76,16 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
     label: "Contact",
     href: "/#contact",
   },
+  blog: {
+    id: "blog",
+    label: "Blog",
+    href: "/#blog",
+    routes: [{ pattern: "/blog/[slug]", entry: "./src/sections/blog/[slug].astro" }],
+  },
 };
 
 export const experienceKeys = ["work", "study"] as const satisfies readonly SectionKey[];
-export const personalKeys = ["projects", "bookshelf", "running"] as const satisfies readonly SectionKey[];
+export const personalKeys = ["projects", "photos", "bookshelf", "running", "blog"] as const satisfies readonly SectionKey[];
 
 export function groupOn(sections: SectionFlags, keys: readonly SectionKey[]) {
   return keys.some((key) => sections[key]);

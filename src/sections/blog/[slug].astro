@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from "astro:content";
+import Note from "../../layouts/Note.astro";
+import Pager from "../../components/Pager.astro";
+import { byOrder, hasNote, isLive, neighbours } from "../../lib/content";
+import { formatRead } from "../../lib/dates";
+import { assertReadableSlug } from "../../lib/slugs";
+import { sectionMeta } from "../../site.sections";
+
+export async function getStaticPaths() {
+  const all = await getCollection("blog");
+  for (const entry of all) assertReadableSlug(entry.id, "Posts");
+  const posts = byOrder(all.filter(isLive));
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const posts = byOrder((await getCollection("blog")).filter(isLive));
+const { newer, older } = neighbours(posts, entry.id);
+---
+
+<Note
+  page="entry blog"
+  current="blog"
+  section="08"
+  title={entry.data.title}
+  description={entry.data.summary || entry.data.title}
+  kickerHref={sectionMeta.blog.href}
+  kicker="blog"
+  meta={entry.data.noteDate ? [{ label: "date", value: formatRead(entry.data.noteDate) }] : []}
+>
+  {hasNote(entry) ? <Content /> : <p>{entry.data.summary}</p>}
+  <Pager
+    slot="pager"
+    indexHref={sectionMeta.blog.href}
+    indexLabel="all posts"
+    newer={newer ? { href: `/blog/${newer.id}/`, label: "newer" } : undefined}
+    older={older ? { href: `/blog/${older.id}/`, label: "older" } : undefined}
+  />
+</Note>

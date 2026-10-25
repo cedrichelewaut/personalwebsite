@@ -134,7 +134,7 @@ const series = defineCollection({
     }),
 });
 
-const articleDate = z.preprocess((value) => {
+const isoDate = z.preprocess((value) => {
   if (value instanceof Date) {
     const year = value.getUTCFullYear();
     const month = String(value.getUTCMonth() + 1).padStart(2, "0");
@@ -144,20 +144,30 @@ const articleDate = z.preprocess((value) => {
   return value;
 }, z.string().regex(/^\d{4}-\d{2}-\d{2}$/));
 
-const articles = defineCollection({
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog", generateId: fileId }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string().default(""),
+    noteDate,
+    order: z.number().default(0),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const photography = defineCollection({
   loader: glob({
     pattern: "**/index.md",
-    base: "./src/content/articles",
+    base: "./src/content/photography",
     generateId: ({ entry }) => entry.replace(/\/index\.md$/, "").replaceAll("\\", "/"),
   }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      date: articleDate,
-      summary: z.string().optional(),
+      date: isoDate,
       cover: image().optional(),
       draft: z.boolean().default(false),
     }),
 });
 
-export const collections = { work, study, projects, reading, current, series, articles };
+export const collections = { work, study, projects, reading, current, series, blog, photography };

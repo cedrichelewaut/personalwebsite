@@ -5,27 +5,26 @@ import { hasNote, isLive } from "../lib/content";
 import { loadSeries } from "../lib/series";
 
 export const GET: APIRoute = async () => {
-  const [work, study, projects, reading, articles, workSets, studySets, projectSets, readingSets] =
+  const [work, study, projects, reading, posts, albums, workSets, studySets, projectSets, readingSets] =
     await Promise.all([
       getCollection("work"),
       getCollection("study"),
       getCollection("projects"),
       getCollection("reading"),
-      getCollection("articles"),
+      getCollection("blog"),
+      getCollection("photography"),
       loadSeries("work"),
       loadSeries("study"),
       loadSeries("projects"),
       loadSeries("reading"),
     ]);
 
-  const liveArticles = articles.filter(isLive);
-
   const paths = [
     "/",
-    "/articles/",
     ...(sections.bookshelf ? ["/reading/"] : []),
     ...(sections.running ? ["/running/"] : []),
-    ...liveArticles.map((entry) => `/articles/${entry.id}/`),
+    ...(sections.blog ? posts.filter(isLive).map((entry) => `/blog/${entry.id}/`) : []),
+    ...(sections.photos ? albums.filter(isLive).map((entry) => `/photography/${entry.id}/`) : []),
     ...(sections.work ? work.filter(isLive).map((entry) => `/work/${entry.id}/`) : []),
     ...(sections.study ? study.filter(isLive).map((entry) => `/study/${entry.id}/`) : []),
     ...(sections.projects ? projects.filter(isLive).map((entry) => `/projects/${entry.id}/`) : []),
