@@ -4,7 +4,8 @@
    A manual dark theme would override these variables
    (--paper, --ink, --grey, --signal, --rule, --link) and nothing else.
    --rule is the thin decorative column line: #CFCDC6 on #FAFAF7.
-   --signal is Red earth, #9A2400. It is the introduction and the thick rules.
+   --signal is Red earth, #9A2400. It is the introduction and the rules.
+   The signal rule is 4px, half the previous bar.
    Links are ink at rest, with no underline. Hover and focus turn them
    to Red earth and add a thin underline. Nav stays ink.
    Content rules stay --ink. */
@@ -51,12 +52,14 @@
   --link: #151515;
   --link-line: var(--link-hover);
   --link-hover: #9a2400;
+  --signal-bar: 4px;
   --gutter: 32px;
   --cols: 12;
   --max: 1440px;
   --body: 1rem;
   --meta: 0.72rem;
   --heading: 1.15rem;
+  --page: 1.75rem;
   color-scheme: light;
   background: var(--paper);
   color: var(--ink);
@@ -246,7 +249,6 @@ nav[aria-label="Sections"] {
   border-bottom: 1px solid var(--ink);
 }
 
-.section-no,
 .head-copy,
 .home-copy,
 .home-photo,
@@ -325,10 +327,10 @@ figcaption,
 
 .nav-links {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: baseline;
-  gap: 0.35rem 1.75rem;
+  gap: 0.35rem clamp(0.45rem, 2.2vw, 1.75rem);
   list-style: none;
   margin: 0;
   padding: calc(var(--gutter) / 2) 0;
@@ -337,6 +339,7 @@ figcaption,
 .nav-links a {
   color: var(--ink);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -383,25 +386,14 @@ body.home main > .home-group {
   border-bottom: 1px solid var(--ink);
 }
 
-.section-no {
-  grid-column: span 2;
-  margin: 0;
-  color: var(--signal);
-  font-family: "Aileron", Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  font-size: var(--heading);
-  line-height: 1.35;
-  letter-spacing: 0;
-}
-
 .head-copy {
   grid-column: span 10;
 }
 
 /* Home intro sits above the section index. The highlight follows the text, line by line.
    Named areas keep the portrait in front of the copy. The single-column stack
-   starts at the same width the nav becomes a column, so narrow viewports never
-   keep a two-column intro under that index. */
+   starts at the same width the intro becomes one column, so narrow viewports never
+   keep a two-column intro under that index. The menu stays one row. */
 .intro {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
@@ -495,23 +487,26 @@ h1.intro-title {
 }
 
 .intro-contact a {
-  color: var(--paper);
-  text-decoration: underline;
-  text-decoration-color: var(--paper);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  box-shadow: inset 0 -1px 0 var(--paper);
-  padding-bottom: 0.22em;
+  color: var(--ink);
+  background: transparent;
+  text-decoration: none;
+  box-shadow: none;
+  padding: 0;
 }
 
 .intro-contact a:hover,
 .intro-contact a:focus {
+  background: var(--signal);
   color: var(--paper);
-  text-decoration-color: var(--paper);
+  text-decoration: none;
+  padding: 0 0.18em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .intro-contact a:focus-visible {
-  outline-color: var(--paper);
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .hl {
@@ -564,14 +559,52 @@ h1.intro-title {
   margin-top: 0.85rem;
 }
 
+.page-title {
+  font-size: var(--page);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
 .digest-title {
   margin-bottom: 0.85rem;
   padding-bottom: 0.35rem;
-  border-bottom: 8px solid var(--signal);
+  border-bottom: var(--signal-bar) solid var(--signal);
   font-size: var(--heading);
   font-weight: 400;
   line-height: 1.35;
   letter-spacing: 0;
+}
+
+/* Home index labels match the header menu: mono, ink, no resting underline. */
+.home-group .digest-title {
+  margin-bottom: 0.55rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.home-group .digest-title a,
+.home-group .digest-title a:hover,
+.home-group .digest-title a:focus {
+  color: var(--ink);
+  font-weight: 400;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.home-group .digest-title a {
+  text-decoration: none;
+}
+
+.home-group .digest-title a:hover,
+.home-group .digest-title a:focus {
+  text-decoration: underline;
+  text-decoration-color: var(--ink);
 }
 
 .digest-title a:hover {
@@ -593,7 +626,7 @@ h1.intro-title {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-top: 8px solid var(--signal);
+  border-top: var(--signal-bar) solid var(--signal);
   border-left: 1px solid var(--ink);
 }
 
@@ -686,7 +719,7 @@ a.poster-title:hover .lang,
   list-style: none;
   margin: var(--gutter) 0 0;
   padding: 0;
-  border-top: 8px solid var(--signal);
+  border-top: var(--signal-bar) solid var(--signal);
 }
 
 .shelf li {
@@ -832,7 +865,7 @@ a.poster-title:hover {
 
 .part-title {
   padding-bottom: 0.35rem;
-  border-bottom: 8px solid var(--signal);
+  border-bottom: var(--signal-bar) solid var(--signal);
   font-size: var(--heading);
   font-weight: 400;
   line-height: 1.35;
@@ -875,11 +908,15 @@ a.poster-title:hover {
     color: HighlightText;
   }
 
-  .intro-contact a,
-  .intro-contact a:hover {
+  .intro-contact a {
+    color: CanvasText;
+    background: transparent;
+  }
+
+  .intro-contact a:hover,
+  .intro-contact a:focus {
+    background: Highlight;
     color: HighlightText;
-    text-decoration-color: HighlightText;
-    box-shadow: inset 0 -1px 0 HighlightText;
   }
 }
 
@@ -1311,10 +1348,6 @@ footer {
     grid-column: span 3;
   }
 
-  .section-no {
-    grid-column: span 2;
-  }
-
   .head-copy {
     grid-column: span 6;
   }
@@ -1346,7 +1379,6 @@ footer {
 @media (max-width: 720px) {
   .brand,
   .place,
-  .section-no,
   .head-copy,
   .home-copy,
   .home-photo {
@@ -1355,23 +1387,6 @@ footer {
 
   .place {
     justify-self: start;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 0.5rem 0;
-    border-top: 1px solid var(--ink);
-  }
-
-  .nav-links li:first-child a {
-    border-top: 0;
   }
 
   .meta > div {

@@ -20,15 +20,13 @@ interface Props {
   meta?: Meta[];
 }
 
-const { page, current, section, title, description, kickerHref, kicker, dek, mark, meta = [] } =
-  Astro.props;
+const { page, current, title, description, kickerHref, kicker, dek, mark, meta = [] } = Astro.props;
 const external = (href: string) => href.startsWith("http");
 ---
 
 <Base title={title} description={description} page={page} current={current} ogType="article">
   <div class="grid head">
-    <p class="section-no">{section}</p>
-    <div class="head-copy">
+    <div class="head-copy span-all">
       <p class="kicker"><a href={kickerHref}>{kicker}</a></p>
       {mark && <p class="mark">{mark}</p>}
       <h1>{title}</h1>

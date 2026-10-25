@@ -54,15 +54,15 @@ Everything that names the owner lives in `src/site.config.ts`.
 | `work` | on | `/work/` |
 | `study` | on | `/study/` |
 | `projects` | on | `/projects/` |
-| `photos` | on | `/photographs/` |
+| `photos` | on | `/photographs/`, labelled Photography |
 | `blog` | off | `/blog/` |
 | `contact` | on | `/contact/` and the intro contact link |
 | `running` | on | `/running/` |
-| `bookshelf` | off | `/reading/` and the home reading block |
+| `bookshelf` | off | `/reading/`, labelled Readings, and the home readings block |
 
-The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left.
+The header is four links, in this order: Home, Experience, Projects, Contact. They stay in one row at every width, including a 320px-wide window. The Projects item opens `/personal-projects/`. That page’s title stays Personal Projects.
 
-Experience opens `/experience/`, which lists Work and Study when those sections are on. Personal Projects opens `/personal-projects/`, which lists Projects, Photographs, Reading, Running, and Blog for the sections that are on. Turning a section off removes it from that landing page and from the home index. `/work/`, `/study/`, `/projects/`, `/photographs/`, `/reading/`, `/running/`, and `/blog/` stay as they are. If every section in a group is off, that header link is omitted too.
+Experience opens `/experience/`, which lists Work and Study when those sections are on. Personal Projects lists Projects, Photography, Readings, Running, and Blog for the sections that are on. Turning a section off removes it from that landing page and from the home index. `/work/`, `/study/`, `/projects/`, `/photographs/`, `/reading/`, `/running/`, and `/blog/` stay as they are. If every section in a group is off, that header link is omitted too.
 
 `bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,photos`). `node scripts/check-sections.mjs` builds every on/off combination.
 
@@ -202,14 +202,14 @@ A dark theme is a manual edit. Add this block to `src/styles/site.css` if you wa
 
 `@media (forced-colors: active)` maps those variables, including the link tokens, to the operating system’s high-contrast colours. That is separate from a dark theme.
 
-Headings use Aileron. Navigation, captions, and metadata use IBM Plex Mono. The files are in `public/fonts/`.
+Headings use Aileron at regular weight. Page titles use `--page` (1.75rem). Section and entry titles use `--heading` (1.15rem). Body text is `--body` (1rem). Navigation, home section labels, captions, and metadata use IBM Plex Mono at `--meta`. The files are in `public/fonts/`.
 
 ## Bookshelf (personal add-on)
 
 The bookshelf is personal to Cedric. It lives in `src/personal/bookshelf/`. The folder README starts with “Personal to Cedric — delete or keep disabled”.
 
 - Default: `bookshelf: false` in `src/site.config.ts`. The home page does not render the reading block, and `/reading/` is not built.
-- This repo: `netlify.toml` sets `PERSONAL_BOOKSHELF=true` under `[build.environment]`. Netlify injects that variable when it runs `npm run build`. Cedric’s live site keeps Reading, the currently-reading book, and Latest recommendations without a dashboard change.
+- This repo: `netlify.toml` sets `PERSONAL_BOOKSHELF=true` under `[build.environment]`. Netlify injects that variable when it runs `npm run build`. Cedric’s live site keeps Readings, the currently-reading book, and Latest recommendations without a dashboard change.
 - Cloners delete the `PERSONAL_BOOKSHELF` line. To preview Cedric’s bookshelf locally, run `PERSONAL_BOOKSHELF=true npm run dev`.
 
 To keep the add-on and add a book, copy `src/personal/bookshelf/content/reading/example.md` and edit `src/personal/bookshelf/content/current.md`. Books rated 3 or higher are listed, newest first. Home “Latest recommendations” is the three newest with a rating above 4. Do not link a Goodreads profile.
