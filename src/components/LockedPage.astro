@@ -6,9 +6,23 @@ interface Props {
   title: string;
 }
 
+interface Item {
+  w: number;
+  h: number;
+  cols: number;
+  rows: number;
+  tiles: string;
+  file: string;
+  capLen: number;
+  civ: string;
+  cdata: string;
+}
+
+type Block = { k: "t"; tag: string; len: number; iv: string; data: string } | { k: "g"; items: Item[] };
+
 const { slug, title } = Astro.props;
 const files = import.meta.glob<{ default: unknown }>("../private/*.json", { eager: true });
-const sealed = files[`../private/${slug}.json`]?.default as { data: string };
+const sealed = files[`../private/${slug}.json`]?.default as { blocks: Block[] } | undefined;
 if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${slug}.json. Run scripts/encrypt-page.mjs.`);
 ---
 
@@ -24,44 +38,204 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
     <p class="unlock-status" id="unlock-status" role="status"></p>
   </form>
   <div class="prose article" id="body">
-    <p class="cipher" id="cipher">{sealed.data}</p>
+    {
+      sealed.blocks.map((block, index) =>
+        block.k === "t" ? (
+          block.tag === "h4" ? (
+            <h4 class="cipher" data-block={index}>{block.data.slice(0, block.len)}</h4>
+          ) : (
+            <p class="cipher" data-block={index}>{block.data.slice(0, block.len)}</p>
+          )
+        ) : (
+          <div class="plates" data-block={index}>
+            {block.items.map((item, at) => (
+              <figure style={`--r:${item.w / item.h}`}>
+                <canvas data-item={at} width="720" height={Math.round(720 / (item.w / item.h))}></canvas>
+                <figcaption class="cipher">{item.cdata.slice(0, item.capLen)}</figcaption>
+              </figure>
+            ))}
+          </div>
+        ),
+      )
+    }
   </div>
   <script type="application/json" id="sealed" set:html={JSON.stringify(sealed)} />
   <script is:inline>
     (function () {
       var form = document.getElementById("unlock");
       var status = document.getElementById("unlock-status");
+      var body = document.getElementById("body");
       var sealed = JSON.parse(document.getElementById("sealed").textContent);
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
       function bytes(b64) {
         return Uint8Array.from(atob(b64), function (c) {
           return c.charCodeAt(0);
         });
       }
-      async function decrypt(password) {
+      function wait(ms) {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, ms);
+        });
+      }
+      function frames(ms, draw) {
+        return new Promise(function (resolve) {
+          var start = performance.now();
+          function step(now) {
+            var p = Math.min(1, (now - start) / ms);
+            draw(p);
+            if (p < 1) requestAnimationFrame(step);
+            else resolve();
+          }
+          requestAnimationFrame(step);
+        });
+      }
+      async function deriveKey(password) {
         var material = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, [
           "deriveKey",
         ]);
-        var key = await crypto.subtle.deriveKey(
+        return crypto.subtle.deriveKey(
           { name: "PBKDF2", salt: bytes(sealed.salt), iterations: sealed.iter, hash: "SHA-256" },
           material,
           { name: "AES-GCM", length: 256 },
           false,
           ["decrypt"],
         );
-        var packed = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(sealed.iv) }, key, bytes(sealed.data));
-        var stream = new Blob([packed]).stream().pipeThrough(new DecompressionStream("gzip"));
-        return new Response(stream).text();
       }
+      function open(key, iv, data) {
+        return crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, data);
+      }
+      async function text(key, iv, data) {
+        return new TextDecoder().decode(await open(key, bytes(iv), bytes(data)));
+      }
+
+      /* Locked view: each picture is its tile colours in shuffled order. */
+      function cells(item) {
+        var out = [];
+        for (var i = 0; i < item.cols * item.rows; i += 1) out.push("#" + item.tiles.substr(i * 6, 6));
+        return out;
+      }
+      function drawMosaic(ctx, item, colours, place) {
+        var cw = ctx.canvas.width / item.cols;
+        var ch = ctx.canvas.height / item.rows;
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        for (var i = 0; i < colours.length; i += 1) {
+          var pos = place(i);
+          ctx.fillStyle = colours[i];
+          ctx.fillRect(Math.floor(pos.x * cw), Math.floor(pos.y * ch), Math.ceil(cw), Math.ceil(ch));
+        }
+      }
+      function atShuffled(item) {
+        return function (i) {
+          return { x: i % item.cols, y: Math.floor(i / item.cols) };
+        };
+      }
+      sealed.blocks.forEach(function (block, index) {
+        if (block.k !== "g") return;
+        var figures = body.querySelector('[data-block="' + index + '"]').querySelectorAll("canvas");
+        block.items.forEach(function (item, at) {
+          drawMosaic(figures[at].getContext("2d"), item, cells(item), atShuffled(item));
+        });
+      });
+
+      /* Unlocking: text resolves from ciphertext, tiles slide home, then the photo fades in. */
+      function resolveText(el, html) {
+        var holder = document.createElement("div");
+        holder.innerHTML = html;
+        var plain = holder.textContent.replace(/\s+/g, " ").trim();
+        var wrapper = holder.firstElementChild;
+        if (reduce) {
+          el.replaceWith(wrapper);
+          return Promise.resolve();
+        }
+        return frames(500 + Math.min(900, plain.length * 3), function (p) {
+          var shown = Math.floor(p * plain.length);
+          var out = plain.slice(0, shown);
+          for (var i = shown; i < plain.length; i += 1) out += plain[i] === " " ? " " : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          el.textContent = out;
+        }).then(function () {
+          el.replaceWith(wrapper);
+        });
+      }
+      async function resolvePicture(canvas, item, order, blob, caption, figure) {
+        var ctx = canvas.getContext("2d");
+        var bitmap = await createImageBitmap(blob);
+        var colours = cells(item);
+        var from = atShuffled(item);
+        var to = function (i) {
+          return { x: order[i] % item.cols, y: Math.floor(order[i] / item.cols) };
+        };
+        if (!reduce) {
+          var delay = colours.map(function () {
+            return Math.random() * 0.35;
+          });
+          await frames(1700, function (p) {
+            drawMosaic(ctx, item, colours, function (i) {
+              var t = Math.max(0, Math.min(1, (p - delay[i]) / 0.65));
+              t = t * t * (3 - 2 * t);
+              var a = from(i);
+              var b = to(i);
+              return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+            });
+          });
+          await frames(550, function (p) {
+            drawMosaic(ctx, item, colours, to);
+            ctx.globalAlpha = p;
+            ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 1;
+          });
+        }
+        var img = document.createElement("img");
+        img.src = URL.createObjectURL(blob);
+        img.alt = caption.alt;
+        img.width = item.w;
+        img.height = item.h;
+        canvas.replaceWith(img);
+        var cap = figure.querySelector("figcaption");
+        cap.className = "";
+        cap.textContent = caption.caption;
+        if (!caption.caption) cap.remove();
+      }
+
+      async function unlock(password) {
+        var key = await deriveKey(password);
+        var first = sealed.blocks.find(function (b) {
+          return b.k === "t";
+        });
+        await text(key, first.iv, first.data); // throws on a wrong key
+        var jobs = sealed.blocks.map(function (block, index) {
+          var holder = body.querySelector('[data-block="' + index + '"]');
+          if (block.k === "t") {
+            return text(key, block.iv, block.data).then(function (html) {
+              return resolveText(holder, html);
+            });
+          }
+          var figures = holder.querySelectorAll("figure");
+          return Promise.all(
+            block.items.map(async function (item, at) {
+              var caption = JSON.parse(await text(key, item.civ, item.cdata));
+              var file = new Uint8Array(await (await fetch(item.file)).arrayBuffer());
+              var plain = new Uint8Array(await open(key, file.slice(0, 12), file.slice(12)));
+              var size = new DataView(plain.buffer).getUint32(0);
+              var order = JSON.parse(new TextDecoder().decode(plain.slice(4, 4 + size)));
+              var blob = new Blob([plain.slice(4 + size)], { type: "image/jpeg" });
+              return resolvePicture(figures[at].querySelector("canvas"), item, order, blob, caption, figures[at]);
+            }),
+          );
+        });
+        await Promise.all(jobs);
+      }
+
       form.addEventListener("submit", async function (event) {
         event.preventDefault();
         status.textContent = "Trying the key…";
         try {
-          var html = await decrypt(document.getElementById("key").value);
-          document.getElementById("body").innerHTML = html;
+          await unlock(document.getElementById("key").value);
           document.getElementById("lock-state").textContent = "Unlocked";
           form.hidden = true;
         } catch (error) {
-          status.textContent = "That key doesn’t fit.";
+          status.textContent = error && error.name === "OperationError" ? "That key doesn’t fit." : "Something went wrong. Try again.";
         }
       });
     })();

@@ -1476,14 +1476,39 @@ footer {
   min-height: 1.4em;
 }
 
-/* The sealed body: the real ciphertext, filling the article column. */
+/* The sealed body: real ciphertext in the article's own type, so the layout matches once unlocked. */
 .cipher {
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.plates {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
   max-width: 66ch;
+}
+
+.plates figure {
+  flex: var(--r) 1 0;
+  min-width: 0;
+  margin: 0;
+}
+
+.plates canvas,
+.plates img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--r);
+  border: 1px solid var(--ink);
+}
+
+.plates figcaption {
+  margin-top: 0.4rem;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: var(--meta);
   line-height: 1.4;
-  overflow-wrap: anywhere;
-  user-select: all;
 }
 
 @media (max-width: 720px) {
