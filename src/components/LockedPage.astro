@@ -82,14 +82,42 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
       function frames(ms, draw) {
         return new Promise(function (resolve) {
           var start = performance.now();
-          function step(now) {
-            var p = Math.min(1, (now - start) / ms);
-            draw(p);
-            if (p < 1) requestAnimationFrame(step);
-            else resolve();
+          var finished = false;
+          function finish() {
+            if (finished) return;
+            finished = true;
+            try {
+              draw(1);
+            } catch (error) {
+              /* the caller puts the final content in place anyway */
+            }
+            resolve();
           }
-          requestAnimationFrame(step);
+          function tick() {
+            if (finished) return;
+            var p = Math.min(1, (performance.now() - start) / ms);
+            if (p >= 1) return finish();
+            draw(p);
+            if (document.hidden) setTimeout(tick, 60);
+            else requestAnimationFrame(tick);
+          }
+          setTimeout(finish, ms * 2 + 600); // a browser that throttles animation frames must not stall the page
+          tick();
         });
+      }
+      async function fetchBytes(url) {
+        var last;
+        for (var attempt = 0; attempt < 3; attempt += 1) {
+          try {
+            var response = await fetch(url, { cache: "no-store" });
+            if (!response.ok) throw new Error("HTTP " + response.status + " for " + url);
+            return new Uint8Array(await response.arrayBuffer());
+          } catch (error) {
+            last = error;
+            await wait(400 * (attempt + 1));
+          }
+        }
+        throw last;
       }
       async function deriveKey(password) {
         var material = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, [
@@ -211,42 +239,61 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
           return b.k === "t";
         });
         await text(key, first.iv, first.data); // throws on a wrong key
+        var problems = [];
+        function failed(what, error) {
+          problems.push(what + ": " + (error && error.message ? error.message : error));
+          if (window.console) console.error(what, error);
+        }
         var jobs = sealed.blocks.map(function (block, index) {
           var holder = body.querySelector('[data-block="' + index + '"]');
           if (block.k === "t") {
-            return text(key, block.iv, block.data).then(function (html) {
-              return resolveText(holder, html);
-            });
+            return text(key, block.iv, block.data)
+              .then(function (html) {
+                return resolveText(holder, html);
+              })
+              .catch(function (error) {
+                failed("text block " + (index + 1), error);
+              });
           }
           var figures = holder.querySelectorAll("figure");
           return Promise.all(
             block.items.map(async function (item, at) {
-              var caption = JSON.parse(await text(key, item.civ, item.cdata));
-              var file = new Uint8Array(await (await fetch(item.file)).arrayBuffer());
-              var plain = new Uint8Array(await open(key, file.slice(0, 12), file.slice(12)));
-              var size = new DataView(plain.buffer).getUint32(0);
-              var order = JSON.parse(new TextDecoder().decode(plain.slice(4, 4 + size)));
-              var blob = new Blob([plain.slice(4 + size)], { type: "image/jpeg" });
-              return resolvePicture(figures[at].querySelector("canvas"), item, order, blob, caption, figures[at]).catch(
-                function () {
-                  return resolvePicture(figures[at].querySelector("canvas"), item, order, blob, caption, figures[at], true);
-                },
-              );
+              var canvas = figures[at].querySelector("canvas");
+              try {
+                var caption = JSON.parse(await text(key, item.civ, item.cdata));
+                var file = await fetchBytes(item.file);
+                var plain = new Uint8Array(await open(key, file.slice(0, 12), file.slice(12)));
+                var size = new DataView(plain.buffer).getUint32(0);
+                var order = JSON.parse(new TextDecoder().decode(plain.slice(4, 4 + size)));
+                var blob = new Blob([plain.slice(4 + size)], { type: "image/jpeg" });
+                try {
+                  await resolvePicture(canvas, item, order, blob, caption, figures[at]);
+                } catch (error) {
+                  await resolvePicture(canvas, item, order, blob, caption, figures[at], true);
+                }
+              } catch (error) {
+                failed("picture " + (at + 1) + " of block " + (index + 1), error);
+              }
             }),
           );
         });
         await Promise.all(jobs);
+        return problems;
       }
 
       form.addEventListener("submit", async function (event) {
         event.preventDefault();
         status.textContent = "Trying the key…";
         try {
-          await unlock(document.getElementById("key").value);
-          document.getElementById("lock-state").textContent = "Unlocked";
-          form.hidden = true;
+          var problems = await unlock(document.getElementById("key").value);
+          document.getElementById("lock-state").textContent = problems.length ? "Partly unlocked" : "Unlocked";
+          if (problems.length) {
+            status.textContent = "Some parts could not be opened (" + problems.join("; ") + "). Reload and try again.";
+          } else {
+            form.hidden = true;
+          }
         } catch (error) {
-          status.textContent = error && error.name === "OperationError" ? "That key doesn’t fit." : "Something went wrong. Try again.";
+          status.textContent = error && error.name === "OperationError" ? "That key doesn’t fit." : "Something went wrong (" + (error && error.message ? error.message : error) + "). Try again.";
         }
       });
     })();
