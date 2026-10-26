@@ -1,5 +1,5 @@
 ---
-title: Canada 2026
+title: Mexico 2026
 date: 2026-10-10
 draft: false
 ---
