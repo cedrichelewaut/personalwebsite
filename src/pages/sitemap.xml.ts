@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
     ...(sections.photos ? albums.filter(isLive).map((entry) => `/photography/${entry.id}/`) : []),
     ...(sections.work ? work.filter(isLive).map((entry) => `/work/${entry.id}/`) : []),
     ...(sections.study ? study.filter(isLive).map((entry) => `/study/${entry.id}/`) : []),
-    ...(sections.projects ? projects.filter(isLive).map((entry) => `/projects/${entry.id}/`) : []),
+    ...(sections.projects ? projects.filter((entry) => isLive(entry) && !entry.data.locked).map((entry) => `/projects/${entry.id}/`) : []),
     ...(sections.bookshelf
       ? reading.filter((entry) => isLive(entry) && hasNote(entry)).map((entry) => `/reading/${entry.id}/`)
       : []),

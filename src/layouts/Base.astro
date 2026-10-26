@@ -8,9 +8,10 @@ interface Props {
   page: string;
   current: string;
   ogType?: "website" | "article";
+  noindex?: boolean;
 }
 
-const { title, description = site.description, page, current, ogType = "website" } = Astro.props;
+const { title, description = site.description, page, current, ogType = "website", noindex = false } = Astro.props;
 const fullTitle = title === site.name ? site.name : `${title} — ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const year = new Date().getFullYear();
@@ -24,6 +25,7 @@ const year = new Date().getFullYear();
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />

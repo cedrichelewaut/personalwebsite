@@ -1432,3 +1432,16 @@ footer {
     width: 100%;
   }
 }
+
+.unlock {
+  margin-top: var(--gutter);
+  max-width: 24rem;
+}
+
+.unlock-status {
+  min-height: 1.4em;
+  margin-top: 0.85rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.4;
+}
