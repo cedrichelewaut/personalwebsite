@@ -158,15 +158,22 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
           el.replaceWith(wrapper);
         });
       }
-      async function resolvePicture(canvas, item, order, blob, caption, figure) {
+      async function resolvePicture(canvas, item, order, blob, caption, figure, plain) {
         var ctx = canvas.getContext("2d");
-        var bitmap = await createImageBitmap(blob);
+        var url = URL.createObjectURL(blob);
+        var photo = new Image();
+        photo.src = url;
+        try {
+          await photo.decode();
+        } catch (error) {
+          /* A browser that cannot pre-decode still shows the photo once it is in the page. */
+        }
         var colours = cells(item);
         var from = atShuffled(item);
         var to = function (i) {
           return { x: order[i] % item.cols, y: Math.floor(order[i] / item.cols) };
         };
-        if (!reduce) {
+        if (!reduce && !plain && photo.naturalWidth > 0) {
           var delay = colours.map(function () {
             return Math.random() * 0.35;
           });
@@ -182,12 +189,12 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
           await frames(550, function (p) {
             drawMosaic(ctx, item, colours, to);
             ctx.globalAlpha = p;
-            ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(photo, 0, 0, canvas.width, canvas.height);
             ctx.globalAlpha = 1;
           });
         }
         var img = document.createElement("img");
-        img.src = URL.createObjectURL(blob);
+        img.src = url;
         img.alt = caption.alt;
         img.width = item.w;
         img.height = item.h;
@@ -220,7 +227,11 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
               var size = new DataView(plain.buffer).getUint32(0);
               var order = JSON.parse(new TextDecoder().decode(plain.slice(4, 4 + size)));
               var blob = new Blob([plain.slice(4 + size)], { type: "image/jpeg" });
-              return resolvePicture(figures[at].querySelector("canvas"), item, order, blob, caption, figures[at]);
+              return resolvePicture(figures[at].querySelector("canvas"), item, order, blob, caption, figures[at]).catch(
+                function () {
+                  return resolvePicture(figures[at].querySelector("canvas"), item, order, blob, caption, figures[at], true);
+                },
+              );
             }),
           );
         });
