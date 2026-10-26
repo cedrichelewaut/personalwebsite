@@ -2,12 +2,9 @@
 import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
-import Pager from "../../components/Pager.astro";
-import { hasNote, isLive, neighbours } from "../../lib/content";
-import { formatRead } from "../../lib/dates";
-import { albumImages, byAlbumDate } from "../../lib/photography";
+import { hasNote, isLive } from "../../lib/content";
+import { albumImages, byAlbumDate, collageRows } from "../../lib/photography";
 import { assertReadableSlug } from "../../lib/slugs";
-import { sectionMeta } from "../../site.sections";
 
 export async function getStaticPaths() {
   const all = await getCollection("photography");
@@ -20,52 +17,40 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const images = albumImages(entry.id);
-const albums = byAlbumDate((await getCollection("photography")).filter(isLive));
-const { newer, older } = neighbours(albums, entry.id);
+const rows = collageRows(albumImages(entry.id));
 ---
 
-<Base
-  title={entry.data.title}
-  description={entry.data.title}
-  page="entry photography"
-  current="photography"
-  ogType="article"
->
+<Base title={entry.data.title} description={entry.data.title} page="entry photography" current="" ogType="article">
   <header class="article-head">
-    <p class="kicker"><a href={sectionMeta.photos.href}>photography</a></p>
     <h1>{entry.data.title}</h1>
-    <p class="article-meta">{formatRead(entry.data.date)}</p>
   </header>
   {
     hasNote(entry) && (
-      <div class="prose">
+      <div class="prose article">
         <Content />
       </div>
     )
   }
   {
-    images.length > 0 && (
-      <div class="album-photos">
-        {images.map((image) => (
-          <Image
-            src={image}
-            alt=""
-            widths={[640, 960, 1280, 1600]}
-            sizes="(min-width: 1100px) 960px, 100vw"
-            loading="lazy"
-            decoding="async"
-          />
+    rows.length > 0 && (
+      <div class="collage">
+        {rows.map((row) => (
+          <div class:list={["collage-row", row.solo && "solo"]} style={row.solo ? `--r:${row.items[0].ratio}` : undefined}>
+            {row.items.map((item) => (
+              <figure class="frame" style={`--r:${item.ratio}`}>
+                <Image
+                  src={item.image}
+                  alt=""
+                  widths={[480, 720, 1080, 1600]}
+                  sizes={`(min-width: 720px) ${Math.round(item.share * 100)}vw, 100vw`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ))}
+          </div>
         ))}
       </div>
     )
   }
-  <div class="block">
-    <Pager
-      indexHref={sectionMeta.photos.href}
-      indexLabel="photography"
-      newer={newer ? { href: `/photography/${newer.id}/`, label: "newer" } : undefined}
-      older={older ? { href: `/photography/${older.id}/`, label: "older" } : undefined}
-    />
-  </div>
 </Base>

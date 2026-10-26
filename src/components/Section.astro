@@ -1,16 +1,12 @@
 ---
 interface Props {
-  num: string;
   title: string;
 }
 
-const { num, title } = Astro.props;
+const { title } = Astro.props;
 ---
 
-<div class="grid head">
-  <p class="section-no">{num}</p>
-  <div class="head-copy">
-    <h1>{title}</h1>
-    <slot />
-  </div>
-</div>
+<header class="article-head">
+  <h1>{title}</h1>
+</header>
+<slot />

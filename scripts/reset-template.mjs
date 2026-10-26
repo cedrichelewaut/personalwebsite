@@ -115,7 +115,6 @@ write(
   `---
 title: "Example book in progress — replace this"
 author: "Example author"
-edition: "Example edition, 2026"
 url: "https://example.com"
 ---
 

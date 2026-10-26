@@ -14,8 +14,10 @@ export const siteConfig = {
   formspree: "https://formspree.io/f/xzbngqdy",
   ogImage: "/img/cedric-portrait.jpg",
   intro:
-    "I’m Cedric, a Ghent-based engineer passionate about building products and taking them to market. I love working on innovation, especially around security and sustainability.",
+    "Cedric Helewaut is a Ghent-based computer science engineer passionate about product management and go-to-market.",
   contactLink: { href: "/#contact", label: "Get in touch →" },
+  /** The full marathon schedule lives outside this site. */
+  runningBoard: "https://cedrichelewaut.github.io/marathoning/",
   portrait: {
     src: "/img/cedric-portrait.jpg",
     alt: "Portrait of Cedric Helewaut",
