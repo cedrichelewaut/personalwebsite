@@ -35,6 +35,14 @@
 
 @font-face {
   font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/IBMPlexMono-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
@@ -459,10 +467,17 @@ h1.intro-title {
   line-height: 1.45;
 }
 
-.lede,
+.lede {
+  max-width: 66ch;
+}
+
+/* Article text is IBM Plex Mono at the small size. Section titles stay Aileron. */
 .prose p,
 .prose li {
-  max-width: 66ch;
+  max-width: 80ch;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.5;
 }
 
 .lede {
@@ -1480,14 +1495,6 @@ footer {
 .cipher {
   overflow-wrap: anywhere;
   user-select: all;
-}
-
-/* Locked articles: IBM Plex Mono for the text, Aileron for the section titles. */
-.prose.mono p {
-  max-width: 80ch;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: var(--meta);
-  line-height: 1.5;
 }
 
 .plates {
