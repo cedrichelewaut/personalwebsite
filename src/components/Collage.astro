@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { collageRows } from "../lib/photography";
+
+interface Props {
+  images: ImageMetadata[];
+  caption: (image: ImageMetadata) => string;
+}
+
+const { images, caption } = Astro.props;
+const rows = collageRows(images);
+---
+
+{
+  rows.length > 0 && (
+    <div class="collage">
+      {rows.map((row) => (
+        <div class:list={["collage-row", row.solo && "solo"]} style={row.solo ? `--r:${row.items[0].ratio}` : undefined}>
+          {row.items.map((item) => (
+            <figure class="frame" style={`--r:${item.ratio}`}>
+              <Image
+                src={item.image}
+                alt=""
+                widths={[480, 720, 1080, 1600]}
+                sizes={`(min-width: 720px) ${Math.round(item.share * 100)}vw, 100vw`}
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption class="frame-meta">{caption(item.image) || " "}</figcaption>
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}

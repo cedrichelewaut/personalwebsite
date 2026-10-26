@@ -1,0 +1,38 @@
+{
+ "montreal/01-img_9496.jpg": {
+  "date": "2022-09-24",
+  "device": "iPhone SE (2nd generation)"
+ },
+ "montreal/02-img_9515.jpg": {
+  "date": "2022-09-25",
+  "device": "iPhone SE (2nd generation)"
+ },
+ "montreal/03-img_9737.jpg": {
+  "date": "2022-10-09",
+  "device": "iPhone SE (2nd generation)"
+ },
+ "montreal/04-img_9806.jpg": {
+  "date": "2022-10-11",
+  "device": "iPhone SE (2nd generation)"
+ },
+ "montreal/05-img_9842.jpg": {
+  "date": "2022-10-13",
+  "device": "iPhone SE (2nd generation)"
+ },
+ "montreal/06-21a68941-1d6c-47c6-9733-d3994b359b0e.jpg": {
+  "date": null,
+  "device": null
+ },
+ "montreal/07-img_1028.jpg": {
+  "date": null,
+  "device": "Analog film"
+ },
+ "pxg/01-training.jpg": {
+  "date": "2026-05-12",
+  "device": "iPhone 17"
+ },
+ "pxg/02-google.jpg": {
+  "date": "2026-06-10",
+  "device": "iPhone 17"
+ }
+}
