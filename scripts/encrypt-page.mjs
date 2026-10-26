@@ -1,5 +1,5 @@
 /**
- * Encrypt an HTML page for a locked project.
+ * Encrypt an HTML fragment (the article body, in the site's own prose markup) for a locked project.
  * Usage: PAGE_PASSWORD='long random passphrase' node scripts/encrypt-page.mjs <page.html> <slug>
  *
  * Keep the plaintext page outside git (private-src/ is ignored). The output,
