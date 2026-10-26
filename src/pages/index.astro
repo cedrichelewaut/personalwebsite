@@ -44,7 +44,7 @@ const icons: Record<string, string> = {
 };
 ---
 
-<Base title={site.name} page="home" current="index" description={sections.intro ? site.intro : site.description}>
+<Base title={site.name} page="home" current="index" description={sections.intro ? site.intro.replace("\n", " ") : site.description}>
   {
     sections.intro && (
       <header slot="lead" class="intro" id="intro">
@@ -59,9 +59,16 @@ const icons: Record<string, string> = {
           />
         </div>
         <div class="intro-text">
-          <h1 class="sr-only">{site.name}</h1>
+          <h1 class="intro-title">
+            <span class="hl">{site.name}</span>
+          </h1>
           <p class="intro-copy">
-            <span class="hl">{site.intro}</span>
+            {site.intro.split("\n").map((line, index) => (
+              <>
+                {index > 0 && <br />}
+                <span class="hl">{line}</span>
+              </>
+            ))}
           </p>
           {sections.contact && (
             <p class="intro-contact">
