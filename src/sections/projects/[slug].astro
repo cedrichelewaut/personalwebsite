@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import EntryArticle from "../../components/EntryArticle.astro";
+import LockedPage from "../../components/LockedPage.astro";
 import SetPage from "../../components/SetPage.astro";
 import { byOrder, hasNote, isLive } from "../../lib/content";
 import { formatRange } from "../../lib/dates";
@@ -40,7 +41,10 @@ const dates =
   props.kind === "set" && <SetPage entry={props.entry} />
 }
 {
-  entry && (
+  entry && entry.data.locked && <LockedPage slug={entry.id} title={entry.data.title} />
+}
+{
+  entry && !entry.data.locked && (
     <EntryArticle
       page="entry projects"
       title={entry.data.title}

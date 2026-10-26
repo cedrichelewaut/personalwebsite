@@ -220,3 +220,15 @@ A catalogue code is only for a finished collection. Copy `src/content/collection
 ## Feed
 
 Entries with a body and a `noteDate` are included in `/rss.xml` when their section is on. Published albums are included when `photos` is on. `/feed.xml` redirects there.
+
+## Locked pages
+
+A project with `locked: true` in its front matter is a password-protected page. Its content is encrypted in the browser sense: the repository holds only `src/private/<slug>.json` (AES-256-GCM, key from the password with PBKDF2), never the readable page. Visitors see a short “sealed” page with a key field; the right key opens the page in a full-screen frame.
+
+To create or update one, keep the readable HTML outside git (`private-src/` is ignored) and run:
+
+```bash
+PAGE_PASSWORD='a long random passphrase' node scripts/encrypt-page.mjs private-src/page.html <slug>
+```
+
+Local `<img src="…">` files next to the page are inlined before encryption. The password must be at least 16 characters, because the encrypted file is public and can be guessed against offline. Locked pages are marked `noindex` and left out of the sitemap and RSS.

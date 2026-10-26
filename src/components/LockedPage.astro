@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+
+interface Props {
+  slug: string;
+  title: string;
+}
+
+const { slug, title } = Astro.props;
+const files = import.meta.glob<{ default: unknown }>("../private/*.json", { eager: true });
+const sealed = files[`../private/${slug}.json`]?.default;
+if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${slug}.json. Run scripts/encrypt-page.mjs.`);
+---
+
+<Base title={title} description="Locked." page="entry locked" current="" ogType="article" noindex>
+  <header class="article-head">
+    <h1>{title}</h1>
+  </header>
+  <div class="prose article">
+    <p>This one is sealed. If you were given a key, type it below.</p>
+  </div>
+  <form class="contact-form unlock" id="unlock" autocomplete="off">
+    <div class="field">
+      <label for="key">key</label>
+      <input id="key" type="password" required autocomplete="off" />
+    </div>
+    <button class="submit" type="submit">open</button>
+    <p class="unlock-status" id="unlock-status" role="status"></p>
+  </form>
+  <script type="application/json" id="sealed" set:html={JSON.stringify(sealed)} />
+  <script is:inline>
+    (function () {
+      var form = document.getElementById("unlock");
+      var status = document.getElementById("unlock-status");
+      var sealed = JSON.parse(document.getElementById("sealed").textContent);
+      function bytes(b64) {
+        return Uint8Array.from(atob(b64), function (c) {
+          return c.charCodeAt(0);
+        });
+      }
+      async function decrypt(password) {
+        var material = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, [
+          "deriveKey",
+        ]);
+        var key = await crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: bytes(sealed.salt), iterations: sealed.iter, hash: "SHA-256" },
+          material,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["decrypt"],
+        );
+        var packed = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(sealed.iv) }, key, bytes(sealed.data));
+        var stream = new Blob([packed]).stream().pipeThrough(new DecompressionStream("gzip"));
+        return new Response(stream).text();
+      }
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        status.textContent = "Trying the key…";
+        try {
+          var html = await decrypt(document.getElementById("key").value);
+          var frame = document.createElement("iframe");
+          frame.setAttribute("sandbox", "allow-scripts allow-popups");
+          frame.title = "Unlocked page";
+          frame.style.cssText = "position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff;z-index:20";
+          frame.srcdoc = html;
+          document.body.appendChild(frame);
+        } catch (error) {
+          status.textContent = "That key doesn’t fit.";
+        }
+      });
+    })();
+  </script>
+</Base>

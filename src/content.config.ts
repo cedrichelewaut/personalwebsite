@@ -76,6 +76,8 @@ const projects = defineCollection({
     start: z.string().optional(),
     end: z.string().optional(),
     stub: z.boolean().default(false),
+    /** A password-protected page. Its encrypted body lives in src/private/<slug>.json. */
+    locked: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
 });

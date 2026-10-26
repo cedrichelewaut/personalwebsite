@@ -2,3 +2,5 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+# Plaintext sources of password-protected pages. Never commit these.
+private-src/
