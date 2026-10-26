@@ -1,0 +1,102 @@
+# Pages CMS configuration: https://pagescms.org/docs/configuration/
+# Sign in at app.pagescms.org, open this repository and edit articles and photo albums with forms.
+# Every save is a commit on the branch you have selected; Netlify publishes what lands on master.
+
+media:
+  - name: images
+    label: Article images
+    input: public/img
+    output: /img
+  - name: albums
+    label: Album photos
+    input: src/content/photography
+    output: /photography
+
+content:
+  - name: work
+    label: Work
+    type: collection
+    path: src/content/work
+    filename:
+      template: "{primary}.md"
+      field: true
+    view:
+      fields: [title, org, start, end]
+      primary: title
+      sort: [order]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: org, label: Organisation, type: string, required: true }
+      - { name: start, label: Start (e.g. Sept. 2025), type: string, required: true }
+      - { name: end, label: End (e.g. Present), type: string, required: true }
+      - { name: summary, label: One-line summary, type: text, required: true }
+      - { name: order, label: Order on the home page (1 = first), type: number, required: true }
+      - { name: noteDate, label: Date of the note, type: date, options: { format: "yyyy-MM-dd" } }
+      - { name: stub, label: Still a stub, type: boolean, default: false }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: false }
+      - { name: body, label: Article, type: rich-text, options: { format: markdown, media: images } }
+
+  - name: study
+    label: Education
+    type: collection
+    path: src/content/study
+    filename:
+      template: "{primary}.md"
+      field: true
+    view:
+      fields: [title, org, start, end]
+      primary: title
+      sort: [order]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: org, label: Organisation, type: string, required: true }
+      - { name: start, label: Start (e.g. Sept 2021), type: string, required: true }
+      - { name: end, label: End (e.g. June 2023), type: string, required: true }
+      - { name: summary, label: One-line summary, type: text, required: true }
+      - { name: order, label: Order on the home page (1 = first), type: number, required: true }
+      - { name: noteDate, label: Date of the note, type: date, options: { format: "yyyy-MM-dd" } }
+      - { name: stub, label: Still a stub, type: boolean, default: false }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: false }
+      - { name: body, label: Article, type: rich-text, options: { format: markdown, media: images } }
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    exclude: [example.md]
+    filename:
+      template: "{primary}.md"
+      field: true
+    view:
+      fields: [title, summary]
+      primary: title
+      sort: [order]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: One-line summary, type: text }
+      - { name: url, label: Link (optional), type: string }
+      - { name: org, label: Organisation (optional), type: string }
+      - { name: start, label: Start (optional), type: string }
+      - { name: end, label: End (optional), type: string }
+      - { name: order, label: Order on the home page (1 = first), type: number }
+      - { name: noteDate, label: Date of the note, type: date, options: { format: "yyyy-MM-dd" } }
+      - { name: stub, label: Still a stub, type: boolean, default: false }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: false }
+      - { name: locked, label: Password-protected page (do not change), type: boolean, default: false }
+      - { name: body, label: Article, type: rich-text, options: { format: markdown, media: images } }
+
+  - name: photography
+    label: Photo albums
+    type: collection
+    path: src/content/photography
+    subfolders: true
+    exclude: [example]
+    view:
+      layout: tree
+      node:
+        filename: index.md
+    fields:
+      - { name: title, label: Album title, type: string, required: true }
+      - { name: date, label: Date (sorts the albums, newest first), type: date, required: true, options: { format: "yyyy-MM-dd" } }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: false }
+      - { name: body, label: Short description, type: rich-text, options: { format: markdown } }

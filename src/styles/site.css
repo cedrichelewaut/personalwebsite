@@ -992,6 +992,14 @@ a.poster-title:hover {
   text-underline-offset: 0.15em;
 }
 
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.1rem 0;
+  border: 1px solid var(--ink);
+}
+
 .prose strong {
   font-weight: 700;
 }
