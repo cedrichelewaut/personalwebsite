@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { hasNote, isLive } from "../../lib/content";
-import { albumImages, byAlbumDate, collageRows } from "../../lib/photography";
+import { albumImages, byAlbumDate, collageRows, photoCaption } from "../../lib/photography";
 import { assertReadableSlug } from "../../lib/slugs";
 
 export async function getStaticPaths() {
@@ -46,6 +46,7 @@ const rows = collageRows(albumImages(entry.id));
                   loading="lazy"
                   decoding="async"
                 />
+                <figcaption class="frame-meta">{photoCaption(item.image) || "\u00a0"}</figcaption>
               </figure>
             ))}
           </div>

@@ -6,6 +6,24 @@ const images = import.meta.glob<ImageMetadata>(
   { eager: true, import: "default" },
 );
 
+import meta from "./photo-meta.json";
+
+const fileOf = new Map<ImageMetadata, string>();
+for (const [file, image] of Object.entries(images)) fileOf.set(image, file.replaceAll("\\", "/"));
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "iPhone 17 · 14 May 2026": device and capture date, from the original files. Empty if unknown. */
+export function photoCaption(image: ImageMetadata): string {
+  const file = fileOf.get(image);
+  const key = file?.match(/photography\/([^/]+\/[^/]+)$/)?.[1];
+  const info = key ? (meta as Record<string, { device: string | null; date: string | null }>)[key] : undefined;
+  if (!info) return "";
+  const date = info.date ? info.date.split("-") : null;
+  const when = date ? `${Number(date[2])} ${months[Number(date[1]) - 1]} ${date[0]}` : null;
+  return [info.device, when].filter(Boolean).join(" · ");
+}
+
 /** Every image in an album folder, sorted by filename. `01.jpg` comes before `10.jpg`. */
 export function albumImages(slug: string): ImageMetadata[] {
   const marker = `/photography/${slug}/`;

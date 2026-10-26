@@ -1,6 +1,6 @@
 ---
 title: Quebec roadtrip
-date: 2026-10-10
+date: 2026-09-25
 draft: false
 ---
 Two week trip to Quebec with Moon!
