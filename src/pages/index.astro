@@ -4,7 +4,6 @@ import Base from "../layouts/Base.astro";
 import TitleList from "../components/TitleList.astro";
 import CollectionIndex from "../components/CollectionIndex.astro";
 import PhotoCarousel from "../components/PhotoCarousel.astro";
-import RunningProgress from "../components/RunningProgress.astro";
 import { site, sections } from "../site";
 import { sectionMeta } from "../site.sections";
 import { byOrder, isLive } from "../lib/content";
@@ -103,7 +102,18 @@ const icons: Record<string, string> = {
               {sectionMeta.study.label}
             </h3>
             <CollectionIndex section="study" reserved={studyAll.map((entry) => entry.id)} />
-            <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
+            <TitleList
+              items={study
+                .filter((entry) => !entry.data.parent)
+                .map((entry) => ({
+                  href: `/study/${entry.id}/`,
+                  title: entry.data.title,
+                  children: study
+                    .filter((child) => child.data.parent === entry.id)
+                    .map((child) => ({ href: `/study/${child.id}/`, title: child.data.title })),
+                }))
+                .concat([{ title: "Bachelor (BSc) in Computer Science Engineering at Ghent University", children: [] }])}
+            />
           </section>
         )}
       </section>
@@ -128,33 +138,16 @@ const icons: Record<string, string> = {
         <h2 class="digest-title" id="photography-title">
           {sectionMeta.photos.label}
         </h2>
+        <p class="lede">
+          Pictures from 2026 onwards, taken with a point-and-shoot analog camera, a Fujifilm X-T30 Mark III or an
+          iPhone 17.
+        </p>
         <PhotoCarousel albums={albums} />
       </section>
     )
   }
 
   {BookshelfExcerpt && <BookshelfExcerpt />}
-
-  {
-    sections.running && (
-      <section class="digest" id="running" aria-labelledby="running-title">
-        <h2 class="digest-title" id="running-title">
-          {sectionMeta.running.label}
-        </h2>
-        <p class="lede">
-          Currently training for Hamburg Marathon 2027. Following a personal training schema inspired by
-          Advanced Marathoning (Pfitzinger &amp; Douglas). Training tracker freely available.
-        </p>
-        <RunningProgress />
-        <p class="board-link">
-          <a href={site.runningBoard} target="_blank" rel="noopener noreferrer">Full schedule →</a>
-        </p>
-        <p class="board-link">
-          <a href={site.runningRepo} target="_blank" rel="noopener noreferrer">Open repository →</a>
-        </p>
-      </section>
-    )
-  }
 
   {
     sections.blog && (
@@ -174,7 +167,7 @@ const icons: Record<string, string> = {
           Contact
         </h2>
         <p class="lede">
-          Fill in the form for any questions, business inquiries or just grabbing a coffee.
+          Feel free to reach out.
         </p>
         <form class="contact-form" action={site.formspree} method="POST">
           <input type="hidden" name="_subject" value="Website — Cedric Helewaut" />
@@ -194,7 +187,7 @@ const icons: Record<string, string> = {
             <label for="message">message</label>
             <textarea id="message" name="message" rows="3" required></textarea>
           </div>
-          <button class="submit" type="submit">send message</button>
+          <button class="submit" type="submit">Send Message</button>
         </form>
         <ul class="social">
           {site.profiles.map((profile) => {

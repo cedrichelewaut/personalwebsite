@@ -1,5 +1,5 @@
 ---
-title: "Proximus graduate programme"
+title: "Technical Graduate at Proximus"
 org: "Proximus"
 start: "Sept. 2023"
 end: "Aug. 2025"
@@ -8,13 +8,11 @@ order: 2
 noteDate: 2023-09-01
 ---
 
-#### A Transformative Journey
-
 In September 2023, after completing my engineering degree, I joined Proximus as a technical graduate. I wanted to complement my technical background with broader business experience, and Belgium's largest telecom operator was the right place for this. What I didn't expect was how much three rotations through product management and strategy would reshape the way I work.
 
-#### Fraud & Security at BICS
+#### Fraud & Security Product Management at BICS
 
-My first rotation placed me in product management at BICS, Proximus's international carrier service. For eight months, I worked on all aspects of the product lifecycle—from exploring opportunities to create innovative products, to tracking development and building partnerships. I gained hands-on experience in key skills such as market research, building business cases, and technical reviews.
+My first rotation placed me in product management at BICS, Proximus's international carrier service. For eight months, I worked on all aspects of the product lifecycle, from exploring opportunities to create innovative products, to tracking development and building partnerships. I gained hands-on experience in key skills such as market research, building business cases, and technical reviews.
 
 #### AI Strategy at Proximus Ada
 

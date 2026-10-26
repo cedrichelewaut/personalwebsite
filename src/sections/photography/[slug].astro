@@ -1,9 +1,9 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
+import Collage from "../../components/Collage.astro";
 import Base from "../../layouts/Base.astro";
 import { hasNote, isLive } from "../../lib/content";
-import { albumImages, byAlbumDate, collageRows } from "../../lib/photography";
+import { albumImages, byAlbumDate, photoCaption } from "../../lib/photography";
 import { assertReadableSlug } from "../../lib/slugs";
 
 export async function getStaticPaths() {
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const rows = collageRows(albumImages(entry.id));
+const images = albumImages(entry.id);
 ---
 
 <Base title={entry.data.title} description={entry.data.title} page="entry photography" current="" ogType="article">
@@ -31,26 +31,5 @@ const rows = collageRows(albumImages(entry.id));
       </div>
     )
   }
-  {
-    rows.length > 0 && (
-      <div class="collage">
-        {rows.map((row) => (
-          <div class:list={["collage-row", row.solo && "solo"]} style={row.solo ? `--r:${row.items[0].ratio}` : undefined}>
-            {row.items.map((item) => (
-              <figure class="frame" style={`--r:${item.ratio}`}>
-                <Image
-                  src={item.image}
-                  alt=""
-                  widths={[480, 720, 1080, 1600]}
-                  sizes={`(min-width: 720px) ${Math.round(item.share * 100)}vw, 100vw`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-            ))}
-          </div>
-        ))}
-      </div>
-    )
-  }
+  <Collage images={images} caption={photoCaption} />
 </Base>

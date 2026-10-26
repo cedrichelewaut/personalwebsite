@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import ArticleGallery from "../../components/ArticleGallery.astro";
 import EntryArticle from "../../components/EntryArticle.astro";
 import SetPage from "../../components/SetPage.astro";
 import { byOrder, hasNote, isLive } from "../../lib/content";
@@ -45,6 +46,7 @@ const Content = rendered?.Content;
       meta={[formatRange(entry.data.start, entry.data.end)]}
     >
       {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}
+      <ArticleGallery id={entry.id} />
     </EntryArticle>
   )
 }

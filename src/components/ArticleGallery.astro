@@ -1,0 +1,9 @@
+---
+import { articleCaption, articleImages } from "../lib/articleImages";
+import Collage from "./Collage.astro";
+
+const { id } = Astro.props;
+const images = articleImages(id);
+---
+
+{images.length > 0 && <Collage images={images} caption={articleCaption} />}

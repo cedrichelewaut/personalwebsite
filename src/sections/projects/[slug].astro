@@ -2,11 +2,13 @@
 import { getCollection, render } from "astro:content";
 import EntryArticle from "../../components/EntryArticle.astro";
 import LockedPage from "../../components/LockedPage.astro";
+import RunningProgress from "../../components/RunningProgress.astro";
 import SetPage from "../../components/SetPage.astro";
 import { byOrder, hasNote, isLive } from "../../lib/content";
 import { formatRange } from "../../lib/dates";
 import { loadSeries } from "../../lib/series";
 import { assertReadableSlug } from "../../lib/slugs";
+import { site } from "../../site";
 
 export async function getStaticPaths() {
   const all = await getCollection("projects");
@@ -53,6 +55,14 @@ const dates =
       link={link}
     >
       {hasNote(entry) && Content ? <Content /> : <p>{entry.data.summary}</p>}
+      {entry.data.embed === "running" && (
+        <>
+          <RunningProgress />
+          <p class="board-link">
+            <a href={site.runningBoard} target="_blank" rel="noopener noreferrer">Full schedule →</a>
+          </p>
+        </>
+      )}
     </EntryArticle>
   )
 }

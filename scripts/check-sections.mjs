@@ -6,7 +6,7 @@ import { spawn } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
-const keys = ["intro", "work", "study", "projects", "photos", "contact", "running", "bookshelf", "blog"];
+const keys = ["intro", "work", "study", "projects", "photos", "contact", "bookshelf", "blog"];
 const defaults = {
   intro: true,
   work: true,
@@ -14,7 +14,6 @@ const defaults = {
   projects: true,
   photos: true,
   contact: true,
-  running: true,
   bookshelf: false,
   blog: false,
 };
@@ -148,7 +147,6 @@ async function runWorker(id) {
         projects: state.projects,
         photography: state.photos && publishedAlbums,
         reading: state.bookshelf,
-        running: state.running,
         blog: state.blog,
       };
       for (const [id, on] of Object.entries(anchors)) {

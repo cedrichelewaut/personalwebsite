@@ -1,14 +1,13 @@
 ---
-title: "Master's thesis: detecting immersion with EEG"
+title: "Thesis on Detecting Immersion with EEG"
 org: "Ghent University"
 start: "June 2023"
 end: "June 2023"
 summary: "Understanding user experience through physiological data."
-order: 1
+order: 2
+parent: degree
 noteDate: 2023-06-30
 ---
-
-#### Research Overview
 
 During my master's dissertation, I explored the potential of Machine Learning in identifying connections between immersion in multimedia content and physiological signals, primarily focusing on electroencephalogram (EEG) data.
 
