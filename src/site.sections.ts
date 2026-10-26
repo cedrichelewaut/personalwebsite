@@ -12,12 +12,6 @@ export type SectionFlags = {
 
 export type SectionKey = keyof SectionFlags;
 
-export interface NavItem {
-  href: string;
-  id: string;
-  label: string;
-}
-
 export interface SectionRoute {
   pattern: string;
   entry: string;
@@ -40,7 +34,7 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
   },
   study: {
     id: "study",
-    label: "Study",
+    label: "Education",
     href: "/#study",
     routes: [{ pattern: "/study/[slug]", entry: "./src/sections/study/[slug].astro" }],
   },
@@ -58,7 +52,7 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
   },
   bookshelf: {
     id: "reading",
-    label: "Reading",
+    label: "Readings",
     href: "/reading/",
     routes: [
       { pattern: "/reading", entry: "./src/personal/bookshelf/pages/index.astro" },
@@ -68,8 +62,7 @@ export const sectionMeta: Record<SectionKey, SectionDef> = {
   running: {
     id: "running",
     label: "Running",
-    href: "/running/",
-    routes: [{ pattern: "/running", entry: "./src/sections/running/index.astro" }],
+    href: "/#running",
   },
   contact: {
     id: "contact",
@@ -115,19 +108,4 @@ export function routesFor(sections: SectionFlags): SectionRoute[] {
     if (meta.routes) routes.push(...meta.routes);
   }
   return routes;
-}
-
-/** Four flat header items. Groups with every section off are omitted. */
-export function navModel(sections: SectionFlags) {
-  const navItems: NavItem[] = [{ href: "/", id: "home", label: "Home" }];
-  if (groupOn(sections, experienceKeys)) {
-    navItems.push({ href: "/#experience", id: "experience", label: "Experience" });
-  }
-  if (groupOn(sections, personalKeys)) {
-    navItems.push({ href: "/#personal-projects", id: "personal", label: "Personal Projects" });
-  }
-  if (sections.contact) {
-    navItems.push({ href: "/#contact", id: "contact", label: "Contact" });
-  }
-  return { navItems };
 }

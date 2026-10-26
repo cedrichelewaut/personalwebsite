@@ -6,7 +6,7 @@
    --rule is the thin decorative column line: #CFCDC6 on #FAFAF7.
    --signal is Red earth, #9A2400. It is the introduction and the thick rules.
    Links are ink at rest, with no underline. Hover and focus turn them
-   to Red earth and add a thin underline. Nav stays ink.
+   to Red earth and add a thin underline.
    Content rules stay --ink. */
 
 @font-face {
@@ -234,16 +234,10 @@ textarea:focus-visible {
 }
 
 .sheet > header,
-.sheet > nav,
 .sheet > main,
-.sheet > footer,
-.site-nav {
+.sheet > footer {
   position: relative;
   z-index: 1;
-}
-
-nav[aria-label="Sections"] {
-  border-bottom: 1px solid var(--ink);
 }
 
 .section-no,
@@ -253,9 +247,6 @@ nav[aria-label="Sections"] {
 .prose,
 .meta,
 .plate,
-.thumb,
-.form-col,
-.direct-col,
 table.index,
 .foot {
   background: var(--paper);
@@ -272,7 +263,6 @@ table.index,
 }
 
 .meta-face,
-.nav-links,
 .foot,
 table.index,
 figcaption,
@@ -280,79 +270,11 @@ figcaption,
 .section-label,
 .thumb-label,
 .mark,
-.direct,
 .field label,
-.pager,
-.flag,
-.place,
-.brand {
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: var(--meta);
-  font-weight: 400;
-  line-height: 1.4;
-  font-style: normal;
-}
-
-.band {
-  border-bottom: 1px solid var(--ink);
-  padding-bottom: var(--gutter);
-}
-
-.mast {
-  align-items: baseline;
-  padding-bottom: calc(var(--gutter) / 2);
-}
-
-.brand {
+.flag {
   grid-column: span 8;
   color: var(--ink);
   text-decoration: none;
-}
-
-.place {
-  grid-column: span 4;
-  justify-self: end;
-  color: var(--grey);
-}
-
-.brand:hover,
-.brand:focus {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--ink);
-  text-underline-offset: 0.15em;
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: baseline;
-  gap: 0.35rem 1.75rem;
-  list-style: none;
-  margin: 0;
-  padding: calc(var(--gutter) / 2) 0;
-}
-
-.nav-links a {
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--ink);
-  text-underline-offset: 0.15em;
-}
-
-.nav-links a[aria-current="page"] {
-  color: var(--ink);
-  font-style: italic;
-  text-decoration: underline;
-  text-decoration-color: var(--ink);
-  text-underline-offset: 0.15em;
 }
 
 main {
@@ -372,7 +294,7 @@ body.home main > .intro {
   min-width: 0;
 }
 
-body.home main > .home-group {
+body.home main > section {
   order: 1;
   min-width: 0;
 }
@@ -435,12 +357,6 @@ body.home main > .home-group {
   align-self: end;
 }
 
-/* The second home nav sits in the document after the intro. It is hidden until
-   the nav stacks, so desktop keeps a single menu line above the portrait. */
-.site-nav-narrow {
-  display: none;
-}
-
 @media (max-width: 720px) {
   .intro {
     grid-template-columns: minmax(0, 1fr);
@@ -454,16 +370,6 @@ body.home main > .home-group {
 
   .intro-text {
     align-self: start;
-  }
-
-  body.home .site-nav:not(.site-nav-narrow) {
-    display: none;
-  }
-
-  body.home .site-nav-narrow {
-    display: block;
-    min-width: 0;
-    margin-top: var(--gutter);
   }
 
   body.home main {
@@ -494,32 +400,60 @@ h1.intro-title {
   line-height: 1.45;
 }
 
-.intro-contact a {
-  color: var(--paper);
-  text-decoration: underline;
-  text-decoration-color: var(--paper);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  box-shadow: inset 0 -1px 0 var(--paper);
-  padding-bottom: 0.22em;
-}
-
-.intro-contact a:hover,
-.intro-contact a:focus {
-  color: var(--paper);
-  text-decoration-color: var(--paper);
-}
-
-.intro-contact a:focus-visible {
-  outline-color: var(--paper);
-}
-
 .hl {
   background: var(--signal);
   color: var(--paper);
   padding: 0 0.18em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Ink text at rest. On hover or focus it takes the intro highlight. */
+.pill {
+  margin-left: -0.18em;
+  padding: 0 0.18em;
+  color: var(--ink);
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.pill:hover,
+.pill:focus-visible {
+  background: var(--signal);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.pill:focus-visible {
+  outline-color: var(--ink);
+}
+
+.back {
+  margin-bottom: var(--gutter);
+}
+
+.sub {
+  margin-top: 1.1rem;
+}
+
+.sub-title {
+  margin: 0;
+  font-size: var(--body);
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .lede,
@@ -546,27 +480,9 @@ h1.intro-title {
   margin-top: calc(var(--gutter) * 1.5);
 }
 
-.home-group,
-.digest {
+.digest,
+.sub {
   scroll-margin-top: var(--gutter);
-}
-
-.home-group {
-  margin-top: calc(var(--gutter) * 1.5);
-}
-
-.home-group-title {
-  margin: 0;
-  color: var(--grey);
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: var(--meta);
-  font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 0;
-}
-
-.home-group .digest:first-of-type {
-  margin-top: 0.85rem;
 }
 
 .digest-title {
@@ -577,10 +493,6 @@ h1.intro-title {
   font-weight: 400;
   line-height: 1.35;
   letter-spacing: 0;
-}
-
-.digest-title a:hover {
-  text-underline-offset: 0.12em;
 }
 
 .digest-title .num {
@@ -798,7 +710,6 @@ a.poster-title:hover {
 }
 
 .now-author,
-.now-edition,
 .now-link {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: var(--meta);
@@ -808,10 +719,6 @@ a.poster-title:hover {
 
 .now-author {
   margin-top: 1.15rem;
-}
-
-.now-edition {
-  margin-top: 0.2rem;
 }
 
 .now-link {
@@ -864,7 +771,6 @@ a.poster-title:hover {
   .now-kicker,
   .now-title,
   .now-author,
-  .now-edition,
   .now-link a {
     color: CanvasText;
   }
@@ -880,11 +786,10 @@ a.poster-title:hover {
     color: HighlightText;
   }
 
-  .intro-contact a,
-  .intro-contact a:hover {
+  .pill:hover,
+  .pill:focus-visible {
+    background: Highlight;
     color: HighlightText;
-    text-decoration-color: HighlightText;
-    box-shadow: inset 0 -1px 0 HighlightText;
   }
 }
 
@@ -924,9 +829,10 @@ a.poster-title:hover {
 }
 
 .note-list a {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
   font-weight: 400;
-  font-size: var(--body);
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .article-meta {
@@ -939,15 +845,7 @@ a.poster-title:hover {
 }
 
 .article-figure,
-.article-photos,
-.album-photos {
-  margin-top: var(--gutter);
-}
-
-.article-figure img,
-.article-photos img,
-.album-photos img,
-.album-photos picture {
+.article-figure img {
   display: block;
   width: 100%;
   height: auto;
@@ -993,7 +891,6 @@ a.poster-title:hover {
 
 .cap-note,
 .figure figcaption,
-.place,
 .foot span {
   color: var(--grey);
 }
@@ -1133,31 +1030,13 @@ table.index td {
   margin-left: 0.7em;
 }
 
-.thumbs {
-  margin-top: var(--gutter);
-}
-
-.thumb {
-  grid-column: span 2;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.thumb picture,
-.thumb img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-}
-
 .thumb-label {
   display: block;
   margin-top: 0.3rem;
   color: var(--grey);
 }
 
-.thumb:hover .thumb-label {
+.slide a:hover .thumb-label {
   color: var(--link-hover);
 }
 
@@ -1184,23 +1063,11 @@ figcaption a {
   text-underline-offset: 0.15em;
 }
 
-.form-col {
-  grid-column: span 7;
-  padding-right: var(--gutter);
-  border-right: 1px solid var(--ink);
-}
-
-.direct-col {
-  grid-column: span 5;
-  padding-left: var(--gutter);
-}
-
 .field {
   margin-top: 0.9rem;
 }
 
-.field label,
-.direct dt {
+.field label {
   display: block;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: var(--meta);
@@ -1225,7 +1092,7 @@ figcaption a {
 }
 
 .field textarea {
-  min-height: 8rem;
+  min-height: 4.5rem;
   resize: vertical;
 }
 
@@ -1240,17 +1107,6 @@ figcaption a {
 .field textarea:-webkit-autofill {
   -webkit-text-fill-color: var(--ink);
   box-shadow: 0 0 0 1000px var(--paper) inset;
-}
-
-.direct dd {
-  margin: 0.15rem 0 0.8rem;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: var(--meta);
-  overflow-wrap: anywhere;
-}
-
-.direct a {
-  text-underline-offset: 0.15em;
 }
 
 button {
@@ -1285,16 +1141,6 @@ button {
   display: none;
 }
 
-.pager {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1.2rem;
-}
-
-.pager a {
-  text-underline-offset: 0.15em;
-}
-
 footer {
   margin-top: var(--gutter);
   border-top: 1px solid var(--ink);
@@ -1313,14 +1159,6 @@ footer {
 }
 
 @media (max-width: 1100px) {
-  .brand {
-    grid-column: span 5;
-  }
-
-  .place {
-    grid-column: span 3;
-  }
-
   .section-no {
     grid-column: span 2;
   }
@@ -1337,51 +1175,14 @@ footer {
     grid-column: span 4;
   }
 
-  .form-col,
-  .direct-col {
-    grid-column: 1 / -1;
-    border-left: 0;
-    border-right: 0;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .direct-col {
-    border-top: 1px solid var(--ink);
-    margin-top: var(--gutter);
-    padding-top: var(--gutter);
-  }
 }
 
 @media (max-width: 720px) {
-  .brand,
-  .place,
   .section-no,
   .head-copy,
   .home-copy,
   .home-photo {
     grid-column: 1 / -1;
-  }
-
-  .place {
-    justify-self: start;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 0.5rem 0;
-    border-top: 1px solid var(--ink);
-  }
-
-  .nav-links li:first-child a {
-    border-top: 0;
   }
 
   .meta > div {
@@ -1464,5 +1265,172 @@ footer {
 
   a {
     text-decoration: underline;
+  }
+}
+
+/* Photography: a row of albums on the home page, four at a time. */
+.carousel-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 calc((100% - 3rem) / 4);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.slide a {
+  display: block;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.slide img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.carousel-controls[hidden] {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .slide {
+    flex-basis: calc((100% - 1rem) / 2);
+  }
+}
+
+/* Round icon buttons: carousel arrows and the social links. */
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.circle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circle:hover,
+.circle:focus-visible {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.circle:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.circle:disabled:hover {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.social {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+}
+
+.contact-form {
+  max-width: 34rem;
+  margin-top: 0.85rem;
+}
+
+.form-note {
+  margin-top: 0.85rem;
+  color: var(--grey);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.4;
+}
+
+/* An album: pictures in rows of equal height, so one row is big and the next is small. */
+.collage {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: var(--gutter);
+}
+
+.collage-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.collage-row.solo {
+  width: 100%;
+  max-width: calc(80vh * var(--r));
+  margin-inline: auto;
+}
+
+.frame {
+  flex: var(--r) 1 0;
+  min-width: 0;
+  aspect-ratio: var(--r);
+  margin: 0;
+  padding: 0.45rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+
+.frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 720px) {
+  .collage-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .frame {
+    flex: none;
+    width: 100%;
   }
 }

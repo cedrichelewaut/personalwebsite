@@ -1,6 +1,5 @@
 ---
 import css from "../styles/site.css?raw";
-import SiteNav from "../components/SiteNav.astro";
 import { site } from "../site";
 
 interface Props {
@@ -39,22 +38,17 @@ const year = new Date().getFullYear();
   <body class={page}>
     <a class="skip" href="#content">Skip to content</a>
     <div class="sheet">
-      {
-        page !== "home" && (
-          <header class="band">
-            <div class="grid mast">
-              <a class="brand" href="/">
-                {site.name}
-              </a>
-              <span class="place">{site.location.toLowerCase()}</span>
-            </div>
-          </header>
-        )
-      }
-      <SiteNav current={current} />
       <main id="content">
+        {
+          page !== "home" && (
+            <p class="back">
+              <a class="pill" href="/">
+                ← Back to home
+              </a>
+            </p>
+          )
+        }
         <slot name="lead" />
-        {page === "home" && <SiteNav current={current} narrow />}
         <slot />
       </main>
       <footer>
@@ -62,6 +56,7 @@ const year = new Date().getFullYear();
           <span>© {year} {site.name}</span>
           <a href={`mailto:${site.email}`}>{site.email}</a>
           <a href="/rss.xml">rss</a>
+          <a href="/privacy/">privacy</a>
         </div>
       </footer>
     </div>

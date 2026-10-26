@@ -480,3 +480,13 @@
   from = "/work/izg/"
   to = "/projects/izg/"
   status = 301
+
+[[redirects]]
+  from = "/running"
+  to = "/#running"
+  status = 301
+
+[[redirects]]
+  from = "/running/"
+  to = "/#running"
+  status = 301

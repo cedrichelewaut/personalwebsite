@@ -42,11 +42,11 @@ const publishedAlbums = hasPublishedAlbums();
 const total = 1 << keys.length;
 
 const level2 = {
-  running: "running/index.html",
   bookshelf: "reading/index.html",
 };
 
 const removed = [
+  "running/index.html",
   "experience/index.html",
   "personal-projects/index.html",
   "contact/index.html",
@@ -138,12 +138,10 @@ async function runWorker(id) {
     const homePath = path.join(outDir, "index.html");
     if (!existsSync(homePath)) missing.push("index.html");
     const experience = state.work || state.study;
-    const personal = state.projects || state.photos || state.bookshelf || state.running || state.blog;
     if (existsSync(homePath)) {
       const home = readFileSync(homePath, "utf8");
       const anchors = {
         experience,
-        "personal-projects": personal,
         contact: state.contact,
         work: state.work,
         study: state.study,
@@ -158,16 +156,10 @@ async function runWorker(id) {
         if (on && !present) missing.push(`#${id}`);
         if (!on && present) unexpected.push(`#${id}`);
       }
-      const nav = {
-        "/#experience": experience,
-        "/#personal-projects": personal,
-        "/#contact": state.contact,
-      };
-      for (const [href, on] of Object.entries(nav)) {
-        const present = home.includes(`href="${href}"`);
-        if (on && !present) missing.push(href);
-        if (!on && present) unexpected.push(href);
+      for (const href of ["/#experience", "/#personal-projects"]) {
+        if (home.includes(`href="${href}"`)) unexpected.push(href);
       }
+      if (home.includes('class="site-nav')) unexpected.push("nav");
     }
     const stale = [];
     const walk = (dir) => {

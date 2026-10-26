@@ -14,17 +14,15 @@ const current = await loadCurrent();
 ---
 
 <section class="digest" id="reading" aria-labelledby="reading-title">
-  <h3 class="digest-title" id="reading-title">
-    <a href="/reading/">Reading</a>
-  </h3>
+  <h2 class="digest-title" id="reading-title">Readings</h2>
   <NowReading
     level="h3"
     title={current.data.title}
     author={current.data.author}
-    edition={current.data.edition}
     url={current.data.url}
     lang={current.data.lang}
   />
   <h3 class="excerpt-label">Latest recommendations</h3>
   <BookPoster books={books} />
+  <p class="board-link"><a href="/reading/">Full book list →</a></p>
 </section>

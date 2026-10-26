@@ -5,29 +5,16 @@ interface Props {
   title: string;
   description?: string;
   page: string;
-  current: string;
-  kicker: string;
-  kickerHref: string;
   meta?: string[];
   link?: string;
 }
 
-const {
-  title,
-  description,
-  page,
-  current,
-  kicker,
-  kickerHref,
-  meta = [],
-  link = "",
-} = Astro.props;
+const { title, description, page, meta = [], link = "" } = Astro.props;
 const href = link.trim();
 ---
 
-<Base title={title} description={description} page={page} current={current} ogType="article">
+<Base title={title} description={description} page={page} current="" ogType="article">
   <header class="article-head">
-    <p class="kicker signal-links"><a href={kickerHref}>{kicker}</a></p>
     <h1>{title}</h1>
     {
       meta.map((line) => (
@@ -44,8 +31,5 @@ const href = link.trim();
   </header>
   <div class="prose article signal-links">
     <slot />
-  </div>
-  <div class="block signal-links">
-    <slot name="pager" />
   </div>
 </Base>

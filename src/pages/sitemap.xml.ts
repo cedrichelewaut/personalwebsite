@@ -22,7 +22,7 @@ export const GET: APIRoute = async () => {
   const paths = [
     "/",
     ...(sections.bookshelf ? ["/reading/"] : []),
-    ...(sections.running ? ["/running/"] : []),
+    "/privacy/",
     ...(sections.blog ? posts.filter(isLive).map((entry) => `/blog/${entry.id}/`) : []),
     ...(sections.photos ? albums.filter(isLive).map((entry) => `/photography/${entry.id}/`) : []),
     ...(sections.work ? work.filter(isLive).map((entry) => `/work/${entry.id}/`) : []),

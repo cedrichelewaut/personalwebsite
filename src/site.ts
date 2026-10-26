@@ -1,5 +1,5 @@
 import { siteConfig } from "./site.config";
-import { navModel, type SectionFlags } from "./site.sections";
+import type { SectionFlags } from "./site.sections";
 
 declare const __SITE_SECTIONS__: SectionFlags;
 
@@ -15,9 +15,8 @@ export const site = {
   ogImage: siteConfig.ogImage,
   intro: siteConfig.intro,
   contactLink: siteConfig.contactLink,
+  runningBoard: siteConfig.runningBoard,
   portrait: siteConfig.portrait,
   profiles: siteConfig.socials,
   sections,
 };
-
-export const { navItems } = navModel(sections);

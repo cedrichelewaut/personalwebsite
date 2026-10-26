@@ -1,0 +1,52 @@
+---
+import EntryArticle from "../components/EntryArticle.astro";
+import { site } from "../site";
+---
+
+<EntryArticle
+  title="Privacy"
+  description="What this site does with personal data."
+  page="entry privacy"
+  meta={["Last updated 26 October 2026"]}
+>
+  <p>
+    This is the personal website of {site.name}, based in {site.location}, Belgium. You can reach me at
+    <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+
+  <h2>Contact form</h2>
+  <p>
+    If you use the contact form, I receive the name, email address and message you type. The form is
+    processed by Formspree (Formspree, Inc., United States), which forwards it to my inbox. I use these
+    details only to reply to you and keep them only as long as needed to handle your message. The legal
+    basis is my legitimate interest in answering you (GDPR art. 6(1)(f)).
+  </p>
+
+  <h2>Cookies and tracking</h2>
+  <p>
+    This site sets no cookies and has no analytics, advertising or tracking scripts. Fonts are served from
+    this site.
+  </p>
+
+  <h2>Other parties</h2>
+  <ul>
+    <li>
+      The site is hosted by Netlify, which may keep technical server logs (such as your IP address) to
+      deliver and secure the site.
+    </li>
+    <li>
+      The running chart is embedded from cedrichelewaut.github.io (GitHub Pages), which receives your IP
+      address when the chart loads.
+    </li>
+    <li>Links to LinkedIn, GitHub and Instagram are plain links. Those services only see you once you follow them.</li>
+  </ul>
+
+  <h2>Your rights</h2>
+  <p>
+    You can ask me to access, correct or delete the data I hold about you, or object to its use, by
+    emailing me. You can also lodge a complaint with the Belgian Data Protection Authority
+    (<a href="https://www.gegevensbeschermingsautoriteit.be" target="_blank" rel="noopener noreferrer"
+      >gegevensbeschermingsautoriteit.be</a
+    >).
+  </p>
+</EntryArticle>

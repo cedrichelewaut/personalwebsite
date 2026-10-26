@@ -1,0 +1,72 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { albumThumb } from "../lib/photography";
+
+interface Props {
+  albums: CollectionEntry<"photography">[];
+}
+
+const { albums } = Astro.props;
+const paged = albums.length > 4;
+---
+
+<div class="carousel" data-carousel>
+  <ul class="carousel-track" tabindex="-1">
+    {
+      albums.map((album) => {
+        const thumb = albumThumb(album);
+        return (
+          <li class="slide">
+            <a href={`/photography/${album.id}/`}>
+              {thumb && (
+                <Image
+                  src={thumb}
+                  alt=""
+                  widths={[240, 480, 720]}
+                  sizes="(min-width: 720px) 25vw, 50vw"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+              <span class="thumb-label">{album.data.title}</span>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+  {
+    paged && (
+      <div class="carousel-controls" hidden>
+        <button type="button" class="circle" data-dir="-1" aria-label="Newer albums">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <button type="button" class="circle" data-dir="1" aria-label="Older albums">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+    )
+  }
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+    const track = root.querySelector<HTMLElement>(".carousel-track");
+    const controls = root.querySelector<HTMLElement>(".carousel-controls");
+    if (!track || !controls) return;
+    const [prev, next] = Array.from(controls.querySelectorAll<HTMLButtonElement>("button"));
+    controls.hidden = false;
+    const sync = () => {
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    };
+    controls.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-dir]");
+      if (!button) return;
+      track.scrollBy({ left: Number(button.dataset.dir) * track.clientWidth, behavior: "smooth" });
+    });
+    track.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    sync();
+  });
+</script>

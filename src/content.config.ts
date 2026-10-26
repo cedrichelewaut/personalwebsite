@@ -113,7 +113,6 @@ const current = defineCollection({
   schema: z.object({
     title: z.string(),
     author: z.string(),
-    edition: z.string(),
     url: z.string().url(),
     /** Dutch books set nl. Omit for English. */
     lang: z.enum(["nl"]).optional(),
