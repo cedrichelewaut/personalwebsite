@@ -15,6 +15,7 @@
  * encrypted. Pictures are written to public/private/<slug>/<n>.bin.
  * The project needs src/content/projects/<slug>.md with `locked: true`.
  * Keep the readable page and the photos outside git (private-src/ is ignored).
+ * To edit an existing locked page, recover the readable files first with scripts/decrypt-page.mjs.
  */
 import { createCipheriv, pbkdf2Sync, randomBytes, randomInt } from "node:crypto";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -83,7 +84,7 @@ async function picture(src, alt, caption) {
   const sealed = seal(Buffer.concat([length, header, jpeg]));
   writeFileSync(path.join(outDir, file), Buffer.concat([Buffer.from(sealed.iv, "base64"), Buffer.from(sealed.data, "base64")]));
   pictures += 1;
-  const text = seal(Buffer.from(JSON.stringify({ alt, caption })));
+  const text = seal(Buffer.from(JSON.stringify({ alt, caption, src: path.basename(src) })));
   return {
     w: width,
     h: height,

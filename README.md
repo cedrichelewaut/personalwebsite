@@ -231,6 +231,16 @@ PAGE_PASSWORD='a long random passphrase' node scripts/encrypt-page.mjs private-s
 
 The page is an HTML fragment in blocks separated by blank lines (headings, paragraphs, lists, and rows of pictures in `<div class="plates">` with `<figure><img src="photo.jpg" alt="…"><figcaption>…</figcaption></figure>`). The mosaic shows each picture's colours but not its content; fewer columns (`COLS` in the script) leak less. The password must be at least 16 characters unless `ALLOW_WEAK_PASSWORD=1`, because the encrypted files are public and can be guessed against offline. Locked pages are marked `noindex` and left out of the sitemap and RSS.
 
+**Editing a locked page later.** The readable source is not in git, so recover it with the key and encrypt it again:
+
+```bash
+PAGE_PASSWORD='the key' node scripts/decrypt-page.mjs project-encryption private-src/project-encryption.html
+# edit private-src/project-encryption.html (the pictures are next to it as JPEG files)
+PAGE_PASSWORD='the key' node scripts/encrypt-page.mjs private-src/project-encryption.html project-encryption
+```
+
+Then commit `src/private/` and `public/private/` (encrypted files only). A coding agent can do this too if you give it the key; keep in mind that the key then passes through that agent.
+
 ## Adding content without a developer
 
 Content lives in plain files, so it can be edited from a browser.
