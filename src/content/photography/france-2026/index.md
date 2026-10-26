@@ -1,6 +1,6 @@
 ---
-title: Paris
-date: 2026-07-05
+title: France
+date: 2026-07-03
 draft: false
 ---
-Weekend trip to Paris with Moon.
+Two weeks in France: a week in Provence with Moon, followed by a week in Bordeaux with friends.
