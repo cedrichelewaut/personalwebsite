@@ -37,7 +37,7 @@ if (!sealed) throw new Error(`Locked project “${slug}” has no src/private/${
     <button class="submit" type="submit">open</button>
     <p class="unlock-status" id="unlock-status" role="status"></p>
   </form>
-  <div class="prose article" id="body">
+  <div class="prose article mono" id="body">
     {
       sealed.blocks.map((block, index) =>
         block.k === "t" ? (
