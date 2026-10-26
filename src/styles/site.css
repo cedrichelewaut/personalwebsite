@@ -1482,6 +1482,14 @@ footer {
   user-select: all;
 }
 
+/* Locked articles: IBM Plex Mono for the text, Aileron for the section titles. */
+.prose.mono p {
+  max-width: 80ch;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.5;
+}
+
 .plates {
   display: flex;
   align-items: flex-start;
