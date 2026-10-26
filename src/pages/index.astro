@@ -134,14 +134,17 @@ const icons: Record<string, string> = {
         <h2 class="digest-title" id="running-title">
           {sectionMeta.running.label}
         </h2>
-        <p class="lede">Currently training for Hamburg Marathon 2027. Progress so far:</p>
+        <p class="lede">
+          Currently training for Hamburg Marathon 2027. Following a personal training schema inspired by
+          Advanced Marathoning (Pfitzinger &amp; Douglas). Training tracker freely available.
+        </p>
         <RunningProgress />
         <p class="board-link">
-          <a href={site.runningBoard} target="_blank" rel="noopener noreferrer">
-            Full schedule →
-          </a>
+          <a href={site.runningBoard} target="_blank" rel="noopener noreferrer">Full schedule →</a>
         </p>
-        <p class="lede">Training schema inspired by Advanced Marathoning (Pfitzinger &amp; Douglas).</p>
+        <p class="board-link">
+          <a href={site.runningRepo} target="_blank" rel="noopener noreferrer">Open repository →</a>
+        </p>
       </section>
     )
   }
@@ -164,8 +167,7 @@ const icons: Record<string, string> = {
           Contact
         </h2>
         <p class="lede">
-          Open for questions, business inquiries, or just grabbing a coffee. Get in touch through this form
-          or on LinkedIn!
+          Fill in the form for any questions, business inquiries or just grabbing a coffee.
         </p>
         <form class="contact-form" action={site.formspree} method="POST">
           <input type="hidden" name="_subject" value="Website — Cedric Helewaut" />
@@ -186,9 +188,6 @@ const icons: Record<string, string> = {
             <textarea id="message" name="message" rows="3" required></textarea>
           </div>
           <button class="submit" type="submit">send message</button>
-          <p class="form-note">
-            Your details are used only to reply. See the <a href="/privacy/">privacy notice</a>.
-          </p>
         </form>
         <ul class="social">
           {site.profiles.map((profile) => {

@@ -18,6 +18,7 @@ export const siteConfig = {
   contactLink: { href: "/#contact", label: "Get in touch →" },
   /** The full marathon schedule lives outside this site. */
   runningBoard: "https://cedrichelewaut.github.io/marathoning/",
+  runningRepo: "https://github.com/cedrichelewaut/marathoning",
   portrait: {
     src: "/img/cedric-portrait.jpg",
     alt: "Portrait of Cedric Helewaut",
