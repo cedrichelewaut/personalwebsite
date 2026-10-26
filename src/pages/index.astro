@@ -103,7 +103,17 @@ const icons: Record<string, string> = {
               {sectionMeta.study.label}
             </h3>
             <CollectionIndex section="study" reserved={studyAll.map((entry) => entry.id)} />
-            <TitleList items={study.map((entry) => ({ href: `/study/${entry.id}/`, title: entry.data.title }))} />
+            <TitleList
+              items={study
+                .filter((entry) => !entry.data.parent)
+                .map((entry) => ({
+                  href: `/study/${entry.id}/`,
+                  title: entry.data.title,
+                  children: study
+                    .filter((child) => child.data.parent === entry.id)
+                    .map((child) => ({ href: `/study/${child.id}/`, title: child.data.title })),
+                }))}
+            />
           </section>
         )}
       </section>
@@ -178,7 +188,7 @@ const icons: Record<string, string> = {
           Contact
         </h2>
         <p class="lede">
-          Fill in the form for any questions, business inquiries or just grabbing a coffee.
+          Feel free to reach out.
         </p>
         <form class="contact-form" action={site.formspree} method="POST">
           <input type="hidden" name="_subject" value="Website — Cedric Helewaut" />
@@ -198,7 +208,7 @@ const icons: Record<string, string> = {
             <label for="message">message</label>
             <textarea id="message" name="message" rows="3" required></textarea>
           </div>
-          <button class="submit" type="submit">send message</button>
+          <button class="submit" type="submit">Send Message</button>
         </form>
         <ul class="social">
           {site.profiles.map((profile) => {

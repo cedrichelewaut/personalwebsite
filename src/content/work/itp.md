@@ -1,5 +1,5 @@
 ---
-title: "Machine learning internship, In The Pocket"
+title: "Machine Learning Intern at In The Pocket"
 org: "In The Pocket"
 start: "July 2021"
 end: "Aug. 2021"
@@ -7,8 +7,6 @@ summary: "Gaining my first machine learning experience at a digital product stud
 order: 4
 noteDate: 2021-09-01
 ---
-
-#### Summer 2021 Internship
 
 In the summer of 2021, I worked with the Machine Learning team at In The Pocket, a digital product studio based in Ghent. My role focused on applying Machine Learning and Data Science to real-world challenges. I contributed to client projects and developed a personal project using internal data to provide insights on team dynamics to team leads.
 

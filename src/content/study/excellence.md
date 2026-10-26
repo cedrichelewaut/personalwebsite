@@ -1,14 +1,13 @@
 ---
-title: "Innovation for Society, Ghent University"
+title: "Faculty Excellence Program"
 org: "Ghent University"
 start: "Sept 2021"
 end: "June 2022"
 summary: "Analyzed racial bias in AI-based facial recognition systems."
 order: 4
+parent: degree
 noteDate: 2022-06-01
 ---
-
-#### Innovation for Society Program
 
 During the 2021-2022 academic year, I joined the first edition of the Innovation for Society excellence program at Ghent University. This program brings together future engineers to explore their role in achieving positive and lasting impact on the world.
 

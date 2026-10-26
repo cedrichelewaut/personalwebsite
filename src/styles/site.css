@@ -639,10 +639,10 @@ a.poster-title:hover .lang,
 .shelf-title {
   margin: 0;
   color: var(--ink);
-  font-family: "Aileron", Helvetica, Arial, sans-serif;
-  font-size: var(--body);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.4;
   letter-spacing: 0;
 }
 
@@ -847,6 +847,24 @@ a.poster-title:hover {
 
 .note-list li + li {
   margin-top: 0.55rem;
+}
+
+.note-sublist {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0 0 0 1.1rem;
+}
+
+.note-sublist li + li {
+  margin-top: 0.4rem;
+}
+
+.note-sublist li::before {
+  content: "\2013";
+  margin-right: 0.6rem;
+  color: var(--grey);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
 }
 
 .note-list a {
@@ -1300,7 +1318,7 @@ footer {
 /* Photography: a row of albums on the home page, four at a time. */
 .carousel-track {
   list-style: none;
-  margin: 0;
+  margin: 1.5rem 0 0;
   padding: 0;
   display: flex;
   gap: 1rem;

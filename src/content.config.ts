@@ -54,6 +54,8 @@ const study = defineCollection({
     end: z.string(),
     summary: z.string(),
     order: z.number(),
+    /** Id of the study entry this one is listed under on the home page. */
+    parent: z.string().optional(),
     noteDate,
     stub: z.boolean().default(false),
     draft: z.boolean().default(false),

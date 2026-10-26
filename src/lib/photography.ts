@@ -44,9 +44,21 @@ export function albumImages(slug: string): ImageMetadata[] {
     .map(([, image]) => image);
 }
 
-/** The home thumbnail: the cover, or the first image in the folder. */
+/** An image in the album folder named `cover`, whatever its extension (case-insensitive). */
+function coverImage(slug: string): ImageMetadata | undefined {
+  const marker = `/photography/${slug}/`;
+  for (const [file, image] of Object.entries(images)) {
+    const path = file.replaceAll("\\", "/");
+    if (!path.includes(marker)) continue;
+    const name = path.split("/").pop() ?? "";
+    if (name.replace(/\.[^.]+$/, "").toLowerCase() === "cover") return image;
+  }
+  return undefined;
+}
+
+/** The home thumbnail: a file named `cover.*`, else the frontmatter cover, else the first image. */
 export function albumThumb(entry: CollectionEntry<"photography">): ImageMetadata | undefined {
-  return entry.data.cover ?? albumImages(entry.id)[0];
+  return coverImage(entry.id) ?? entry.data.cover ?? albumImages(entry.id)[0];
 }
 
 export function byAlbumDate(entries: CollectionEntry<"photography">[]) {
