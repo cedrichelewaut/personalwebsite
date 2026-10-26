@@ -19,8 +19,12 @@ if (!input || !slug) {
   process.exit(1);
 }
 if (password.length < 16) {
-  console.error("PAGE_PASSWORD must be at least 16 characters. Anyone can try guesses offline.");
-  process.exit(1);
+  if (process.env.ALLOW_WEAK_PASSWORD !== "1") {
+    console.error("PAGE_PASSWORD must be at least 16 characters. Anyone can try guesses offline.");
+    console.error("Set ALLOW_WEAK_PASSWORD=1 to accept a short one anyway.");
+    process.exit(1);
+  }
+  console.warn("Warning: a short password can be guessed offline from the public encrypted file.");
 }
 
 const types = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", svg: "image/svg+xml" };
