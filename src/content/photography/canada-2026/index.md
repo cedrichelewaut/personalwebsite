@@ -1,5 +1,5 @@
 ---
-title: Canada 2026
+title: Quebec roadtrip
 date: 2026-10-10
 draft: false
 ---

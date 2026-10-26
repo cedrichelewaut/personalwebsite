@@ -1,5 +1,5 @@
 ---
-title: Munich 2026
+title: Munich
 date: 2026-02-15
 draft: false
 ---
