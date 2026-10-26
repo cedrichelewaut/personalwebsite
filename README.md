@@ -232,3 +232,17 @@ PAGE_PASSWORD='a long random passphrase' node scripts/encrypt-page.mjs private-s
 ```
 
 The page is an HTML fragment in blocks separated by blank lines (headings, paragraphs, lists, and rows of pictures in `<div class="plates">` with `<figure><img src="photo.jpg" alt="…"><figcaption>…</figcaption></figure>`). The mosaic shows each picture's colours but not its content; fewer columns (`COLS` in the script) leak less. The password must be at least 16 characters unless `ALLOW_WEAK_PASSWORD=1`, because the encrypted files are public and can be guessed against offline. Locked pages are marked `noindex` and left out of the sitemap and RSS.
+
+## Adding content without a developer
+
+Content lives in plain files, so it can be edited from a browser.
+
+**Pages CMS (forms and image upload).** Sign in at [app.pagescms.org](https://app.pagescms.org) with GitHub, install the app on this repository and open it. `.pages.yml` defines the forms for Work, Education, Projects and Photo albums, plus media libraries for article images (`public/img`) and album photos (`src/content/photography`). Every save is a commit on the selected branch, and Netlify publishes whatever lands on `master`.
+
+**GitHub in the browser.** The same files can be created with *Add file* on github.com:
+
+- An article: a markdown file in `src/content/work/`, `study/` or `projects/`. Copy an existing one for the top block (title, summary, order, and org/start/end for work and education). The file name is the address (`my-article.md` is `/projects/my-article/`).
+- A picture inside an article: upload it to `public/img/` and write `![description](/img/photo.jpg)`.
+- A photo album: a folder `src/content/photography/<name>/` with an `index.md` (title, date, `draft: false`, a short description as the body) and the pictures next to it. Number them (`01.jpg`, `02.jpg`) to set the order.
+
+Password-protected pages still need `scripts/encrypt-page.mjs` (see Locked pages).
