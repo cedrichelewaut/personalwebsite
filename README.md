@@ -223,12 +223,12 @@ Entries with a body and a `noteDate` are included in `/rss.xml` when their secti
 
 ## Locked pages
 
-A project with `locked: true` in its front matter is a password-protected page. Its content is encrypted in the browser sense: the repository holds only `src/private/<slug>.json` (AES-256-GCM, key from the password with PBKDF2), never the readable page. Visitors see a short “sealed” page with a key field; the right key opens the page in a full-screen frame.
+A project with `locked: true` in its front matter is a password-protected article. The repository holds only encrypted data: `src/private/<slug>.json` (the layout plus every text block, AES-256-GCM with a PBKDF2 key) and `public/private/<slug>/*.bin` (the pictures). Visitors see the article laid out as usual, with ciphertext in place of the text and a shuffled mosaic of each picture's tile colours in place of the photos. The right key decrypts everything in the browser: the text resolves letter by letter, the tiles slide into place, and the photo fades in.
 
-To create or update one, keep the readable HTML outside git (`private-src/` is ignored) and run:
+To create or update one, keep the readable HTML and the photos outside git (`private-src/` is ignored) and run:
 
 ```bash
 PAGE_PASSWORD='a long random passphrase' node scripts/encrypt-page.mjs private-src/page.html <slug>
 ```
 
-Local `<img src="…">` files next to the page are inlined before encryption. The password must be at least 16 characters, because the encrypted file is public and can be guessed against offline. Locked pages are marked `noindex` and left out of the sitemap and RSS.
+The page is an HTML fragment in blocks separated by blank lines (headings, paragraphs, lists, and rows of pictures in `<div class="plates">` with `<figure><img src="photo.jpg" alt="…"><figcaption>…</figcaption></figure>`). The mosaic shows each picture's colours but not its content; fewer columns (`COLS` in the script) leak less. The password must be at least 16 characters unless `ALLOW_WEAK_PASSWORD=1`, because the encrypted files are public and can be guessed against offline. Locked pages are marked `noindex` and left out of the sitemap and RSS.
