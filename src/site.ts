@@ -16,6 +16,7 @@ export const site = {
   intro: siteConfig.intro,
   contactLink: siteConfig.contactLink,
   runningBoard: siteConfig.runningBoard,
+  runningRepo: siteConfig.runningRepo,
   portrait: siteConfig.portrait,
   profiles: siteConfig.socials,
   sections,

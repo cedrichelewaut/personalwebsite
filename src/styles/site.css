@@ -44,7 +44,7 @@
 :root {
   --paper: #fafaf7;
   --ink: #151515;
-  --grey: #5e5b55;
+  --grey: #151515;
   --signal: #9a2400;
   --rule: #cfcdc6;
   /* Links. Ink at rest, no underline. Hover and focus stay ink; a 1px underline is the only change. */
@@ -272,9 +272,11 @@ figcaption,
 .mark,
 .field label,
 .flag {
-  grid-column: span 8;
-  color: var(--ink);
-  text-decoration: none;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  font-weight: 400;
+  line-height: 1.4;
+  font-style: normal;
 }
 
 main {
@@ -464,6 +466,9 @@ h1.intro-title {
 
 .lede {
   margin-top: 0.85rem;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  line-height: 1.4;
 }
 
 .head-copy .lede + p,
@@ -1376,14 +1381,6 @@ footer {
 .contact-form {
   max-width: 34rem;
   margin-top: 0.85rem;
-}
-
-.form-note {
-  margin-top: 0.85rem;
-  color: var(--grey);
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: var(--meta);
-  line-height: 1.4;
 }
 
 /* An album: pictures in rows of equal height, so one row is big and the next is small. */
