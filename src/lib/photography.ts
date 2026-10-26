@@ -2,7 +2,7 @@ import type { ImageMetadata } from "astro";
 import type { CollectionEntry } from "astro:content";
 
 const images = import.meta.glob<ImageMetadata>(
-  "../content/photography/**/*.{avif,gif,jpeg,jpg,png,webp}",
+  "../content/photography/**/*.{avif,gif,jpeg,jpg,JPG,JPEG,png,webp}",
   { eager: true, import: "default" },
 );
 
