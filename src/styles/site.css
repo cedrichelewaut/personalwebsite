@@ -867,6 +867,13 @@ a.poster-title:hover {
   font-size: var(--meta);
 }
 
+.note-plain {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: var(--meta);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
 .note-list a {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: var(--meta);

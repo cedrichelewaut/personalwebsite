@@ -1,5 +1,5 @@
 ---
-title: Singapore work trip
+title: Singapore Work Trip
 date: 2026-06-07
 draft: false
 ---

@@ -56,7 +56,6 @@ Everything that names the owner lives in `src/site.config.ts`.
 | `projects` | on | Projects list on the home page (`/#projects`) and each `/projects/…/` article |
 | `photos` | on | Photography albums on the home page (`/#photography`) and each `/photography/…/` album |
 | `contact` | on | Contact form on the home page (`/#contact`) and the intro contact link |
-| `running` | on | Running chart and a link to the full schedule on the home page |
 | `bookshelf` | off | Home reading block and the full list at `/reading/` |
 | `blog` | off | Blog list on the home page (`/#blog`) and each `/blog/…/` post |
 
@@ -64,11 +63,11 @@ The site has two levels. The home page is the only overview. Detail pages are th
 
 The header is four links, in this order: Home, Experience, Personal Projects, Contact. They sit in a row on wide screens and stack on narrow ones. Contact stays with the others, on the left. Home is `/`. Experience is `/#experience`. Personal Projects is `/#personal-projects`. Contact is `/#contact`.
 
-The home page has no menu. Experience groups Work and Education (Study); Projects, Photography, Readings, Running, Blog and Contact each get their own block when on. Photography is a carousel of the four newest albums with arrows for older ones, and each album page is a title, a short note and a collage. Photography appears when `photos` is on and at least one album is published. The home page lists every published album, so there is no `/photography/` index. Turning a section off removes that block from the home page and does not generate its detail pages. `/reading/` stays as its own page. Every inner page opens with a “Back to home” link and has no menu. `/privacy/` is the privacy notice linked from the footer.
+The home page has no menu. Experience groups Work and Education (Study); Projects, Photography, Readings, Blog and Contact each get their own block when on. Photography is a carousel of the four newest albums with arrows for older ones, and each album page is a title, a short note and a collage. Photography appears when `photos` is on and at least one album is published. The home page lists every published album, so there is no `/photography/` index. Turning a section off removes that block from the home page and does not generate its detail pages. `/reading/` stays as its own page. Every inner page opens with a “Back to home” link and has no menu. `/privacy/` is the privacy notice linked from the footer.
 
 Old overview URLs redirect to the matching home anchor. `/experience/` goes to `/#experience`, `/personal-projects/` to `/#personal-projects`, `/contact/` to `/#contact`, `/work/` to `/#work`, `/study/` to `/#study`, and `/projects/` to `/#projects`. Each rule is also listed without the trailing slash. `/about` and `/about.html` go to `/#work` in one hop, and `/contact.html` goes to `/#contact`. Role, study, and project URLs such as `/work/pxg/` are unchanged. `/blog` and `/blog/` go to `/#blog`. A published post stays at `/blog/…/`. `/photographs` and `/photographs/…/` go to `/#photography`. `/photography` and `/photography/` go there too, because the album list lives on the home page. Those rules use `force`. The rules are in `netlify.toml`.
 
-`bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,running`). `node scripts/check-sections.mjs` builds every on/off combination.
+`bookshelf` stays off unless the environment variable `PERSONAL_BOOKSHELF` is `true` at build time. `SECTIONS_ON` and `SECTIONS_OFF` are comma-separated flag names for local checks (`SECTIONS_OFF=work,blog`). `node scripts/check-sections.mjs` builds every on/off combination.
 
 ## Turn sections on or off
 
@@ -82,13 +81,12 @@ sections: {
   projects: true,
   photos: true,
   contact: true,
-  running: false,
   bookshelf: false,
   blog: false,
 }
 ```
 
-With `study` off, Study leaves the home page and `/study/…/` articles are not generated. With `running` off, Running leaves the home page. With `photos` off, Photography leaves the home page and `/photography/…/` albums are not generated.
+With `study` off, Study leaves the home page and `/study/…/` articles are not generated. With `photos` off, Photography leaves the home page and `/photography/…/` albums are not generated.
 
 ## Add a work entry
 

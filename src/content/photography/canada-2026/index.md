@@ -1,5 +1,5 @@
 ---
-title: Quebec roadtrip
+title: Quebec Roadtrip
 date: 2026-09-25
 draft: false
 ---

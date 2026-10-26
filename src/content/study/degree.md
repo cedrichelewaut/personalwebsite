@@ -1,5 +1,5 @@
 ---
-title: "MSc in Computer Science Engineering at Ghent University"
+title: "Master (MSc) in Computer Science Engineering at Ghent University"
 org: "Ghent University"
 start: "Sept 2021"
 end: "June 2023"

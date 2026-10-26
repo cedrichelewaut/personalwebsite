@@ -80,6 +80,8 @@ const projects = defineCollection({
     stub: z.boolean().default(false),
     /** A password-protected page. Its encrypted body lives in src/private/<slug>.json. */
     locked: z.boolean().default(false),
+    /** Append the live running progress chart and a link to the full schedule. */
+    embed: z.enum(["running"]).optional(),
     draft: z.boolean().default(false),
   }),
 });

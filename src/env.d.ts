@@ -5,7 +5,6 @@ type SiteSections = {
   projects: boolean;
   photos: boolean;
   contact: boolean;
-  running: boolean;
   bookshelf: boolean;
   blog: boolean;
 };

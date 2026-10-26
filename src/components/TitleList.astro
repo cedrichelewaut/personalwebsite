@@ -1,6 +1,6 @@
 ---
 interface Item {
-  href: string;
+  href?: string;
   title: string;
   children?: Item[];
 }
@@ -16,7 +16,7 @@ const { items } = Astro.props;
   {
     items.map((item) => (
       <li>
-        <a href={item.href}>{item.title}</a>
+        {item.href ? <a href={item.href}>{item.title}</a> : <span class="note-plain">{item.title}</span>}
         {item.children && item.children.length > 0 && (
           <ul class="note-sublist">
             {item.children.map((child) => (

@@ -4,7 +4,6 @@ import Base from "../layouts/Base.astro";
 import TitleList from "../components/TitleList.astro";
 import CollectionIndex from "../components/CollectionIndex.astro";
 import PhotoCarousel from "../components/PhotoCarousel.astro";
-import RunningProgress from "../components/RunningProgress.astro";
 import { site, sections } from "../site";
 import { sectionMeta } from "../site.sections";
 import { byOrder, isLive } from "../lib/content";
@@ -112,7 +111,8 @@ const icons: Record<string, string> = {
                   children: study
                     .filter((child) => child.data.parent === entry.id)
                     .map((child) => ({ href: `/study/${child.id}/`, title: child.data.title })),
-                }))}
+                }))
+                .concat([{ title: "Bachelor (BSc) in Computer Science Engineering at Ghent University", children: [] }])}
             />
           </section>
         )}
@@ -148,27 +148,6 @@ const icons: Record<string, string> = {
   }
 
   {BookshelfExcerpt && <BookshelfExcerpt />}
-
-  {
-    sections.running && (
-      <section class="digest" id="running" aria-labelledby="running-title">
-        <h2 class="digest-title" id="running-title">
-          {sectionMeta.running.label}
-        </h2>
-        <p class="lede">
-          Currently training for Hamburg Marathon 2027. Following a personal training schema inspired by
-          Advanced Marathoning (Pfitzinger &amp; Douglas). Training tracker freely available.
-        </p>
-        <RunningProgress />
-        <p class="board-link">
-          <a href={site.runningBoard} target="_blank" rel="noopener noreferrer">Full schedule →</a>
-        </p>
-        <p class="board-link">
-          <a href={site.runningRepo} target="_blank" rel="noopener noreferrer">Open repository →</a>
-        </p>
-      </section>
-    )
-  }
 
   {
     sections.blog && (
