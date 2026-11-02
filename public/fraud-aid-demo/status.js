@@ -25,7 +25,7 @@ async function load() {
 
 function message(titleKey, subKey) {
   view = () => message(titleKey, subKey);
-  app.replaceChildren(el("section", { className: "screen" }, el("div", { className: "ask" }, el("img", { src: "/logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big" }, t(titleKey)), el("p", { className: "sub" }, t(subKey)))));
+  app.replaceChildren(el("section", { className: "screen" }, el("div", { className: "ask" }, el("img", { src: "logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big" }, t(titleKey)), el("p", { className: "sub" }, t(subKey)))));
 }
 
 // System updates are stored as a kind and a code, so each person reads them in their own language.
@@ -76,7 +76,7 @@ function render(c) {
     el(
       "section",
       { className: "screen" },
-      el("div", { className: "ask" }, el("img", { src: "/logo.svg", alt: "", width: 44, height: 44 }), el("p", { className: "label quiet" }, t("s_ref", { id: c.id })), el("h2", { className: "big", tabIndex: -1 }, t("st_" + c.status))),
+      el("div", { className: "ask" }, el("img", { src: "logo.svg", alt: "", width: 44, height: 44 }), el("p", { className: "label quiet" }, t("s_ref", { id: c.id })), el("h2", { className: "big", tabIndex: -1 }, t("st_" + c.status))),
       el("div", { className: "terms-sec" }, el("p", { className: "label quiet" }, t("s_updates")), events),
       el("div", { className: "terms-sec" }, el("p", { className: "label quiet" }, t("s_files")), files, el("div", { className: "field" }, el("label", { htmlFor: "more" }, t("s_addmore")), pick)),
       err,

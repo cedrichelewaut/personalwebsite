@@ -73,7 +73,7 @@ function frame(stepIndex, ...content) {
 }
 
 function ask(text) {
-  return el("div", { className: "ask" }, el("img", { src: "/logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, text));
+  return el("div", { className: "ask" }, el("img", { src: "logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, text));
 }
 
 function next(from) {
@@ -113,7 +113,7 @@ function showStart() {
   const hero = el(
     "div",
     { className: "ask" },
-    el("img", { src: "/logo.svg", alt: "", width: 96, height: 96 }),
+    el("img", { src: "logo.svg", alt: "", width: 96, height: 96 }),
     el("h1", { className: "big" }, t("start_h1")),
     el("p", { className: "sub" }, t("start_sub")),
   );
@@ -320,7 +320,7 @@ function otherCountry() {
     go.disabled = !!(r && r.ok);
   });
   if (trail[trail.length - 1] !== 0) trail.push(0);
-  frame(0, el("div", { className: "ask" }, el("img", { src: "/logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, t("oc_title")), el("p", { className: "sub" }, t("oc_sub"))), form);
+  frame(0, el("div", { className: "ask" }, el("img", { src: "logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, t("oc_title")), el("p", { className: "sub" }, t("oc_sub"))), form);
 }
 
 // ---- Learn -------------------------------------------------------------------------------
@@ -382,7 +382,7 @@ async function buildPlan() {
     el(
       "section",
       { className: "screen" },
-      el("div", { className: "ask" }, el("img", { src: "/logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, t("loading_title")), el("span", { className: "typing", ariaHidden: "true" }, el("i"), el("i"), el("i")), el("p", { className: "hint" }, t("loading_hint"))),
+      el("div", { className: "ask" }, el("img", { src: "logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, t("loading_title")), el("span", { className: "typing", ariaHidden: "true" }, el("i"), el("i"), el("i")), el("p", { className: "hint" }, t("loading_hint"))),
     ),
   );
   window.scrollTo(0, 0);
@@ -423,7 +423,7 @@ function showPlan(plan) {
   view = () => reloadPlan();
   reading(true);
   const v = plan.verdict;
-  const head = el("div", { className: "head" }, el("div", { className: "ask" }, el("img", { src: "/logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, t("plan_title"))));
+  const head = el("div", { className: "head" }, el("div", { className: "ask" }, el("img", { src: "logo.svg", alt: "", width: 44, height: 44 }), el("h2", { className: "big", tabIndex: -1 }, t("plan_title"))));
   const wrap = el("div", { className: "plan" }, head);
 
   if (plan.urgent) wrap.append(el("p", { className: "urgent" }, t("urgent")));
