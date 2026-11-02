@@ -13,4 +13,4 @@ Fraud Aid is a prototype for Belgium. A short guided questionnaire gives a five-
 
 The language model never decides anything legal. Plain rules give the verdict, and the model only rewrites the victim's own words into a short statement for the documents. An earlier version let the model call tools freely, and I dropped it after the 8B model skipped tools, invented phone numbers and cited Dutch law.
 
-It is a prototype and not yet open to real cases. It needs review by a Belgian lawyer and a fraud specialist, and proper hosting, before it can be used. The code is on GitHub.
+It is a prototype and not yet open to real cases. It needs review by a Belgian lawyer and a fraud specialist, and proper hosting, before it can be used. You can [try the demo](/fraud-aid-demo/), which runs entirely in your browser, read [the article](/blog/building-fraud-aid/), or see the code on GitHub.
