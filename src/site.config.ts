@@ -54,6 +54,6 @@ export const siteConfig = {
     photos: true,
     contact: true,
     bookshelf: false,
-    blog: true,
+    blog: false,
   } satisfies SectionFlags,
 };
