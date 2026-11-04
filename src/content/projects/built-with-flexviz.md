@@ -6,10 +6,10 @@ order: 3
 draft: false
 ---
 
-Earlier this year, I teamed up with Jeroen, a friend who, together with his brother, has developed many great solutions for data analytics on large-scale data sets. The latest is FlexViz.tech.
+Earlier this year, I teamed up with Jeroen, a friend who, together with his brother, builds solutions for data analytics on large-scale data sets. Their latest is [FlexViz](https://flexviz.tech), the most effective way I know to visualize large data sets.
 
-FlexViz is the most effective way to visualize large data sets, and one of the best ways to analyse data with agents: the single state in which it stores a chart view lets agents easily see what you are looking at at any point in time.
+FlexViz stores a chart view in a single state, so an agent can see exactly what you are looking at. Together we decided the best way to productise it was to open-source it, and adoption has grown steadily since.
 
-Together we looked at how to productise FlexViz and decided the best use was to open-source it. Adoption has grown steadily among both people who know Jeroen's other libraries and new users.
+## Finding my next favorite book
 
-Personally, I have used FlexViz to explore large data sets related to books. More on this soon.
+As a hobby project, I built [Atlas](https://github.com/cedrichelewaut/atlas) to find my next favorite book. It shows hundreds of thousands of books at once, and an LLM sees the exact same view I do through FlexViz's single state.
