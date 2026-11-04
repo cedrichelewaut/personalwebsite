@@ -1,5 +1,5 @@
 ---
-title: "Machine Learning Intern at In The Pocket"
+title: "Intern at In The Pocket"
 org: "In The Pocket"
 start: "July 2021"
 end: "Aug. 2021"
