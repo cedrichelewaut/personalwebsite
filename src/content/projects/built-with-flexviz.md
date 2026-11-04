@@ -12,4 +12,4 @@ FlexViz stores a chart view in a single state, so an agent can see exactly what 
 
 ## Finding my next favorite book
 
-As a hobby project, I built [Atlas](https://github.com/cedrichelewaut/atlas) to find my next favorite book. It shows hundreds of thousands of books at once, and an LLM sees the exact same view I do through FlexViz's single state.
+As a hobby project, I built [Atlas](https://github.com/cedrichelewaut/atlas) to find my next favorite book. It shows hundreds of thousands of books at once, and an LLM sees the exact same view I do through [FlexViz](https://github.com/flex-analytics/flexviz)'s single state.
